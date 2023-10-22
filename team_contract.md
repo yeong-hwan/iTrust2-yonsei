@@ -13,6 +13,6 @@ Team Contract for [Team Name]
 
 Signed,
 
-| Name   |   Signature     |
+| Name | Signature |
 | Lim, Yewon | Lim, Yewon |
-
+| ------ | --------------- |
