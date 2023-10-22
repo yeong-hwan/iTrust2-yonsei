@@ -17,3 +17,4 @@ Signed,
 | ------ | --------------- |
 | Lim, Yewon | Lim, Yewon |
 |Uhm Soeun|Uhm Soeun|
+| Kim Yeongseo | Kim Yeongseo |
