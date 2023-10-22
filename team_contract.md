@@ -14,5 +14,6 @@ Team Contract for [Team Name]
 Signed,
 
 | Name | Signature |
-| Lim, Yewon | Lim, Yewon |
 | ------ | --------------- |
+| Lim, Yewon | Lim, Yewon |
+
