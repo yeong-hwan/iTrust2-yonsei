@@ -14,8 +14,9 @@ Team Contract for [Team Name]
 Signed,
 
 | Name | Signature |
-| ------ | --------------- |
+|  | --------------- |
 | Lim, Yewon | Lim, Yewon |
 |Uhm Soeun|Uhm Soeun|
 | Kim Yeongseo | Kim Yeongseo |
 | Park Seungho | Park Seungho |
+| Yoon Jongyoon | Yoon Jongyoon |
