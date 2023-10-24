@@ -14,7 +14,7 @@ Team Contract for [Team Name]
 Signed,
 
 | Name | Signature |
-|  | --------------- |
+| ------ | --------------- |
 | Lim, Yewon | Lim, Yewon |
 |Uhm Soeun|Uhm Soeun|
 | Kim Yeongseo | Kim Yeongseo |
