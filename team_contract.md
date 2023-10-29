@@ -21,3 +21,4 @@ Signed,
 | Park Seungho | Park Seungho |
 | Yoon Jongyoon | Yoon Jongyoon |
 | Noh Gyumin | Noh Gyumin |
+| Jang Yeonghwan | Jang Yeonghwan |
