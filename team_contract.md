@@ -23,3 +23,4 @@ Signed,
 | Noh Gyumin | Noh Gyumin |
 | Jang Yeonghwan | Jang Yeonghwan |
 | Kim Jueun | Kim Jueun |
+| Kang Minyong | Kang Minyong |
