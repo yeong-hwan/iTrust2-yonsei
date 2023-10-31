@@ -19,3 +19,12 @@
 
 11 PM, Tue, 1hour.  
 Link: https://meet.google.com/ocp-naww-bnv
+
+### 10/17 Team meeting
+- Iteration 별 Leader 정하기
+- Branch 관리 전략 
+- 구현할 UC 정하기
+
+### 10/24 Team meeting
+- User Story 는 무엇인가 정의
+- Team 별 UC 명세서 작성 
