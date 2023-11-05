@@ -90,3 +90,11 @@ UC19는 식단일지 입출력이 필요함.
 2. 환자 ID를 key로 DB에서 식단일지 저장
 (2번이 효율적으로 판단됨)
 - - -
+
+### 11/05 Cell1 meeting
+- 팀원 빌드 에러 해결 시도
+- UC에 따른 구체적 필요 API, DB 수정 제안 정리 (사진 참고)
+- dependency 판단
+![cell1_api-table](img/cell1_api-table.png){: width="1200" height="800"}
+![cell1_api-flow](img/cell1_api-flow.png){: width="900" height="800"}
+- - - 
