@@ -96,5 +96,5 @@ UC19는 식단일지 입출력이 필요함.
 - UC에 따른 구체적 필요 API, DB 수정 제안 정리 (사진 참고)
 - dependency 판단
 ![cell1_api-table](img/cell1_api-table.png){: width="1200" height="800"}
-![cell1_api-flow](img/cell1_api-flow.png){: width="900" height="800"}
+![cell1_api-flow](img/cell1_api-flow.jpeg){: width="900" height="800"}
 - - - 
