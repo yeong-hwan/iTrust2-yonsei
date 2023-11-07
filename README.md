@@ -98,3 +98,8 @@ UC19는 식단일지 입출력이 필요함.
 ![cell1_api-table](img/cell1_api-table.png){: width="1200" height="800"}
 ![cell1_api-flow](img/cell1_api-flow.jpg){: width="900" height="800"}
 - - - 
+
+### 11/06 Cell3 meeting
+- 초기 환경 세팅 설정 완료
+- 전체 structure가 어떻게 구성되어 있는지 확인
+- 각 UC (15, 23) 별 front와 backend로 나누어서 필요한 requirement 확인
