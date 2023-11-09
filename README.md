@@ -106,5 +106,5 @@ UC19는 식단일지 입출력이 필요함.
 
 - - -
 ### 11/09 Cell2 meeting
-- UC 19에 대한 API, DB 제안
+- UC 19에 대한 API, DB 제안  
 ![cell2_api-table](img/cell2_api-table.png){: width="800" height="1000"}
