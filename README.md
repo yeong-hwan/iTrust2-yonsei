@@ -103,3 +103,8 @@ UC19는 식단일지 입출력이 필요함.
 - 초기 환경 세팅 설정 완료
 - 전체 structure가 어떻게 구성되어 있는지 확인
 - 각 UC (15, 23) 별 front와 backend로 나누어서 필요한 requirement 확인
+
+- - -
+### 11/09 Cell2 meeting
+- UC 19에 대한 API, DB 제안
+![cell2_api-table](img/cell2_api-table.png){: width="800" height="1000"}
