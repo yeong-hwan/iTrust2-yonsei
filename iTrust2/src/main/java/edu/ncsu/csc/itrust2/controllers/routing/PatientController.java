@@ -24,22 +24,9 @@ public class PatientController {
      *            Data for the front end
      * @return The page the patient should see
      */
-    @GetMapping ( "/patient/manageOphthalmologistAppointmentRequest" )
-    @PreAuthorize ( "hasRole('ROLE_PATIENT')" )
-    public String requestAppointmentForm ( final Model model ) {
-        return "/patient/manageOphthalmologistAppointmentRequest";
-    }
-    
-    /**
-     * Retrieves the page for the Patient to request an Appointment
-     *
-     * @param model
-     *            Data for the front end
-     * @return The page the patient should see
-     */
     @GetMapping ( "/patient/manageAppointmentRequest" )
     @PreAuthorize ( "hasRole('ROLE_PATIENT')" )
-    public String requestOphthalmologistAppointmentForm ( final Model model ) {
+    public String requestAppointmentForm ( final Model model ) {
         return "/patient/manageAppointmentRequest";
     }
 
