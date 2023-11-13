@@ -61,10 +61,10 @@
 					
 					if (type === 'GENERAL_OPHTHALMOLOGY') {
 						// Gets all of the ophthalmology personnel
-						$scope.getPersonnelByRole(['OD', 'OPH', 'HCP']);
+						$scope.getPersonnelByRole(['OD', 'OPH']);
 					} else if (type === 'OPHTHALMOLOGY_SURGERY') {
 						// Gets all of the ophthalmologist personnel
-						$scope.getPersonnelByRole(['OPH', 'HCP']);
+						$scope.getPersonnelByRole('OPH');
 					} // else {
 						// Gets all of the doctor personnel
 						// $scope.getPersonnelByRole(['HCP']);
