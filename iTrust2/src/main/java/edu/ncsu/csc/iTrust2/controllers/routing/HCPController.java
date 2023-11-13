@@ -79,6 +79,20 @@ public class HCPController {
     public String requestAppointmentForm ( final Model model ) {
         return "hcp/appointmentRequests";
     }
+    
+    /**
+     * Method responsible for HCP's Accept/Reject requested appointment
+     * functionality. This prepares the page.
+     *
+     * @param model
+     *            Data for the front end
+     * @return The page to display to the user
+     */
+    @GetMapping ( "/hcp/appointmentOphthalmologistRequests" )
+    @PreAuthorize ( "hasRole('ROLE_HCP')" )
+    public String requestOphthalmologistAppointmentForm ( final Model model ) {
+        return "hcp/appointmentOphthalmologistRequests";
+    }
 
     /**
      * Returns the form page for a HCP to document an OfficeVisit

@@ -30,6 +30,7 @@
 				$scope.appointments = [];
 				$scope.hcp = /*[[${#httpServletRequest.remoteUser}]]*/null;
 				$scope.loadAppointments = function () {
+				// 안과 예약은 여기 없음! 안과 예약 로드하는 API 넣기
 					$http.get("/iTrust2/api/v1/appointmentrequestForHCP")
 						.then(function (response) {
 							$scope.appointments = response.data;
@@ -66,6 +67,7 @@
 					if ($scope.selectedAppointment.status == null) {
 						$scope.errorMsg = "Could not update appointment as no status is selected\n";
 					} else {
+					// eyecheckup 여부 넣어서 API 새로 넣기!
 						$http.get("/iTrust2/api/v1/appointmentrequests/" + $scope.selectedAppointment.id)
 							.then(function (response) {
 								$scope.appointmentByID = response.data;
@@ -140,6 +142,11 @@
 									<option ng-repeat="status in statuses" value="{{status}}">{{status
 										| humanize}}</option>
 							</select>
+							<!-- eyecheckup 체크박스 버튼 -->
+							</label>
+							<label for="eyeCheckup" ng-if="statuses && appointments.length">
+							    Eye Checkup:
+							    <input type="checkbox" ng-model="selectedAppointment.eyeCheckup">
 							</label>
 
 							<button class="btn btn-primary" ng-if="appointments.length > 0"

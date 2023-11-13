@@ -61,14 +61,14 @@
 					
 					if (type === 'GENERAL_OPHTHALMOLOGY') {
 						// Gets all of the ophthalmology personnel
-						$scope.getPersonnelByRole(['OD', 'OPH']);
+						$scope.getPersonnelByRole(['OD', 'OPH', 'HCP']);
 					} else if (type === 'OPHTHALMOLOGY_SURGERY') {
 						// Gets all of the ophthalmologist personnel
-						$scope.getPersonnelByRole('OPH');
-					} else {
+						$scope.getPersonnelByRole(['OPH', 'HCP']);
+					} // else {
 						// Gets all of the doctor personnel
-						$scope.getPersonnelByRole(['HCP']);
-					}
+						// $scope.getPersonnelByRole(['HCP']);
+					// }
 				}
 				
 				/**
@@ -187,7 +187,7 @@
 							<div class="col radio-box">
 								<div class="form-check">
 									<ul style="list-style: none; padding: 0;">
-										<li ng-repeat="appt in appointments"><span> <input
+										<li ng-repeat="appt in appointments" ng-if="appt.type.indexOf('OPH') !== -1"><span> <input
 												type="radio" ng-model="selectedAppointment.id" name="appt"
 												id="appt{{appt.id}}" value="{{appt.id}}" required="true" />
 												<label for="appt{{appt.id}}"
@@ -221,7 +221,7 @@
 									<label for="type">Type:</label> <select
 										ng-model="appointment.type" name="type" class="form-control"
 										ng-change="getHCPsForType()">
-										<option ng-repeat="type in types" value="{{type}}">{{type
+										<option ng-repeat="type in types.slice(1)" value="{{type}}">{{type
 											| humanize}}</option>
 									</select>
 								</div>
