@@ -105,13 +105,6 @@ a {
 					var erdropdown = document.getElementById('er-dropdown');
 					var ltdropdown = document.getElementById('labtech-dropdown');
 					var virologistdropdown = document.getElementById('virologist-dropdown');
-					var odList = document.getElementById('hcp-view');
-					var odview = document.getElementById('od-view');
-					console.log(role);
-					if (!(role.includes('OD') || role.includes('OPH'))) {
-						console.log('trying...');
-						odList.removeChild(odview);
-					}
 					if (!role.includes('PATIENT')) {
 						navbarparent.removeChild(patientdropdown);
 					}
@@ -172,12 +165,9 @@ a {
 				<ul id="hcp-dropdown" class="nav navbar-nav">
 					<li class="dropdown"><a class="dropdown-toggle"
 						data-toggle="dropdown" href="#" id="hcpPatientDropDown">Patient<span class="caret"></span></a>
-						<ul class="dropdown-menu" id="hcp-view">
+						<ul class="dropdown-menu">
 							<li><a href="/iTrust2/hcp/appointmentRequests"
 								id="viewrequests">View Appointment Requests and Upcoming
-									Appointments</a></li>
-							<li id="od-view"><a href="/iTrust2/hcp/appointmentOphthalmologistRequests"
-								id="viewrequests">View Ophthalmologist Appointment Requests and Upcoming
 									Appointments</a></li>
 							<li><a href="/iTrust2/hcp/editPatientDemographics"
 								id="editPatientDemographics">Edit Patient</a></li>
@@ -210,9 +200,6 @@ a {
 							<li><a
 								href="/iTrust2/patient/manageAppointmentRequest"
 								id="requestappointment">Manage Appointment Requests</a></li>
-							<li><a
-								href="/iTrust2/patient/manageOphthalmologistAppointmentRequest"
-								id="requestappointment">Manage Ophthalmologist Appointment Requests</a></li>
 							<li><a href="/iTrust2/patient/officeVisit/viewOfficeVisits"
 								id="viewOfficeVisits">Past Office Visits</a></li>
 							<li><a href="/iTrust2/patient/officeVisit/viewDiagnoses"
