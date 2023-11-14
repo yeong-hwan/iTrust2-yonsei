@@ -79,6 +79,7 @@
 								$scope.selectedAppointment.type = $scope.appointmentByID.type;
 								$scope.selectedAppointment.comments = $scope.appointmentByID.comments;
 								$scope.selectedAppointment.id = $scope.appointmentByID.id;
+								$scope.selectedAppointment.eyeCheckup = $scope.appointmentByID.eyeCheckup;
 								
 								$http.put("/iTrust2/api/v1/appointmentrequests/" + $scope.selectedAppointment.id, $scope.selectedAppointment)
 									.then(function (response) {
@@ -113,7 +114,8 @@
 							<li ng-repeat="appt in incomingAppointments"><label>
 									Type: {{appt.type | humanize}} <br /> Date: {{appt.date | date
 									: 'MM/dd/yyyy'}} <br /> Time: {{appt.date | date :
-									'shortTime'}} <br /> Patient: {{appt.patient.username}}
+									'shortTime'}} <br /> Patient: {{appt.patient.username}} 
+									<br /> eyeCheckup : {{appt.eyeCheckup}}
 							</label></li>
 						</ul>
 						<div name="errorMsg1" class="text-danger">{{errorMsg1}}</div>
