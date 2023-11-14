@@ -228,6 +228,7 @@ public class APIUserController extends APIController {
 
     }
 
+    /*
     @PostMapping ( BASE_PATH + "generateUsers" )
     public ResponseEntity generateUsers () {
         final User admin = new Personnel( new UserForm( "admin", "123456", Role.ROLE_ADMIN, 1 ) );
@@ -246,6 +247,33 @@ public class APIUserController extends APIController {
         final User patient = new Patient( new UserForm( "patient", "123456", Role.ROLE_PATIENT, 1 ) );
 
         userService.save( patient );
+
+        loggerUtil.log( TransactionType.USERS_GENERATED, "" );
+
+        return new ResponseEntity( HttpStatus.OK );
+    }
+    */
+    
+    @PostMapping ( BASE_PATH + "generateUsers" )
+    public ResponseEntity generateUsers (@RequestBody final UserForm newUserForm) {
+
+        // System.out.println(newUserForm.getUsername());
+        // System.out.println(newUserForm.getPassword());
+        // System.out.println(newUserForm.getPassword2());
+        // System.out.println(newUserForm.getRoles());
+        // System.out.println(newUserForm.getEnabled());
+
+        // if getRoles has ROLE_PATIENT, then create a patient
+        // else create a personnel
+        if (newUserForm.getRoles().contains("ROLE_PATIENT")) {
+            final User newUser = new Patient( newUserForm );
+            userService.save( newUser );
+        }
+        else {
+            final User newUser = new Personnel( newUserForm );
+            userService.save( newUser );
+        }
+        
 
         loggerUtil.log( TransactionType.USERS_GENERATED, "" );
 
