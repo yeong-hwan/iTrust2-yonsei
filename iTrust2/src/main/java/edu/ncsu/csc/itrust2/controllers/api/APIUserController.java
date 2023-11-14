@@ -228,6 +228,41 @@ public class APIUserController extends APIController {
 
     }
 
+    /* @yewon 231108
+     * Generate a user given a username, password and role.
+     */
+    @PostMapping ( BASE_PATH + "generateUser" )
+    public ResponseEntity generateUser( @RequestBody final UserForm userF ) {
+        if ( null != userService.findByName( userF.getUsername() ) ) {
+            return new ResponseEntity( errorResponse( "User with the id " + userF.getUsername() + " already exists" ),
+                    HttpStatus.CONFLICT );
+        }
+        User user = null;
+        final List<Role> rolesOnUser = userF.getRoles().stream().map( Role::valueOf ).collect( Collectors.toList() );
+
+        try {
+            if ( rolesOnUser.contains( Role.ROLE_PATIENT ) ) {
+                user = new Patient( userF );
+            }
+
+            else {
+                user = new Personnel( userF );
+            }
+
+            userService.save( user );
+            loggerUtil.log( TransactionType.CREATE_USER, LoggerUtil.currentUser(), user.getUsername(), null );
+            return new ResponseEntity( user, HttpStatus.OK );
+        }
+        catch ( final Exception e ) {
+            return new ResponseEntity(
+                    errorResponse( "Could not create " + userF.getUsername() + " because of " + e.getMessage() ),
+                    HttpStatus.BAD_REQUEST );
+        }
+
+    }
+
+
+
     @PostMapping ( BASE_PATH + "generateUsers" )
     public ResponseEntity generateUsers () {
         final User admin = new Personnel( new UserForm( "admin", "123456", Role.ROLE_ADMIN, 1 ) );
