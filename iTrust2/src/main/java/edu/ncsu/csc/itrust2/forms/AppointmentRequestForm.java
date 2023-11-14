@@ -36,6 +36,8 @@ public class AppointmentRequestForm {
 
     /** The comments of the appt request */
     private String comments;
+    // 2023.11.14 eyecheckup 추가
+    private Boolean eyeCheckup;
 
     /**
      * Don't use this one. For Hibernate/Thymeleaf
@@ -55,11 +57,12 @@ public class AppointmentRequestForm {
         setDate( request.getDate().toString() );
         setType( request.getType().toString() );
         setComments( request.getComments() );
-
+        
         if ( request.getId() != null ) {
             setId( request.getId().toString() );
         }
-
+        // 2023.11.14 eyecheckup 추가
+        setEyeCheckup( request.getEyeCheckup() );
         setStatus( request.getStatus().toString() );
     }
 
@@ -194,6 +197,16 @@ public class AppointmentRequestForm {
      */
     public void setStatus ( final String status ) {
         this.status = status;
+    }
+    
+    // 2023.11.14 eyecheckup 추가
+    // eyeCheckup 필드에 대한 getter와 setter
+    public Boolean getEyeCheckup() {
+        return eyeCheckup;
+    }
+
+    public void setEyeCheckup(Boolean eyeCheckup) {
+        this.eyeCheckup = eyeCheckup;
     }
 
 }

@@ -80,7 +80,8 @@ public class AppointmentRequestService extends Service {
                                                    */
         }
         ar.setType( at );
-
+        ar.setEyeCheckup(raf.getEyeCheckup());
+        
         return ar;
     }
 

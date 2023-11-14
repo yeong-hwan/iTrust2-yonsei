@@ -98,7 +98,12 @@ public class AppointmentRequest extends DomainObject {
     @NotNull
     @Enumerated ( EnumType.STRING )
     private AppointmentType type;
-
+    
+    // 23.11.14 eyecheckup column 추가
+    /**
+     * Whether this AppointmentRequest is for an eye checkup. Can be null.
+     */
+    private Boolean eyeCheckup; // Boolean wrapper class instead of primitive boolean
     /**
      * Retrieve the Status of this AppointmentRequest
      *
@@ -224,5 +229,23 @@ public class AppointmentRequest extends DomainObject {
     public void setType ( final AppointmentType type ) {
         this.type = type;
     }
-
+    
+    // 23.11.14 eyecheckup column 추가
+    /**
+     * Retrieves the eye checkup status of this AppointmentRequest.
+     *
+     * @return True if this is an eye checkup, false if it's not, and null if the status is unknown.
+     */
+    public Boolean getEyeCheckup() {
+        return eyeCheckup;
+    }
+    
+    /**
+     * Sets the eye checkup status of this AppointmentRequest.
+     *
+     * @param eyeCheckup True if this is an eye checkup, false if it's not, or null if the status is unknown.
+     */
+    public void setEyeCheckup(Boolean eyeCheckup) {
+        this.eyeCheckup = eyeCheckup;
+    }
 }

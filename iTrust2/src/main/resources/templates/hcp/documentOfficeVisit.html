@@ -369,6 +369,33 @@
                                 })
                             }
                         }
+                        else if ($scope.visit.type === 'GENERAL_OPHTHALMOLOGY') {
+                        	// check 함수
+                        	checkEyeHealthMetrics();
+                        	if ($scope.errorMsg == "") {
+                        		/* 체크해야 할 것: eyecheckup 여부 */
+                        		/* surgery인 경우 surgery type 넣고...eyecheckup 넣고... */
+                                $scope.visit.diagnoses = $scope.diagnoses;
+                                $scope.visit.prescriptions = $scope.prescriptions;
+                                $scope.visit.prescriptions.forEach(function (p) {
+                                    p.patient = $scope.visit.patient;
+                                });
+
+                                $scope.visit.labProcedures = $scope.procedures;
+                                
+                                $http({
+                                    method: 'POST',
+                                    url: '/iTrust2/api/v1/officevisits',
+                                    data: $scope.visit
+                                }).then(function (response) {
+                                    $scope.errorMsg = "";
+                                    $scope.message = "Office visit created successfully";
+                                }, function (rejection) {
+                                    $scope.message = "";
+                                    $scope.errorMsg = "Error occurred creating office visit";
+                                })
+                            }
+                        }
                          else {
                             $scope.message = "";
                             $scope.errorMsg = "Invalid office visit type";
@@ -391,6 +418,9 @@
 
                     $scope.procedure = {};
                     $scope.procedures = [];
+                    
+                    // eyecheckup 정보 다 지우기
+                    $scope.visualAcuityOS = "";
 
                     // Clears local variables for diagnosis form
                     function resetDiagnosisForm() {
@@ -525,6 +555,7 @@
 											</label>
 										</div>
 									</div>
+									
 								</div>
 								<div class="row">
 									<div class="form-group col-md-4">
@@ -561,6 +592,11 @@
 																name="{{type}}" value="{{type}}" required="true" />{{type
 																| humanize}}
 														</label></li>
+														<div class="checkbox">
+															<label> <input type="checkbox" name="eyeCheckup"
+																class="checkbox" ng-model="visit.eyeCheckup"  ng-checked="visit.type == 'OPHTHALMOLOGY_SURGERY' || visit.eyeCheckup">eyeCheckup?
+															</label>
+														</div>
 													</ul>
 												</div>
 											</div>
@@ -695,7 +731,7 @@
 																		ng-model="$parent.visit.patientSmokingStatus"
 																		name="patientSmokingStatus" value="{{psmokes}}"
 																		required="true" /> {{psmokes}}
-																</label></li>
+																</label></li>icdcodespres
 															</ul>
 														</div>
 													</div>
@@ -705,7 +741,7 @@
 									</div>
 
 									<!-- Diagnosis Panel  -->
-									<div ng-show="visit.type == 'GENERAL_CHECKUP'" class="col-md-4">
+									<div ng-show="visit.type == 'GENERAL_CHECKUP' || visit.eyeCheckup && visit.type != 'OPHTHALMOLOGY_SURGERY'" class="col-md-4">
 										<div class="panel panel-info">
 											<div class="panel-heading">
 												<h4>Diagnosis</h4>
@@ -764,6 +800,125 @@
 													</div>
 												</div>
 
+											</div>
+										</div>
+									</div>
+									
+									<!-- EyeCheckup Panel  -->
+									<div ng-show="visit.eyeCheckup || visit.type == 'OPHTHALMOLOGY_SURGERY'" class="col-md-4">
+										<div class="panel panel-info">
+											<div class="panel-heading">
+												<h4>Eye Checkup</h4>
+											</div>
+											<div class="panel-body">
+												<div class="form-group row">
+													<div class="col-xs-6">
+														<label>visualAcuityOS:</label>
+													</div>
+													<div class="col-xs-6">
+														<input class="form-control" name="visualAcuityOS"
+															ng-model="visualAcuityOS" required="true" type="text">
+													</div>
+												</div>
+												<div class="form-group row">
+													<div class="col-xs-6">
+														<label>visualAcuityOD:</label>
+													</div>
+													<div class="col-xs-6">
+														<input class="form-control" name="visualAcuityOD"
+															ng-model="visualAcuityOD" required="true" type="text">
+													</div>
+												</div>
+												<div class="form-group row">
+													<div class="col-xs-6">
+														<label>sphereOS:</label>
+													</div>
+													<div class="col-xs-6">
+														<input class="form-control" name="sphereOS"
+															ng-model="sphereOS" required="true" type="text">
+													</div>
+												</div>
+												<div class="form-group row">
+													<div class="col-xs-6">
+														<label>sphereOD:</label>
+													</div>
+													<div class="col-xs-6">
+														<input class="form-control" name="sphereOD"
+															ng-model="sphereOD" required="true" type="text">
+													</div>
+												</div>
+												<div class="form-group row">
+													<div class="col-xs-6">
+														<label>cylinderOD:</label>
+													</div>
+													<div class="col-xs-6">
+														<input class="form-control" name="cylinderOD"
+															ng-model="cylinderOD" required="true" type="text">
+													</div>
+												</div>
+												<div class="form-group row">
+													<div class="col-xs-6">
+														<label>cylinderOS:</label>
+													</div>
+													<div class="col-xs-6">
+														<input class="form-control" name="cylinderOS"
+															ng-model="cylinderOS" required="true" type="text">
+													</div>
+												</div>
+												<div class="form-group row">
+													<div class="col-xs-6">
+														<label>axisOS:</label>
+													</div>
+													<div class="col-xs-6">
+														<input class="form-control" name="axisOS"
+															ng-model="axisOS" required="true" type="text">
+													</div>
+												</div>
+												<div class="form-group row">
+													<div class="col-xs-6">
+														<label>axisOD:</label>
+													</div>
+													<div class="col-xs-6">
+														<input class="form-control" name="axisOD"
+															ng-model="axisOD" required="true" type="text">
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<!-- Surgery Type Panel  -->
+									<div ng-show="visit.type == 'OPHTHALMOLOGY_SURGERY'" class="col-md-4">
+										<div class="panel panel-info">
+											<div class="panel-heading">
+												<h4>Surgery Type</h4>
+											</div>
+											<div class="panel-body">
+												<div class="form-group row">
+													<div class="col-xs-6">
+														<label>Surgery Type:</label>
+													</div>
+													<div class="col-xs-6 radio-box">
+														<div class="form-check">
+															<ul style="list-style: none;">
+																<li ng-repeat="t in ['cataract surgery', 'laser surgery', 'refractive surgery']"><label> <input
+																		type="radio" ng-model="visit.surgeryType"
+																		id="{{t}}" ng-value="t"
+																		required="true" /> {{t}}
+																</label></li>
+															</ul>
+														</div>
+													</div>
+												</div>
+												<div class="form-group row">
+													<div class="col-xs-6">
+														<label>Notes:</label>
+													</div>
+													<div class="col-xs-6">
+														<input class="form-control" name="notesEntry"
+															ng-model="noteEntry" required="true" type="text">
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -965,6 +1120,8 @@
 									</div>
 
 								</div>
+								
+								
 								<!-- Notes and Error Messages -->
 								<div class="row">
 									<div class="form-group col-md-6">
