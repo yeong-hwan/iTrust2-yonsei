@@ -79,12 +79,10 @@
 								$scope.selectedAppointment.type = $scope.appointmentByID.type;
 								$scope.selectedAppointment.comments = $scope.appointmentByID.comments;
 								$scope.selectedAppointment.id = $scope.appointmentByID.id;
-								$scope.selectedAppointment.eyeCheckup = $scope.appointmentByID.eyeCheckup;
 								
 								$http.put("/iTrust2/api/v1/appointmentrequests/" + $scope.selectedAppointment.id, $scope.selectedAppointment)
 									.then(function (response) {
 										$scope.message = "Appointment request was successfully updated"
-										console.log(response.data)
 										$scope.loadAppointments();
 										$scope.selectedAppointment = {};
 										$scope.loadIncomingAppointments();
