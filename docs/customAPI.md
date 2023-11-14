@@ -1,4 +1,24 @@
 # API Documentation for UC15 Emergency Health Records
+| Function | Endpoint | Method | Request Payload | Success Response | Error Responses |
+|----------|----------|--------|------------------|-------------------|-----------------|
+| Search Emergency Health Records | `/api/emergency_health_records/search` | `POST` | `searchType` (String), `searchQuery` (String) | `200 OK` - List of Patients | `400 Bad Request` - Invalid search type or query<br>`404 Not Found` - No matching patients<br>`401 Unauthorized` - User not authenticated |
+| View Patient's Emergency Health Records | `/api/emergency_health_records/view/{patientMID}` | `GET` | `patientMID` (String) | `200 OK` - Patient's Emergency Health Record | `404 Not Found` - Patient not found<br>`401 Unauthorized` - User not authenticated |
+
+# Logging
+
+| Log Entry | Transaction Code | Verbose Description | Logged In MID | Secondary MID | Transaction Type | Patient Viewable |
+|-----------|-------------------|----------------------|---------------|---------------|-------------------|-------------------|
+| View Patient's Emergency Health Records | 1501 (HCP), 1502 (ER) | "HCP views a patient's Emergency Health Records" or "ER views a patient's Emergency Health Records" | MID of the authenticated user | MID of the patient being viewed | View | Yes |
+
+# Data Format
+
+| Field | Format |
+|-------|--------|
+| First Name | Up to 20 alpha characters and symbols -, ', and space |
+| Last Name | Up to 30 alpha characters and symbols -, ', and space |
+| Patient MID | Between 6 and 20 alpha characters and symbols - or _ |
+
+
 
 ## Authentication
 
