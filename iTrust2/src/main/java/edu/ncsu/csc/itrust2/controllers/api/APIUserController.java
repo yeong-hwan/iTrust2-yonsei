@@ -228,41 +228,7 @@ public class APIUserController extends APIController {
 
     }
 
-    /* @yewon 231108
-     * Generate a user given a username, password and role.
-     */
-    @PostMapping ( BASE_PATH + "generateUser" )
-    public ResponseEntity generateUser( @RequestBody final UserForm userF ) {
-        if ( null != userService.findByName( userF.getUsername() ) ) {
-            return new ResponseEntity( errorResponse( "User with the id " + userF.getUsername() + " already exists" ),
-                    HttpStatus.CONFLICT );
-        }
-        User user = null;
-        final List<Role> rolesOnUser = userF.getRoles().stream().map( Role::valueOf ).collect( Collectors.toList() );
-
-        try {
-            if ( rolesOnUser.contains( Role.ROLE_PATIENT ) ) {
-                user = new Patient( userF );
-            }
-
-            else {
-                user = new Personnel( userF );
-            }
-
-            userService.save( user );
-            loggerUtil.log( TransactionType.CREATE_USER, LoggerUtil.currentUser(), user.getUsername(), null );
-            return new ResponseEntity( user, HttpStatus.OK );
-        }
-        catch ( final Exception e ) {
-            return new ResponseEntity(
-                    errorResponse( "Could not create " + userF.getUsername() + " because of " + e.getMessage() ),
-                    HttpStatus.BAD_REQUEST );
-        }
-
-    }
-
-
-
+    /*
     @PostMapping ( BASE_PATH + "generateUsers" )
     public ResponseEntity generateUsers () {
         final User admin = new Personnel( new UserForm( "admin", "123456", Role.ROLE_ADMIN, 1 ) );
@@ -281,6 +247,33 @@ public class APIUserController extends APIController {
         final User patient = new Patient( new UserForm( "patient", "123456", Role.ROLE_PATIENT, 1 ) );
 
         userService.save( patient );
+
+        loggerUtil.log( TransactionType.USERS_GENERATED, "" );
+
+        return new ResponseEntity( HttpStatus.OK );
+    }
+    */
+    
+    @PostMapping ( BASE_PATH + "generateUsers" )
+    public ResponseEntity generateUsers (@RequestBody final UserForm newUserForm) {
+
+        // System.out.println(newUserForm.getUsername());
+        // System.out.println(newUserForm.getPassword());
+        // System.out.println(newUserForm.getPassword2());
+        // System.out.println(newUserForm.getRoles());
+        // System.out.println(newUserForm.getEnabled());
+
+        // if getRoles has ROLE_PATIENT, then create a patient
+        // else create a personnel
+        if (newUserForm.getRoles().contains("ROLE_PATIENT")) {
+            final User newUser = new Patient( newUserForm );
+            userService.save( newUser );
+        }
+        else {
+            final User newUser = new Personnel( newUserForm );
+            userService.save( newUser );
+        }
+        
 
         loggerUtil.log( TransactionType.USERS_GENERATED, "" );
 
