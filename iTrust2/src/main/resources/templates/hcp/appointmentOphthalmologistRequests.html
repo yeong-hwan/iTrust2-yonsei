@@ -52,6 +52,7 @@
 				$scope.loadIncomingAppointments = function () {
 					$http.get("/iTrust2/api/v1/viewAppointments")
 						.then(function (response) {
+							console.log(response.data)
 							$scope.incomingAppointments = response.data;
 							if ($scope.incomingAppointments.length == 0) {
 								$scope.errorMsg1 = "No appointment found.";

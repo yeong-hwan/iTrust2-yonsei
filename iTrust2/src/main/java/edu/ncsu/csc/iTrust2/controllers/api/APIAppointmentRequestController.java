@@ -207,7 +207,7 @@ public class APIAppointmentRequestController extends APIController {
         try {
             final AppointmentRequest request = service.build( requestF );
             request.setId( id );
-
+            request.setEyeCheckup(requestF.getEyeCheckup());
             if ( null != request.getId() && !id.equals( request.getId() ) ) {
                 return new ResponseEntity(
                         errorResponse( "The ID provided does not match the ID of the AppointmentRequest provided" ),
