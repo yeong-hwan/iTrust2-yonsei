@@ -84,6 +84,7 @@
 								$http.put("/iTrust2/api/v1/appointmentrequests/" + $scope.selectedAppointment.id, $scope.selectedAppointment)
 									.then(function (response) {
 										$scope.message = "Appointment request was successfully updated"
+										console.log(response.data)
 										$scope.loadAppointments();
 										$scope.selectedAppointment = {};
 										$scope.loadIncomingAppointments();
