@@ -1,7 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:include="layout :: head(title=~{::title},links=~{::script})">
-<title>Document Office Visit</title>
+<title>Edit Office Visit</title>
 <script th:src="@{/js/dateTimeService.js}"
 		src="../js/dateTimeService.js"></script>
 </head>
@@ -9,12 +9,18 @@
 <body th:include="layout :: body" th:with="content=~{::content}">
 	<div th:fragment="content">
 		<div class="container">
+			<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.min.js"></script>
 
 			<script th:inline="javascript">
                 /* Otherwise Thymeleaf tries to parse Javascript as XML and breaks itself sometimes. */
                 /*<![CDATA[*/
-                var app = angular.module('myApp', ['dateTimeServices']);
-
+                var app = angular.module('myApp', ['dateTimeServices', 'ngRoute']);
+								// app.config(function($routeProvider) {
+								// 	$routeProvider.when('/iTrust2/hcp/editDocumentOfficeVisit/:id', {
+								// 		templateUrl: 'editDocumentOfficeVisit.html',
+								// 		controller: 'editDocumentOfficeVisitCtrl'
+								// 	})
+								// })
                 /**
                  * A filter to humanize the text to be more user friendly.
                  */
@@ -26,8 +32,9 @@
                     }
                 });
 
-                app.controller('documentOfficeVisitCtrl', function ($scope, $http, dateTimeService) {
-
+                app.controller('editDocumentOfficeVisitCtrl', function ($scope, $http, dateTimeService, $routeParams) {
+										$scope.id = $routeParams.id;
+										console.log($routeParams.id)
                     /*method for checking added perscriptions for vailidity*/
                     var checkValidPrescription = function (p) {
                         var err = [];
@@ -529,12 +536,12 @@
 			/*]]>*/
             </script>
 
-			<div ng-app="myApp" ng-controller="documentOfficeVisitCtrl">
+			<div ng-app="myApp" ng-controller="editDocumentOfficeVisitCtrl">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="panel panel-primary">
 							<div class="panel-heading">
-								<h3>Office Visit</h3>
+								<h3>Office Visit {{$scope.id}} <span th:text="${id}"></span></h3>
 							</div>
 							<div class="panel-body">
 								<div class="row">
