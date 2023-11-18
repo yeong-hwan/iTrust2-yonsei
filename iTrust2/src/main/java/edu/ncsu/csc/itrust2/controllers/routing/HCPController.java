@@ -4,6 +4,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import edu.ncsu.csc.iTrust2.models.enums.Role;
@@ -106,5 +107,33 @@ public class HCPController {
     public String documentOfficeVisit ( final Model model ) {
         return "/hcp/documentOfficeVisit";
     }
+
+    /**
+     * Returns the form page for a HCP to view an OfficeVisit
+     *
+     * @param model
+     *            The data for the front end
+     * @return Page to display to the user
+     */
+    @GetMapping ( "/hcp/editOfficeVisit" )
+    @PreAuthorize ( "hasAnyRole('ROLE_HCP', 'ROLE_OPH','ROLE_OD')" )
+    public String editOfficeVisit ( final Model model ) {
+        return "/hcp/editOfficeVisit";
+    }
+
+    /**
+     * Returns the form page for a HCP to edit an OfficeVisit
+     *
+     * @param model
+     *            The data for the front end
+     * @return Page to display to the user
+     */
+    @GetMapping ( "/hcp/editDocumentOfficeVisit/{id}" )
+    @PreAuthorize ( "hasAnyRole('ROLE_HCP', 'ROLE_OPH','ROLE_OD')" )
+    public String editDocumentOfficeVisit ( @PathVariable String id, final Model model ) {
+        model.addAttribute("id", id);
+        return "/hcp/editDocumentOfficeVisit";
+    }
+
 
 }

@@ -1,0 +1,62 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout :: head(title=~{::title},links=~{::script})">
+<title>Edit Office Visit</title>
+<script th:src="@{/js/dateTimeService.js}"
+		src="../js/dateTimeService.js"></script>
+</head>
+<body th:include="layout :: body" th:with="content=~{::content}">
+	<div th:fragment="content">
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+		<script th:inline="javascript">
+			/* Otherwise Thymeleaf tries to parse Javascript as XML and breaks itself sometimes.  Sigh */
+			/*<![CDATA[*/
+
+			var app = angular.module('myApp', ['dateTimeServices']);
+			// app.config(function($routeProvider) {
+			// 	$routeProvider.when('/iTrust2/hcp/editDocumentOfficeVisit/:id', {
+			// 		templateUrl: 'editDocumentOfficeVisit.html',
+			// 		controller: 'editDocumentOfficeVisitCtrl',
+			// 	})
+			// })
+			app
+					.controller(
+							'editOfficeVisitCtrl',
+							function($scope, $http, dateTimeService) {
+								$http.get("/iTrust2/api/v1/officevisits/HCP").then(
+										function(response) {
+											$scope.visits = response.data;
+											console.log(response.data)
+										});
+							});
+
+			/*]]>*/
+		</script>
+
+
+
+		<div ng-app="myApp" ng-controller="editOfficeVisitCtrl">
+			<div style="float: left; overflow-y: auto">
+				<h2>Office Visits</h2>
+				<ul style="overflow: auto; flex-wrap: wrap; display: flex; padding: 0;">
+					<!-- Information on how labels wor from here: https://stackoverflow.com/questions/7863251/clicking-the-text-to-select-corresponding-radio-button -->
+					<li ng-repeat="visit in visits" 
+					style="list-style-type: none; 
+						width: 28%; height: 200px; margin: 2%; padding: 2%; background: #3379b752; 
+						border-radius: 8px; display: flex; flex-direction: column;"
+					>
+						<div><strong>ID</strong>: {{visit.id}}</div>
+						<div><strong>Date</strong>: {{visit.date.split('T')[0]}} <strong>Time</strong>: {{visit.date.split('T')[1].split('+')[0]}} <strong>Hospital</strong>: {{visit.hospital.name}}</div>
+						<div><strong>Type of Visit</strong>: {{visit.type.charAt(0)}}{{visit.type.replace('_',' ').toLowerCase().slice(1)}}</div>
+						<div><strong>Patient</strong>: {{visit.patient.username}}</div>
+						<div>EyeCheckup X</div>
+						<div class="text-right">
+							<button class="btn btn-primary" style="margin-bottom: 0;"><a ng-href="/iTrust2/hcp/editDocumentOfficeVisit/{{visit.id}}" id="editDocumentOfficeVisit" style="color:white; text-decoration: none;">Edit Office Visit</a></button>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

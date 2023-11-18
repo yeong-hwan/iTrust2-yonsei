@@ -1,7 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:include="layout :: head(title=~{::title},links=~{::script})">
-<title>Document Office Visit</title>
+<title>Edit Office Visit</title>
 <script th:src="@{/js/dateTimeService.js}"
 		src="../js/dateTimeService.js"></script>
 </head>
@@ -9,15 +9,12 @@
 <body th:include="layout :: body" th:with="content=~{::content}">
 	<div th:fragment="content">
 		<div class="container">
+			<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.min.js"></script>
 
 			<script th:inline="javascript">
                 /* Otherwise Thymeleaf tries to parse Javascript as XML and breaks itself sometimes. */
                 /*<![CDATA[*/
                 var app = angular.module('myApp', ['dateTimeServices']);
-
-                /**
-                 * A filter to humanize the text to be more user friendly.
-                 */
                 app.filter('humanize', function() {
                     return function (input) {
                         return input.toLowerCase().split('_')
@@ -26,7 +23,89 @@
                     }
                 });
 
-                app.controller('documentOfficeVisitCtrl', function ($scope, $http, dateTimeService) {
+                app.controller('editDocumentOfficeVisitCtrl', function ($scope, $http, dateTimeService, $location) {
+										$scope.id = $location.absUrl().split('/').pop();
+
+										$http.get("/iTrust2/api/v1/officevisits/"+$scope.id).then(
+                        function (response) {
+                            $scope.data = response.data;
+														$scope.visit = {};
+														$scope.visit.actualPatient = response.data.patient;
+														$scope.visit.patient = response.data.patient.username;
+														$scope.visit.height = response.data.basicHealthMetrics.height;
+														$scope.visit.weight = response.data.basicHealthMetrics.weight;
+														$scope.visit.headCircumference = response.data.basicHealthMetrics.headCircumference;
+														$scope.visit.systolic = response.data.basicHealthMetrics.systolic;
+														$scope.visit.diastolic = response.data.basicHealthMetrics.diastolic;
+														$scope.visit.hdl = response.data.basicHealthMetrics.hdl;
+														$scope.visit.ldl = response.data.basicHealthMetrics.ldl;
+														$scope.visit.tri = response.data.basicHealthMetrics.tri;
+														$scope.visit.patientSmokingStatus = response.data.basicHealthMetrics.patientSmokingStatus;
+														$scope.visit.houseSmokingStatus = response.data.basicHealthMetrics.houseSmokingStatus;
+
+														// $scope.visit.visualAcuityOS = response.data.visualAcuityOS;
+														// $scope.visit.visualAcuityOD = response.data.visualAcuityOD;
+														// $scope.visit.sphereOD = response.data.sphereOD;
+														// $scope.visit.sphereOS = response.data.sphereOS;
+														// $scope.visit.cylinderOD = response.data.cylinderOD;
+														// $scope.visit.cylinderOS = response.data.cylinderOS;
+														// $scope.visit.axisOD = response.data.axisOD;
+														// $scope.visit.axisOS = response.data.axisOS;
+														// $scope.visit.surgeryType = response.data.surgeryType;
+
+														$scope.visit.hcp = response.data.hcp;
+														// $scope.visit.status
+														$scope.visit.type = response.data.type;
+														$scope.visit.hospital = response.data.hospital.name;
+														var date = new Date(response.data.date)
+														$scope.visitInputDate = date;
+														console.log(date.toLocaleTimeString('en-US', { hour12: false }).substring(0, 8 - 3))
+														$scope.visitInputTime = date;
+
+														$scope.visit.date = response.data.date;
+
+														$scope.diagnoses = [];
+														// console.log(response.data.diagnoses.length)
+														for (diagnose in response.data.diagnoses) {
+															console.log('a', diagnose)
+															var d = {
+																note: response.data.diagnoses[diagnose].note,
+																code: response.data.diagnoses[diagnose].code.code
+															};
+															$scope.diagnoses.push(d);
+                        		}
+
+														$scope.visit.prescriptions = response.data.prescriptions;
+														// $scope.visit.eyeCheckup
+														$scope.visit.notes = response.data.notes;
+
+														$scope.visit.id = response.data.id;
+
+														console.log(response.data)
+
+														$scope.three = true;
+														$scope.threeAndUp = true;
+														$scope.twelveAndUp = true;
+
+														if (response.data.patient.dateOfBirth) {
+															const age = dateTimeService.getAge(new Date(response.data.patient.dateOfBirth), $scope.visitInputDate);
+																if (age < 3) {
+																		$scope.three = true;
+																		$scope.threeAndUp = false;
+																		$scope.twelveAndUp = false;
+																}
+																if (age >= 3) {
+																	$scope.three = false;
+																	$scope.threeAndUp = true;
+																		$scope.twelveAndUp = false;
+																}
+																if (age >= 12) {
+																		$scope.three = false;
+																		$scope.threeAndUp = false;
+																		$scope.twelveAndUp = true;
+																}
+														}
+                        });
 
                     /*method for checking added perscriptions for vailidity*/
                     var checkValidPrescription = function (p) {
@@ -75,10 +154,6 @@
                         }
                         return err.join(". ");
                     }
-
-                    $scope.three = false;
-                    $scope.threeAndUp = false;
-                    $scope.twelveAndUp = false;
 
                     /**
                      * Validates birthdate here when patient is selected.
@@ -357,12 +432,12 @@
                                 $scope.visit.labProcedures = $scope.procedures;
                                 
                                 $http({
-                                    method: 'POST',
-                                    url: '/iTrust2/api/v1/officevisits',
+                                    method: 'PUT',
+                                    url: '/iTrust2/api/v1/officevisits/'+$scope.visit.id,
                                     data: $scope.visit
                                 }).then(function (response) {
                                     $scope.errorMsg = "";
-                                    $scope.message = "Office visit created successfully";
+                                    $scope.message = "Office visit edited successfully";
                                 }, function (rejection) {
                                     $scope.message = "";
                                     $scope.errorMsg = "Error occurred creating office visit";
@@ -529,12 +604,12 @@
 			/*]]>*/
             </script>
 
-			<div ng-app="myApp" ng-controller="documentOfficeVisitCtrl">
+			<div ng-app="myApp" ng-controller="editDocumentOfficeVisitCtrl">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="panel panel-primary">
 							<div class="panel-heading">
-								<h3>Office Visit</h3>
+								<h3>Office Visi {{visit.id}}</h3>
 							</div>
 							<div class="panel-body">
 								<div class="row">
@@ -1134,7 +1209,7 @@
 							<div class="panel-footer text-right">
 								<!-- button may have to be inside form tag, or just a submit function for the form? -->
 								<button class="btn btn-primary btn-lg" ng-click="submit()"
-									name="submit">Submit Office Visit</button>
+									name="submit">Edit Office Visit</button>
 							</div>
 						</div>
 					</div>
