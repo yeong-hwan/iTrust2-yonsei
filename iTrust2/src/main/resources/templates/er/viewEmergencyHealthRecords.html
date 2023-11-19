@@ -74,8 +74,17 @@
 					if ($scope.searchType === 'username') {
 						var searchQuery = $scope.username;
 					} else if ($scope.searchType === 'name') {
-						var searchQuery = $scope.firstName + '_' + $scope.lastName;
+						// If only first name is entered, search by first name
+						if ($scope.firstName && !$scope.lastName) {
+							var searchQuery = $scope.firstName + '_';
+						} else if (!$scope.firstName && $scope.lastName) {
+							var searchQuery = '_' + $scope.lastName;
+						} else {
+							var searchQuery = $scope.firstName + '_' + $scope.lastName;
+						}
 					}
+
+					console.log('searchQuery:', searchQuery);
 
 					$http.get('/api/v1/emergency_health_records/search?searchType=' + $scope.searchType + '&searchQuery=' + searchQuery)
 						.then(function (response) {
