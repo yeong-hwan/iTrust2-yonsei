@@ -43,12 +43,14 @@ public class FoodDiaryForm {
 		setFatPerServing( foodDiary.getFatPerServing() );
 		setSodiumPerServing( foodDiary.getSodiumPerServing() );
 		setCarbsPerServing( foodDiary.getCarbsPerServing() );
-		setSugarPerServing( foodDiary.getSugarPerServing() );
+		setSugarsPerServing( foodDiary.getSugarsPerServing() );
 		setFiberPerServing( foodDiary.getFiberPerServing() );
 		setProteinPerServing( foodDiary.getProteinPerServing() );
 	}
 	
-
+	/**
+	 * getter methods
+	 */
 	public Long getId() {
 		return id;
 	}
@@ -93,6 +95,57 @@ public class FoodDiaryForm {
 	}
 	public Long getProteinPerServing() {
 		return proteinPerServing;
+	}
+	
+	/**
+	 * setter methods
+	 */
+	public void setId( final Long id ) {
+		this.id = id;
+	}
+	
+	public void setDate( final String date ) {
+		this.date = date;
+	}
+	
+	public void setMealType( final String mealType ) {
+		this.mealType = mealType;
+	}
+	
+	public void setFoodName( final String foodName ) {
+		this.foodName = foodName;
+	}
+	
+	public void setServingNumber( final Long servingNumber ) {
+		this.servingNumber = servingNumber;
+	}
+	
+	public void setCaloriesPerServing( final Long caloriesPerServing ) {
+		this.caloriesPerServing = caloriesPerServing;
+	}
+	
+	public void setFatPerServing( final Long fatPerServing ) {
+		this.fatPerServing = fatPerServing;
+	}
+	
+	public void setSodiumPerServing( final Long sodiumPerServing ) {
+		this.sodiumPerServing = sodiumPerServing;
+	}
+	
+	public void setCarbsPerServing( final Long carbsPerServing ) {
+		this.carbsPerServing = carbsPerServing;
+	}
+	
+	public void setSugarsPerServing( final Long sugarsPerServing ) {
+		this.sugarsPerServing = sugarsPerServing;
+	}
+	
+	public void setFiberPerServing( final Long fiberPerServing ) {
+		this.fiberPerServing = fiberPerServing;
+	}
+	
+	public void setProteinPerServing( final Long proteinPerServing ) {
+		this.proteinPerServing = proteinPerServing;
 	}
 }
 
