@@ -14,7 +14,7 @@ public class FoodDiary extends DomainObject {
 
 	/**
 	 * Date of Diaries
-	 * PastOrPresent가 있어서 null값 못 받아요~
+	 * PastOrPresent가 있어서 null값 못 받아요
 	 */
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "mm/dd/yyyy")

@@ -6,6 +6,10 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
+import edu.ncsu.csc.iTrust2.forms.FoodDiaryForm;
+import edu.ncsu.csc.iTrust2.models.FoodDiary;
+import edu.ncsu.csc.iTrust2.services.FoodDiaryService;
+
 public class APIFoodDiaryController extends APIController {
 
     @Autowired

@@ -1,5 +1,6 @@
 package edu.ncsu.csc.iTrust2.repositories;
 
+import java.util.date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,5 @@ public class FoodDiaryRepository extends JpaRepository<FoodDiary, Long> {
 
     public List<FoodDiaryEntry> findAllByOrderByDateDesc();
 
+    public List<FoodDiaryEntry> findAllByDate(Date date);
 }

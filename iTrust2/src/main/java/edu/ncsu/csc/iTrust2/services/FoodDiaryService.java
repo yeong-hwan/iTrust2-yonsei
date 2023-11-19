@@ -17,17 +17,24 @@ import edu.ncsu.csc.iTrust2.repositories.FoodDiaryRepository;
 public class FoodDiary extends Service {
 
     @Autowired
-	private FoodDiaryRepository repository;
-	
-	@Override
-    protected JpaRepository getRepository () {
+    private FoodDiaryRepository repository;
+
+    @Override
+    protected JpaRepository getRepository() {
         return repository;
     }
-	
-	// find by patient or HCP?
 
-    public List<FoodDiaryEntry> getAllEntries() {return repository.findAllByOrderByDateDesc();}
+    // find by patient or HCP?
 
-    public FoodDiaryEntry getEntryById(Long id) {return repository.findById(id).orElse(null);}
+    public List<FoodDiaryEntry> getAllEntries() {
+        return repository.findAllByOrderByDateDesc();
+    }
 
-    public FoodDiaryEntry addEntry(FoodDiaryEntry entry) {return repository.save(entry);}
+    public FoodDiaryEntry getEntryById(Long id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    public FoodDiaryEntry addEntry(FoodDiaryEntry entry) {
+        return repository.save(entry);
+    }
+}
