@@ -76,6 +76,69 @@ public class APIPatientController extends APIController {
         }
     }
 
+
+    /* @yewon 2023.11.19
+     * *****************************************************
+     * GET patient list given a query, named 'searchQuery'
+     *  -   A 'searchQuery' can be either a part of name(including firstname and lastname) or a part of username
+     *  -   If the query is empty, return all patients
+     *  -   If the query is not empty, return all patients whose name or username contains the query
+     *  -   It also takes a parameter 'searchType', which can be 'name' or 'username' 
+     *  -   If the searchType is 'name', the query is a part of name
+     *  -   If the searchType is 'username', the query is a part of username
+     * *****************************************************
+     */
+    @GetMapping ( BASE_PATH + "/emergency_health_records/search")
+    @PreAuthorize ( "hasAnyRole('ROLE_HCP', 'ROLE_ER')" )
+    public ResponseEntity getPatientsByQuery ( @PathVariable final String searchQuery, @PathVariable final String searchType ) {
+        List<Patient> patients = null;
+        boolean isAuthorized = false;
+        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        final SimpleGrantedAuthority hcp = new SimpleGrantedAuthority( "ROLE_HCP" );
+        final SimpleGrantedAuthority er = new SimpleGrantedAuthority( "ROLE_ER" );
+        try {
+            isAuthorized = auth.getAuthorities().contains( hcp ) || auth.getAuthorities().contains( er );
+            if ( !isAuthorized ) {
+                return new ResponseEntity( errorResponse( "User not authenticated" ),
+                        HttpStatus.UNAUTHORIZED );
+            }
+        }
+        catch ( final Exception e ) {
+            return new ResponseEntity(errorResponse("User not authenticated"), HttpStatus.UNAUTHORIZED );
+        }
+        try{
+            if ( searchQuery.isEmpty() ) {
+                patients = (List<Patient>) patientService.findAll();
+            }
+            else {
+                if ( searchType.equals( "name" ) ) {
+                    patients = (List<Patient>) patientService.findByNameContains( searchQuery );
+                }
+                else if ( searchType.equals( "username" ) ) {
+                    patients = (List<Patient>) patientService.findByUsernameContains( searchQuery );
+                }
+            }
+            if ( patients == null ) {
+                return new ResponseEntity( errorResponse( "No matching patients" ), HttpStatus.NOT_FOUND );
+            }
+            else {
+                // logging 
+                // if current user is hcp, log as hcp_view_er
+                // if current user is er, log as er_view_er
+                if ( auth.getAuthorities().contains( hcp ) ) {
+                    loggerUtil.log( TransactionType.HCP_VIEW_ER, LoggerUtil.currentUser(), "HCP views a patients Emergency Health Records " + searchQuery );
+                }
+                else if ( auth.getAuthorities().contains( er ) ) {
+                    loggerUtil.log( TransactionType.ER_VIEW_ER, LoggerUtil.currentUser(), "ER views a patients Emergency Health Records " + searchQuery );
+                }
+                return new ResponseEntity( patients, HttpStatus.OK );
+            }   
+        } catch ( final Exception e ) {
+            return new ResponseEntity( errorResponse( "Invalid search type or query" ), HttpStatus.BAD_REQUEST );
+        }
+    }
+
+
     /**
      * Retrieves and returns the Patient with the username provided
      *
