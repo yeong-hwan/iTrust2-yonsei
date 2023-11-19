@@ -35,28 +35,28 @@ public class FoodDiary extends DomainObject {
 	private String foodName;
 
 	@Positive(message = "Number of Servings should be a positive number")
-	private int servings;
+	private long servings;
 
 	@PositiveOrZero(message = "Calories per serving must be Zero or a positive number")
-	private double calories;
+	private long calories;
 
 	@PositiveOrZero(message = "Grams of fat per serving must be Zero or a positive number")
-	private double fat;
+	private long fat;
 
 	@PositiveOrZero(message = "Milligrams of sodium per serving must be Zero or a positive number")
-	private double sodium;
+	private long sodium;
 
 	@PositiveOrZero(message = "Grams of carbs per serving must be Zero or a positive number")
-	private double carbs;
+	private long carbs;
 
 	@PositiveOrZero(message = "Grams of sugars per serving must be Zero or a positive number")
-	private double sugars;
+	private long sugars;
 
 	@PositiveOrZero(message = "Grams of fiber per serving must be Zero or a positive number")
-	private double fiber;
+	private long fiber;
 
 	@PositiveOrZero(message = "Grams of protein per serving must be Zero or a positive number")
-	private double protein;
+	private long protein;
 	public FoodDiary () {
 		
 	}
