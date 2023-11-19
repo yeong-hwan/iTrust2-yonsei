@@ -24,7 +24,8 @@
 					// validation checks
 					var firstNameRegex = /^[A-Za-z-,\'\s]{1,20}$/;
 					var lastNameRegex = /^[A-Za-z-,\'\s]{1,30}$/;
-					var usernameRegex = /^[A-Za-z-_]{6,20}$/;
+					var usernameRegex = /^[A-Za-z0-9_-]{6,20}$/;
+
 
 					if (!searchType) {
 						$scope.formErrorMsg = 'Search type should be selected';
@@ -86,7 +87,7 @@
 
 					console.log('searchQuery:', searchQuery);
 
-					$http.get('/api/v1/emergency_health_records/search?searchType=' + $scope.searchType + '&searchQuery=' + searchQuery)
+					$http.get('/iTrust2/api/v1/emergency_health_records/search?searchType=' + $scope.searchType + '&searchQuery=' + searchQuery)
 						.then(function (response) {
 							$scope.patientList = response.data;
 
@@ -129,7 +130,7 @@
 					};
 
 					// Send GET request to get patient emergency health records
-					$http.get('/api/v1/emergency_health_records/view?patientUsername =' + patient.username)
+					$http.get('/iTrust2/api/v1/emergency_health_records/view?patientUsername =' + patient.username)
 						.then(function (response) {
 							$scope.selectedPatientInfo = response.data;
 						})
