@@ -57,6 +57,13 @@ public class OfficeVisit extends DomainObject {
     @JoinColumn ( name = "basichealthmetrics_id" )
     private BasicHealthMetrics basicHealthMetrics;
 
+    /*
+    1118: Add Eyecheckup column
+     */
+    @OneToOne ( cascade = CascadeType.ALL )
+    @JoinColumn ( name = "eyecheckup_id" )
+    private Eyecheckup eyecheckup;
+
     /**
      * The date of this office visit
      */
@@ -124,7 +131,7 @@ public class OfficeVisit extends DomainObject {
         }
         for ( final Diagnosis d : diagnoses ) {
             if ( d.getNote().length() > 500 ) {
-                throw new IllegalArgumentException( "Dagnosis note too long (500 character max) : " + d.getNote() );
+                throw new IllegalArgumentException( "Diagnosis note too long (500 character max) : " + d.getNote() );
             }
             if ( d.getCode() == null ) {
                 throw new IllegalArgumentException( "Diagnosis Code missing!" );
@@ -381,6 +388,14 @@ public class OfficeVisit extends DomainObject {
      */
     public List<Prescription> getPrescriptions () {
         return prescriptions;
+    }
+
+    public Eyecheckup getEyecheckup(){
+        return eyecheckup;
+    }
+
+    public void setEyecheckup(final Eyecheckup eyecheckup){
+        this.eyecheckup = eyecheckup;
     }
 
 }
