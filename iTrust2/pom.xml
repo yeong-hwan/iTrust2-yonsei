@@ -26,6 +26,11 @@
 
 
 	<dependencies>
+		<dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-tomcat</artifactId>
+		</dependency>
+
 
 		<!-- Cucumber -->
 
@@ -40,6 +45,7 @@
 			<artifactId>cucumber-junit</artifactId>
 			<version>${cucumber.version}</version>
 			<scope>test</scope>
+
 		</dependency>
 		<dependency>
 			<groupId>io.cucumber</groupId>
@@ -180,6 +186,13 @@
 
 	<build>
 		<plugins>
+			<!-- added -->
+			<plugin>
+	            <groupId>org.springframework.boot</groupId>
+	            <artifactId>spring-boot-maven-plugin</artifactId>
+	        </plugin>
+	        <!-- added -->
+	        
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
