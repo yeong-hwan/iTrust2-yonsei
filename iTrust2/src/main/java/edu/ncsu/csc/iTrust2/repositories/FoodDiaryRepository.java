@@ -11,4 +11,6 @@ public class FoodDiaryRepository extends JpaRepository<FoodDiary, Long> {
 
     public List<FoodDiary> findByPatient ( User patient );
 
+    public List<FoodDiaryEntry> findAllByOrderByDateDesc();
+
 }
