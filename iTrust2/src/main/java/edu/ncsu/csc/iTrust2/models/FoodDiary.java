@@ -4,6 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import edu.ncsu.csc.iTrust2.forms.foodDiaryForm;
 
 
 @Entity
@@ -57,7 +58,182 @@ public class FoodDiary extends DomainObject {
 
 	@PositiveOrZero(message = "Grams of protein per serving must be Zero or a positive number")
 	private long protein;
-	public FoodDiary () {
-		
+	/**
+	 * Construct a Hospital object from all of its individual fields.
+	 *
+	 * @param name
+	 *            Name of the Hospital
+	 * @param address
+	 *            Address of the Hospital
+	 * @param zip
+	 *            ZIP of the Hospital
+	 * @param state
+	 *            State of the Hospital
+	 */
+	public foodDiary ( final Long id, final Date date, final String mealType, final String foodName, final long servings, final long calories, final long fat, final long sodium, final long carbs, final long sugars, final long fiber, final long protein) {
+		setId( id )
+		setDate( date )
+		setMealType( mealType )
+		setFoodName( foodName )
+		setServingNumber( servingNumber )
+		setCaloriesPerServing( caloriesPerServing )
+		setFatPerServing( fatPerServing )
+		setSodiumPerServing( sodiumPerServing )
+		setCarbsPerServing( carbsPerServing )
+		setSugarsPerServing( sugarsPerServing )
+		setFiberPerServing( fiberPerServing )
+		setProteinPerServing( proteinPerServing )
 	}
+
+	/**
+	 * Construct an empty Food Diary. Used for Hibernate.
+	 */
+	public foodDiary () {
+	}
+
+	/**
+	 * Construct a Food Diary object from the foodDiaryForm object provided
+	 *
+	 * @param fd
+	 *            A FoodDiaryForm to convert to a FoodDiary
+	 */
+	public foodDiary ( final foodDiaryForm fd ) {
+		setId( fd.getId )
+		setDate( fd.getDate )
+		setMealType( fd.getMealType )
+		setFoodName( fd.getFoodName )
+		setServingNumber( fd.getServingNumber )
+		setCaloriesPerServing( fd.getCaloriesPerServing )
+		setFatPerServing( fd.getFatPerServing )
+		setSodiumPerServing( fd.getSodiumPerServing )
+		setCarbsPerServing( fd.getCarbsPerServing )
+		setSugarsPerServing( fd.getSugarsPerServing )
+		setFiberPerServing( fd.getFiberPerServing )
+		setProteinPerServing(fd.getProteinPerServing )
+	}
+
+	/**
+	 * Update this Hospital object from the HospitalForm object provided
+	 *
+	 * @param fd
+	 *            A FoodDiaryForm to convert to a FoodDiar
+	 * @return `this` FoodDiary object, after updates
+	 */
+	public foodDiary update ( final foodDiaryForm fd ) {
+		setId( fd.getId )
+		setDate( fd.getDate )
+		setMealType( fd.getMealType )
+		setFoodName( fd.getFoodName )
+		setServingNumber( fd.getServingNumber )
+		setCaloriesPerServing( fd.getCaloriesPerServing )
+		setFatPerServing( fd.getFatPerServing )
+		setSodiumPerServing( fd.getSodiumPerServing )
+		setCarbsPerServing( fd.getCarbsPerServing )
+		setSugarsPerServing( fd.getSugarsPerServing )
+		setFiberPerServing( fd.getFiberPerServing )
+		setProteinPerServing(fd.getProteinPerServing )
+		return this;
+	}
+
+	/**
+	 * getter methods
+	 */
+	public Long getId() {
+		return id;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public String getMealType() {
+		return mealType;
+	}
+
+	public String getFoodName() {
+		return foodName;
+	}
+
+	public Long getServingNumber() {
+		return servingNumber;
+	}
+
+	public Long getCaloriesPerServing() {
+		return caloriesPerServing;
+	}
+
+	public Long getFatPerServing() {
+		return fatPerServing;
+	}
+
+	public Long getSodiumPerServing() {
+		return sodiumPerServing;
+	}
+
+	public Long getCarbsPerServing() {
+		return carbsPerServing;
+	}
+
+	public Long getSugarsPerServing() {
+		return sugarsPerServing;
+	}
+	public Long getFiberPerServing() {
+		return fiberPerServing;
+	}
+	public Long getProteinPerServing() {
+		return proteinPerServing;
+	}
+
+	/**
+	 * setter methods
+	 */
+	public void setId( final Long id ) {
+		this.id = id;
+	}
+
+	public void setDate( final String date ) {
+		this.date = date;
+	}
+
+	public void setMealType( final String mealType ) {
+		this.mealType = mealType;
+	}
+
+	public void setFoodName( final String foodName ) {
+		this.foodName = foodName;
+	}
+
+	public void setServingNumber( final Long servingNumber ) {
+		this.servingNumber = servingNumber;
+	}
+
+	public void setCaloriesPerServing( final Long caloriesPerServing ) {
+		this.caloriesPerServing = caloriesPerServing;
+	}
+
+	public void setFatPerServing( final Long fatPerServing ) {
+		this.fatPerServing = fatPerServing;
+	}
+
+	public void setSodiumPerServing( final Long sodiumPerServing ) {
+		this.sodiumPerServing = sodiumPerServing;
+	}
+
+	public void setCarbsPerServing( final Long carbsPerServing ) {
+		this.carbsPerServing = carbsPerServing;
+	}
+
+	public void setSugarsPerServing( final Long sugarsPerServing ) {
+		this.sugarsPerServing = sugarsPerServing;
+	}
+
+	public void setFiberPerServing( final Long fiberPerServing ) {
+		this.fiberPerServing = fiberPerServing;
+	}
+
+	public void setProteinPerServing( final Long proteinPerServing ) {
+		this.proteinPerServing = proteinPerServing;
+	}
+}
+
 }
