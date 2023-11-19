@@ -1,5 +1,11 @@
 package edu.ncsu.csc.iTrust2.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import java.util.Date;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+
+
 @Entity
 public class FoodDiary extends DomainObject {
 	@Id
