@@ -28,25 +28,33 @@ public class PatientService extends UserService {
      * - findByUsernameContains
      */
     public List<Patient> findByNameContains ( final String name ) {
-        String[] names = name.split("_");
-        String firstName = names[0];
-        String lastName = names[1];
-        if (firstName.equals("") && (!lastName.equals(""))) {
-            return repository.findAllByLastNameLike(lastName);
-
-        } else if ((!firstName.equals("")) && lastName.equals("")) {
-            return repository.findAllByFirstNameLike(firstName);
-
-        } else if ((!firstName.equals("")) && (!lastName.equals(""))) {
-            return repository.findAllByFirstNameLikeAndLastNameLike(firstName, lastName);
+        String firstName, lastName;
+        // empty string
+        if (name.equals("")){
+            return repository.findAll();
+        }
+        // only last name
+        else if (name.charAt(0) == '_') {
+            lastName = name.substring(1);
+            return repository.findAllByLastNameContaining(lastName);
 
         } else {
-            return repository.findAll();
+            String[] names = name.split("_");
+            // only first name
+            if (names.length == 1) {
+                firstName = names[0];
+                return repository.findAllByFirstNameContaining(firstName);
+            } else {
+                // both first and last name
+                firstName = names[0];
+                lastName = names[1];
+                return repository.findAllByFirstNameContainingAndLastNameContaining(firstName, lastName);
+            }
         }
     }
 
     public List<Patient> findByUsernameContains(final String username) {
-        return repository.findAllByUsernameLike(username);
+        return repository.findAllByUsernameContaining(username);
     }
 
 }

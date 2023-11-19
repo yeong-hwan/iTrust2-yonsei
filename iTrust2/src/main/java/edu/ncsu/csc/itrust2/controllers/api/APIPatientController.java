@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.ncsu.csc.iTrust2.forms.PatientForm;
@@ -90,7 +91,7 @@ public class APIPatientController extends APIController {
      */
     @GetMapping ( BASE_PATH + "/emergency_health_records/search")
     @PreAuthorize ( "hasAnyRole('ROLE_HCP', 'ROLE_ER')" )
-    public ResponseEntity getPatientsByQuery ( @PathVariable final String searchQuery, @PathVariable final String searchType ) {
+    public ResponseEntity getPatientsByQuery ( @RequestParam final String searchQuery, @RequestParam final String searchType ) {
         List<Patient> patients = null;
         boolean isAuthorized = false;
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -134,7 +135,7 @@ public class APIPatientController extends APIController {
                 return new ResponseEntity( patients, HttpStatus.OK );
             }   
         } catch ( final Exception e ) {
-            return new ResponseEntity( errorResponse( "Invalid search type or query" ), HttpStatus.BAD_REQUEST );
+            return new ResponseEntity( errorResponse( "Invalid search type or query " + e ), HttpStatus.BAD_REQUEST );
         }
     }
 
