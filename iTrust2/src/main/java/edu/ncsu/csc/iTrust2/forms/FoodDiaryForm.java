@@ -49,6 +49,50 @@ public class FoodDiaryForm {
 	}
 	
 
+	public Long getId() {
+		return id;
+	}
 		
-		
+	public String getDate() {
+		return date;
+	}
+	
+	public String getMealType() {
+		return mealType;
+	}
+	
+	public String getFoodName() {
+		return foodName;
+	}
+	
+	public Long getServingNumber() {
+		return servingNumber;
+	}
+	
+	public Long getCaloriesPerServing() {
+		return caloriesPerServing;
+	}
+	
+	public Long getFatPerServing() {
+		return fatPerServing;
+	}
+	
+	public Long getSodiumPerServing() {
+		return sodiumPerServing;
+	}
+	
+	public Long getCarbsPerServing() {
+		return carbsPerServing;
+	}
+	
+	public Long getSugarsPerServing() {
+		return sugarsPerServing;
+	}
+	public Long getFiberPerServing() {
+		return fiberPerServing;
+	}
+	public Long getProteinPerServing() {
+		return proteinPerServing;
+	}
 }
+
