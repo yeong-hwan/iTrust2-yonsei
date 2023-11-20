@@ -33,11 +33,6 @@ public class APIFoodDiaryController extends APIController {
         return ResponseEntity.ok(foodDiaryService.addEntry(entry));
     }
 
-    /**
-     * Retrieves and returns a list of all Patients stored in the system
-     *
-     * @return list of patients
-     */
     @GetMapping(BASE_PATH + "food_diary/view")
     public List<Patient> getPatients() {
         final List<Patient> patients = (List<Patient>) patientService.findAll();
@@ -49,11 +44,15 @@ public class APIFoodDiaryController extends APIController {
         final List<FoodDiary> f = (List<FoodDiary>) foodDiaryService.findById( id );
         return ResponseEntity.ok(f);
     }
+
     @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}")
     public FoodDiary calculateDailyTotal() {
         final FoodDiary dailyTotal = foodDiaryService.calculateDailyTotal(@PathVariable("date") Date date);
         return dailyTotal;
     }
+
+    @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}/{mealType}")
+
 
 
     // @GetMapping ( BASE_PATH + "/fooddiary/{id}" )
