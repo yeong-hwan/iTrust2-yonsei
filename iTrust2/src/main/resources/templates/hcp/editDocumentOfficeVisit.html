@@ -43,15 +43,18 @@
 														$scope.visit.patientSmokingStatus = response.data.basicHealthMetrics.patientSmokingStatus;
 														$scope.visit.houseSmokingStatus = response.data.basicHealthMetrics.houseSmokingStatus;
 
-														// $scope.visit.visualAcuityOS = response.data.visualAcuityOS;
-														// $scope.visit.visualAcuityOD = response.data.visualAcuityOD;
-														// $scope.visit.sphereOD = response.data.sphereOD;
-														// $scope.visit.sphereOS = response.data.sphereOS;
-														// $scope.visit.cylinderOD = response.data.cylinderOD;
-														// $scope.visit.cylinderOS = response.data.cylinderOS;
-														// $scope.visit.axisOD = response.data.axisOD;
-														// $scope.visit.axisOS = response.data.axisOS;
-														// $scope.visit.surgeryType = response.data.surgeryType;
+														$scope.visit.eyeCheckup = (response.data.eyecheckup != null)
+														if (response.data.eyecheckup != null) {
+															$scope.visit.visualAcuityOS = response.data.eyecheckup.visualAcuityOS;
+															$scope.visit.visualAcuityOD = response.data.eyecheckup.visualAcuityOD;
+															$scope.visit.sphereOD = response.data.eyecheckup.sphereOD;
+															$scope.visit.sphereOS = response.data.eyecheckup.sphereOS;
+															$scope.visit.cylinderOD = response.data.eyecheckup.cylinderOD;
+															$scope.visit.cylinderOS = response.data.eyecheckup.cylinderOS;
+															$scope.visit.axisOD = response.data.eyecheckup.axisOD;
+															$scope.visit.axisOS = response.data.eyecheckup.axisOS;
+															$scope.visit.surgeryType = response.data.surgeryType;
+														}
 
 														$scope.visit.hcp = response.data.hcp;
 														// $scope.visit.status
@@ -76,7 +79,7 @@
                         		}
 
 														$scope.visit.prescriptions = response.data.prescriptions;
-														// $scope.visit.eyeCheckup
+														
 														$scope.visit.notes = response.data.notes;
 
 														$scope.visit.id = response.data.id;
@@ -609,7 +612,7 @@
 					<div class="col-md-12">
 						<div class="panel panel-primary">
 							<div class="panel-heading">
-								<h3>Office Visi {{visit.id}}</h3>
+								<h3>Office Visit {{visit.id}}</h3>
 							</div>
 							<div class="panel-body">
 								<div class="row">

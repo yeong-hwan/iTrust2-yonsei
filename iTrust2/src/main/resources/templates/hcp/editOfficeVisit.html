@@ -36,7 +36,7 @@
 
 
 		<div ng-app="myApp" ng-controller="editOfficeVisitCtrl">
-			<div style="float: left; overflow-y: auto">
+			<div style="float: left; overflow-y: auto; width: 100%;">
 				<h2>Office Visits</h2>
 				<ul style="overflow: auto; flex-wrap: wrap; display: flex; padding: 0;">
 					<!-- Information on how labels wor from here: https://stackoverflow.com/questions/7863251/clicking-the-text-to-select-corresponding-radio-button -->
@@ -46,10 +46,11 @@
 						border-radius: 8px; display: flex; flex-direction: column;"
 					>
 						<div><strong>ID</strong>: {{visit.id}}</div>
-						<div><strong>Date</strong>: {{visit.date.split('T')[0]}} <strong>Time</strong>: {{visit.date.split('T')[1].split('+')[0]}} <strong>Hospital</strong>: {{visit.hospital.name}}</div>
+						<div><strong>Date</strong>: {{visit.date.split('T')[0]}} <strong>Time</strong>: {{visit.date.split('T')[1].split('+')[0]}}</div>
+						<div><strong>Hospital</strong>: {{visit.hospital.name}}</div>
 						<div><strong>Type of Visit</strong>: {{visit.type.charAt(0)}}{{visit.type.replace('_',' ').toLowerCase().slice(1)}}</div>
 						<div><strong>Patient</strong>: {{visit.patient.username}}</div>
-						<div>EyeCheckup X</div>
+						<div>EyeCheckup <span ng-if="!visit.eyecheckup">X</span><span ng-if="visit.eyecheckup">O</span></div>
 						<div class="text-right">
 							<button class="btn btn-primary" style="margin-bottom: 0;"><a ng-href="/iTrust2/hcp/editDocumentOfficeVisit/{{visit.id}}" id="editDocumentOfficeVisit" style="color:white; text-decoration: none;">Edit Office Visit</a></button>
 						</div>

@@ -243,41 +243,41 @@
 
                     /*Checks validity of eye health metrics*/
                     function checkEyeHealthMetrics() {
-                        if (/^[0-9]{1,3}?$/.test(String($scope.visit.visualAcuityOS).replace(/^0+/, '')) == false) {
+                        if (/^[0-9]{1,3}?$/.test(String($scope.visualAcuityOS).replace(/^0+/, '')) == false) {
                             $scope.errorMsg += "Visual Acuity OS must be an integer value between 20 and 200 inclusive\n"
-                        } else if (parseInt($scope.visit.visualAcuityOS) < 20 || parseInt($scope.visit.visualAcuityOS) > 200) {
+                        } else if (parseInt($scope.visualAcuityOS) < 20 || parseInt($scope.visualAcuityOS) > 200) {
                             $scope.errorMsg += "Visual Acuity OS must be an integer value between 20 and 200 inclusive\n"
                         }
 
-                        if (/^[0-9]{1,3}?$/.test(String($scope.visit.visualAcuityOD).replace(/^0+/, '')) == false) {
+                        if (/^[0-9]{1,3}?$/.test(String($scope.visualAcuityOD).replace(/^0+/, '')) == false) {
                             $scope.errorMsg += "Visual Acuity OD must be an integer value between 20 and 200 inclusive\n"
-                        } else if (parseInt($scope.visit.visualAcuityOD) < 20 || parseInt($scope.visit.visualAcuityOD) > 200) {
+                        } else if (parseInt($scope.visualAcuityOD) < 20 || parseInt($scope.visualAcuityOD) > 200) {
                             $scope.errorMsg += "Visual Acuity OD must be an integer value between 20 and 200 inclusive\n"
                         }
 
-                        if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.visit.sphereOS)) == false) {
+                        if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.sphereOS)) == false) {
                             $scope.errorMsg += "Sphere OS must be a floating point number up to two digits\n"
                         }
-                        if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.visit.sphereOD)) == false) {
+                        if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.sphereOD)) == false) {
                             $scope.errorMsg += "Sphere OD must be a floating point number up to two digits\n"
                         }
 
-                        if ($scope.visit.cylinderOS != undefined || $scope.visit.cylinderOD != undefined) {
-                            if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.visit.cylinderOS)) == false) {
+                        if ($scope.cylinderOS != undefined || $scope.cylinderOD != undefined) {
+                            if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.cylinderOS)) == false) {
                                 $scope.errorMsg += "Cylinder OS must be a floating point number up to two digits\n"
                             }
-                            if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.visit.cylinderOD)) == false) {
+                            if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.cylinderOD)) == false) {
                                 $scope.errorMsg += "Cylinder OD must be a floating point number up to two digits\n"
                             }
                             
-                            if (/^[0-9]{1,3}?$/.test(String($scope.visit.axisOS).replace(/^0+/, '')) == false) {
+                            if (/^[0-9]{1,3}?$/.test(String($scope.axisOS).replace(/^0+/, '')) == false) {
                                 $scope.errorMsg += "Axis OS must be an integer value between 1 and 180 inclusive\n"
-                            } else if (parseInt($scope.visit.axisOS) < 1 || parseInt($scope.visit.axisOS) > 180) {
+                            } else if (parseInt($scope.axisOS) < 1 || parseInt($scope.axisOS) > 180) {
                                 $scope.errorMsg += "Axis OS must be an integer value between 1 and 180 inclusive\n"
                             }
-                            if (/^[0-9]{1,3}?$/.test(String($scope.visit.axisOD).replace(/^0+/, '')) == false) {
+                            if (/^[0-9]{1,3}?$/.test(String($scope.axisOD).replace(/^0+/, '')) == false) {
                                 $scope.errorMsg += "Axis OD must be an integer value between 1 and 180 inclusive\n"
-                            } else if (parseInt($scope.visit.axisOD) < 1 || parseInt($scope.visit.axisOD) > 180) {
+                            } else if (parseInt($scope.axisOD) < 1 || parseInt($scope.axisOD) > 180) {
                                 $scope.errorMsg += "Axis OD must be an integer value between 1 and 180 inclusive\n"
                             }
                         }
@@ -384,6 +384,20 @@
 
                                 $scope.visit.labProcedures = $scope.procedures;
 
+																$scope.visit.eyecheckup = {
+																	patient: $scope.visit.patient,
+																	hcp: $scope.visit.hcp,
+																	visualAcuityOS: $scope.visualAcuityOS,
+																	visualAcuityOD: $scope.visualAcuityOD,
+																	sphereOS: $scope.sphereOS,
+																	sphereOD: $scope.sphereOD,
+																	cylinderOS: $scope.cylinderOS,
+																	cylinderOD: $scope.cylinderOD,
+																	axisOS: $scope.axisOS,
+																	axisOD: $scope.axisOD,
+																	// note: $scope.
+																};
+
                                 console.log($scope.visit)
                                 $http({
                                     method: 'POST',
@@ -423,6 +437,13 @@
                     
                     // eyecheckup 정보 다 지우기
                     $scope.visualAcuityOS = "";
+                    $scope.visualAcuityOD = "";
+                    $scope.sphereOS = "";
+                    $scope.sphereOD = "";
+                    $scope.cylinderOD = "";
+                    $scope.cylinderOS = "";
+                    $scope.axisOS = "";
+                    $scope.axisOD = "";
 
                     // Clears local variables for diagnosis form
                     function resetDiagnosisForm() {
@@ -550,7 +571,7 @@
 											required="true" />
 									</div>
 
-									<div class="form-group col-md-2 text-right">
+									<div class="form-group col-md-2 text-right" >
 										<div class="checkbox">
 											<label> <input type="checkbox" name="preScheduled"
 												class="checkbox" ng-model="visit.prescheduled">Prescheduled?
@@ -594,7 +615,7 @@
 																name="{{type}}" value="{{type}}" required="true" />{{type
 																| humanize}}
 														</label></li>
-														<div class="checkbox">
+														<div class="checkbox" ng-if="types.includes('GENERAL_OPHTHALMOLOGY')">
 															<label> <input type="checkbox" name="eyeCheckup"
 																class="checkbox" ng-model="visit.eyeCheckup"  ng-checked="visit.type == 'OPHTHALMOLOGY_SURGERY' || visit.eyeCheckup">eyeCheckup?
 															</label>
@@ -819,7 +840,7 @@
 													</div>
 													<div class="col-xs-6">
 														<input class="form-control" name="visualAcuityOS"
-															ng-model="visit.visualAcuityOS" required="true" type="text">
+															ng-model="visualAcuityOS" required="true" type="text">
 													</div>
 												</div>
 												<div class="form-group row">
@@ -828,7 +849,7 @@
 													</div>
 													<div class="col-xs-6">
 														<input class="form-control" name="visualAcuityOD"
-															ng-model="visit.visualAcuityOD" required="true" type="text">
+															ng-model="visualAcuityOD" required="true" type="text">
 													</div>
 												</div>
 												<div class="form-group row">
@@ -837,7 +858,7 @@
 													</div>
 													<div class="col-xs-6">
 														<input class="form-control" name="sphereOS"
-															ng-model="visit.sphereOS" required="true" type="text">
+															ng-model="sphereOS" required="true" type="text">
 													</div>
 												</div>
 												<div class="form-group row">
@@ -846,7 +867,7 @@
 													</div>
 													<div class="col-xs-6">
 														<input class="form-control" name="sphereOD"
-															ng-model="visit.sphereOD" required="true" type="text">
+															ng-model="sphereOD" required="true" type="text">
 													</div>
 												</div>
 												<div class="form-group row">
@@ -855,7 +876,7 @@
 													</div>
 													<div class="col-xs-6">
 														<input class="form-control" name="cylinderOD"
-															ng-model="visit.cylinderOD" required="true" type="text">
+															ng-model="cylinderOD" required="true" type="text">
 													</div>
 												</div>
 												<div class="form-group row">
@@ -864,7 +885,7 @@
 													</div>
 													<div class="col-xs-6">
 														<input class="form-control" name="cylinderOS"
-															ng-model="visit.cylinderOS" required="true" type="text">
+															ng-model="cylinderOS" required="true" type="text">
 													</div>
 												</div>
 												<div class="form-group row">
@@ -873,7 +894,7 @@
 													</div>
 													<div class="col-xs-6">
 														<input class="form-control" name="axisOS"
-															ng-model="visit.axisOS" required="true" type="text">
+															ng-model="axisOS" required="true" type="text">
 													</div>
 												</div>
 												<div class="form-group row">
@@ -882,7 +903,7 @@
 													</div>
 													<div class="col-xs-6">
 														<input class="form-control" name="axisOD"
-															ng-model="visit.axisOD" required="true" type="text">
+															ng-model="axisOD" required="true" type="text">
 													</div>
 												</div>
 											</div>

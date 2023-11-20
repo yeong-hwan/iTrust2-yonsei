@@ -109,10 +109,9 @@ public class OfficeVisitService extends Service {
         ov.setHospital(hospitalService.findByName(ovf.getHospital()));
         ov.setBasicHealthMetrics(bhmService.build(ovf));
         // add eyecheckup
-        if(ovf.getEyecheckupForm() != null){
+        if(ovf.getEyecheckup() != null){
             ov.setEyecheckup(eyecheckupService.build(ovf));
         }
-
 
         // associate all diagnoses with this visit
         if (ovf.getDiagnoses() != null) {
