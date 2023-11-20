@@ -22,6 +22,9 @@ import edu.ncsu.csc.iTrust2.models.enums.Gender;
 import edu.ncsu.csc.iTrust2.models.enums.Role;
 import edu.ncsu.csc.iTrust2.models.enums.State;
 
+import java.time.LocalDate;
+import java.time.Period;
+
 @Entity
 public class Patient extends User {
 
@@ -85,6 +88,11 @@ public class Patient extends User {
     @Length ( min = 12, max = 12 )
     private String    phone;
 
+    /**
+     * The age of this patient
+     */
+    private Integer		age;
+    
     /**
      * The birthday of this patient
      */
@@ -165,6 +173,12 @@ public class Patient extends User {
         setEthnicity( Ethnicity.parse( form.getEthnicity() ) );
 
         setGender( Gender.parse( form.getGender() ) );
+        
+        //set age based on birth date and current date
+        LocalDate today = LocalDate.now();
+    	Period ageCalc = Period.between(dateOfBirth, today);
+    	Integer age = ageCalc.getYears();
+        setAge(age);
 
         return this;
     }
@@ -249,6 +263,14 @@ public class Patient extends User {
         this.phone = phone;
     }
 
+    public Integer getAge () {
+    	return age;
+    }
+    
+    public void setAge (final Integer age) {
+    	this.age = age;
+    }
+    
     public LocalDate getDateOfBirth () {
         return dateOfBirth;
     }
