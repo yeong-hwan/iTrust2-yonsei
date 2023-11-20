@@ -52,6 +52,10 @@ public class APIFoodDiaryController extends APIController {
     }
 
     @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}/{mealType}")
+    public ResponseEntity List<FoodDiary> viewEntries( @PathVariable("patientMID") Long id, @PathVariable("date") Date date, @PathVariable("mealType") String mealType) {
+        final List<FoodDiary> f = (List<FoodDiary>) foodDiaryService.findByIdDateContains( id, date );
+        return ResponseEntity.ok(f);
+    }
 
 
 

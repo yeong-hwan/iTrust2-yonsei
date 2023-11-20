@@ -36,6 +36,10 @@ public class FoodDiaryService extends Service {
         return repository.findAllByDateContaining(date);
     }
 
+    public List<FoodDiary> findByIdDateContains(final Long id, final Date date) {
+        return repository.findAllByIdAndDateContaining(id, date);
+    }
+
     public List<FoodDiary> findByMealTypeContains(final String mealType) {
         return repository.findAllByMealTypeContaining(mealType);
     }
