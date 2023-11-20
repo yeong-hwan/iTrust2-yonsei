@@ -94,8 +94,8 @@ public class APIFoodDiaryController extends APIController {
 //        return ResponseEntity.ok(entry);
 //    }
 //
-//    @PostMapping
-//    public ResponseEntity<FoodDiary> addEntry(@RequestBody FoodDiaryEntry entry) {
-//        return ResponseEntity.ok(foodDiaryService.addEntry(entry));
-//    }
+    @PostMapping
+    public ResponseEntity<FoodDiary> addEntry(@RequestBody FoodDiary entry) {
+       return ResponseEntity.ok(foodDiaryService.addEntry(entry));
+    }
 }

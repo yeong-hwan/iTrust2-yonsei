@@ -46,9 +46,9 @@ public class FoodDiaryService extends Service {
     // return repository.findById(id).orElse(null);
     // }
     //
-    // public FoodDiary addEntry(FoodDiary entry) {
-    // return repository.save(entry);
-    // }
+    public FoodDiary addEntry(FoodDiary entry) {
+        return repository.save(entry);
+    }
 
     /**
      * 5~11 더하는 건데,, 작동할지는 모르겠습니다,, 만들고 수정하는걸로,,
