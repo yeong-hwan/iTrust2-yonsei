@@ -38,6 +38,9 @@ public class FoodDiaryService extends Service {
 
     public List<FoodDiary> findByMealTypeContains(final String mealType) {
         return repository.findAllByMealTypeContaining(mealType);
+
+    public FoodDiary addEntry(FoodDiary entry) {
+        return repository.save(entry);
     }
 
     /**
