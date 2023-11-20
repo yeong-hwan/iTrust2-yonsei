@@ -55,4 +55,9 @@ public class DefaultController {
     public String getEmails ( final Model model ) {
         return "viewEmails";
     }
+
+    @RequestMapping ( value = "/signup" )
+    public String signup ( final Model model ) {
+        return "signup";
+    }
 }

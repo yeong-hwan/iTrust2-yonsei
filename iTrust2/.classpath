@@ -32,7 +32,10 @@
 	<classpathentry excluding="**" kind="src" output="target/test-classes" path="src/test/resources">
 		<attributes>
 			<attribute name="test" value="true"/>
+<<<<<<< HEAD
 			<attribute name="maven.pomderived" value="true"/>
+=======
+>>>>>>> c846940583a76840e5cba754e7705f9c770ab12b
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>

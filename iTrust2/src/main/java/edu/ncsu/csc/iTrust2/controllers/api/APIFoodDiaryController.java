@@ -9,6 +9,7 @@ import java.util.List;
 
 import edu.ncsu.csc.iTrust2.forms.FoodDiaryForm;
 import edu.ncsu.csc.iTrust2.models.FoodDiary;
+import edu.ncsu.csc.iTrust2.models.Patient;
 import edu.ncsu.csc.iTrust2.models.User;
 import edu.ncsu.csc.iTrust2.models.enums.TransactionType;
 import edu.ncsu.csc.iTrust2.services.FoodDiaryService;
@@ -27,16 +28,20 @@ public class APIFoodDiaryController extends APIController {
     @Autowired
     private UserService userService;
 
+    @PostMapping(BASE_PATH + "/food_diary/add")
+    public ResponseEntity<FoodDiary> addEntry(@RequestBody FoodDiary entry) {
+        return ResponseEntity.ok(foodDiaryService.addEntry(entry));
+    }
+
     /**
-     * Retrieves a list of all FoodDiaries in the DB
-     * 
-     * @return list of food diaries
+     * Retrieves and returns a list of all Patients stored in the system
+     *
+     * @return list of patients
      */
-    @GetMapping(BASE_PATH + "/fooddiary/{id}")
-    public List<FoodDiary> getFoodDiaryEntry() {
-        loggerUtil.log(TransactionType.PATIENT_VIEW_FOOD_DIARY_ENTRY, LoggerUtil.currentUser());
-        // return (List<FoodDiary>) // = foodDiaryService.
-        return null;
+    @GetMapping(BASE_PATH + "/patients")
+    public List<Patient> getPatients() {
+        final List<Patient> patients = (List<Patient>) patientService.findAll();
+        return patients;
     }
 
     /**
@@ -90,8 +95,5 @@ public class APIFoodDiaryController extends APIController {
     // return ResponseEntity.ok(entry);
     // }
     //
-    @PostMapping(BASE_PATH + "/food_diary/add")
-    public ResponseEntity<FoodDiary> addEntry(@RequestBody FoodDiary entry) {
-        return ResponseEntity.ok(foodDiaryService.addEntry(entry));
-    }
+
 }

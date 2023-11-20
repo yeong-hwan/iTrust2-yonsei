@@ -30,13 +30,19 @@ public class ICDCode extends DomainObject {
      * Description of the diagnosis
      */
     private String description;
-
+    	
     /**
      * Empty constructor for Hibernate
      */
     public ICDCode () {
 
     }
+    // 23.11.15 default 값 넣어주기 위해 만든 생성자 overload
+    public ICDCode(String code, String description) {
+        this.code = code;
+        this.description = description;
+    }
+    
 
     /**
      * Construct from a form
