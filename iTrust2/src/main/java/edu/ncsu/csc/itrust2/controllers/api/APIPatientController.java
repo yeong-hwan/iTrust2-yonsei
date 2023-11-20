@@ -281,7 +281,7 @@ public class APIPatientController extends APIController {
      */
     @GetMapping ( BASE_PATH + "/emergency_health_records/view")
     @PreAuthorize ( "hasAnyRole('ROLE_HCP', 'ROLE_ER')" )
-    public ResponseEntity getRecordsByPatientId ( @RequestParam final String patientMID ) {
+    public ResponseEntity getRecordsByPatientId ( @RequestParam final String patientUsername ) {
         final Authentication authorized = SecurityContextHolder.getContext().getAuthentication();
         final SimpleGrantedAuthority hcp = new SimpleGrantedAuthority( "ROLE_HCP" );
         final SimpleGrantedAuthority er = new SimpleGrantedAuthority( "ROLE_ER" );
@@ -295,7 +295,7 @@ public class APIPatientController extends APIController {
             return new ResponseEntity(errorResponse("Unauthorized User"), HttpStatus.UNAUTHORIZED );
         }
         try{
-        	Patient patient = (Patient) patientService.findByName( patientMID );
+        	Patient patient = (Patient) patientService.findByName( patientUsername );
             if ( patient == null ) {
                 return new ResponseEntity( errorResponse( "Patient not found"),
                         HttpStatus.NOT_FOUND );
@@ -303,18 +303,20 @@ public class APIPatientController extends APIController {
             List<Diagnosis> diagnosis = diagnosisService.findByPatient(patient);
         	List<Prescription> prescription = prescriptionService.findByPatient(patient);
         	
-        	LocalDate today = LocalDate.now();
+        	/*LocalDate today = LocalDate.now();
         	Period ageCalc = Period.between(patient.getDateOfBirth(), today);
-        	int age = ageCalc.getYears();
+        	int age = ageCalc.getYears();*/
         	
         	Map<String, Object> record = new HashMap<>();
         	record.put("firstName", patient.getFirstName());
         	record.put("lastName", patient.getLastName());
-        	record.put("age", age);
-        	record.put("username", patientMID);
+        	record.put("age", patient.getAge());
+        	record.put("username", patientUsername);
            	record.put("dob", patient.getDateOfBirth());
         	record.put("gender", patient.getGender());
         	record.put("bloodType", patient.getBloodType());
+        	//Map<String, Object> record = new HashMap<>();
+        	//record.put("patient", patient);
         	record.put("diagnoses", diagnosis);
         	record.put("prescriptions", prescription);
         	

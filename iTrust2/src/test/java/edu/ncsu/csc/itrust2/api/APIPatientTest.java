@@ -296,8 +296,8 @@ public class APIPatientTest {
         mvc.perform(get("/api/v1/emergency_health_records/view").params(params))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.age").value(46))
-                .andExpect(jsonPath("$.lastName").value("Doe"));
+                .andExpect(jsonPath("$.patient.lastName").value("Doe"))
+                .andExpect(jsonPath("$.patient.age").value(46));
     }
 
 }
