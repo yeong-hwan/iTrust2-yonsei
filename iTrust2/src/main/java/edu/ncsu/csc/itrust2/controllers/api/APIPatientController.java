@@ -9,6 +9,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,6 +25,15 @@ import edu.ncsu.csc.iTrust2.models.enums.TransactionType;
 import edu.ncsu.csc.iTrust2.services.PatientService;
 import edu.ncsu.csc.iTrust2.services.UserService;
 import edu.ncsu.csc.iTrust2.utils.LoggerUtil;
+
+import edu.ncsu.csc.iTrust2.models.Diagnosis;
+import edu.ncsu.csc.iTrust2.models.Prescription;
+import edu.ncsu.csc.iTrust2.services.DiagnosisService;
+import edu.ncsu.csc.iTrust2.services.PrescriptionService;
+import java.util.Map;
+import java.util.HashMap;
+import java.time.LocalDate;
+import java.time.Period;
 
 /**
  * Controller responsible for providing various REST API endpoints for the
@@ -43,6 +54,12 @@ public class APIPatientController extends APIController {
 
     @Autowired
     private LoggerUtil     loggerUtil;
+    
+    @Autowired
+    private PrescriptionService    prescriptionService;
+    
+    @Autowired
+    private DiagnosisService    diagnosisService;
 
     /**
      * Retrieves and returns a list of all Patients stored in the system
@@ -253,6 +270,59 @@ public class APIPatientController extends APIController {
 
         }
 
+    }
+    /* Gyumin Noh
+     * *****************************************************
+     * GET patient list given a patient's username (patientMID)
+     *  -   Only accessible by ER and HCP
+     *  -	Returns patient not found 404 error if username is not in database
+     *  -	If username is found, returns relevant emergency health record information including diagnoses and prescriptions
+     * *****************************************************
+     */
+    @GetMapping ( BASE_PATH + "/emergency_health_records/view")
+    @PreAuthorize ( "hasAnyRole('ROLE_HCP', 'ROLE_ER')" )
+    public ResponseEntity getRecordsByPatientId ( @RequestParam final String patientMID ) {
+        final Authentication authorized = SecurityContextHolder.getContext().getAuthentication();
+        final SimpleGrantedAuthority hcp = new SimpleGrantedAuthority( "ROLE_HCP" );
+        final SimpleGrantedAuthority er = new SimpleGrantedAuthority( "ROLE_ER" );
+        try {
+        	if(!(authorized.getAuthorities().contains( hcp ) || authorized.getAuthorities().contains( er ))) {
+                return new ResponseEntity( errorResponse( "Unauthorized User" ),
+                        HttpStatus.UNAUTHORIZED );
+            }
+        }
+        catch ( final Exception e ) {
+            return new ResponseEntity(errorResponse("Unauthorized User"), HttpStatus.UNAUTHORIZED );
+        }
+        try{
+        	Patient patient = (Patient) patientService.findByName( patientMID );
+            if ( patient == null ) {
+                return new ResponseEntity( errorResponse( "Patient not found"),
+                        HttpStatus.NOT_FOUND );
+            }
+            List<Diagnosis> diagnosis = diagnosisService.findByPatient(patient);
+        	List<Prescription> prescription = prescriptionService.findByPatient(patient);
+        	
+        	LocalDate today = LocalDate.now();
+        	Period ageCalc = Period.between(patient.getDateOfBirth(), today);
+        	int age = ageCalc.getYears();
+        	
+        	Map<String, Object> record = new HashMap<>();
+        	record.put("firstName", patient.getFirstName());
+        	record.put("lastName", patient.getLastName());
+        	record.put("age", age);
+        	record.put("username", patientMID);
+           	record.put("dob", patient.getDateOfBirth());
+        	record.put("gender", patient.getGender());
+        	record.put("bloodType", patient.getBloodType());
+        	record.put("diagnoses", diagnosis);
+        	record.put("prescriptions", prescription);
+        	
+        	return new ResponseEntity(record, HttpStatus.OK);
+        	
+        } catch ( final Exception e ) {
+            return new ResponseEntity( errorResponse( "Patient not found" +e.getMessage()), HttpStatus.NOT_FOUND );
+        }
     }
 
 }

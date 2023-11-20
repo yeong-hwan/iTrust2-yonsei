@@ -267,5 +267,37 @@ public class APIPatientTest {
         // we should be able to update our record too
         mvc.perform( get( "/api/v1/patient/" ) ).andExpect( status().isOk() );
     }
+    
+    @Test
+    @Transactional
+    @WithMockUser( username = "hcp", roles = { "HCP" } )
+    public void testGetRecordsByPatientId() throws Exception {
+        // Create a new patient
+        final PatientForm patient = new PatientForm();
+        patient.setFirstName("John");
+        patient.setLastName("Doe");
+        patient.setAddress1( "1 Test Street" );
+        patient.setAddress2( "Some Location" );
+        patient.setBloodType( BloodType.APos.toString() );
+        patient.setCity( "Viipuri" );
+        patient.setDateOfBirth( "1977-06-15" );
+        patient.setEmail( "test@yonsei.ac.kr");
+        patient.setGender( Gender.Male.toString() );
+
+        User er = new Patient(new UserForm("johnDoe", "123456", Role.ROLE_PATIENT, 1));
+        service.save(er);
+
+        mvc.perform(put("/api/v1/patients/johnDoe").contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtils.asJsonString(patient))).andExpect(status().isOk());
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("patientMID", "johnDoe");
+
+        mvc.perform(get("/api/v1/emergency_health_records/view").params(params))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.age").value(46))
+                .andExpect(jsonPath("$.lastName").value("Doe"));
+    }
 
 }
