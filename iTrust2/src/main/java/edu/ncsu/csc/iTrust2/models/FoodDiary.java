@@ -9,9 +9,6 @@ import edu.ncsu.csc.iTrust2.forms.FoodDiaryForm;
 
 @Entity
 public class FoodDiary extends DomainObject {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
 
 	/**
 	 * Construct an empty Food Diary. Used for Hibernate.
@@ -43,6 +40,27 @@ public class FoodDiary extends DomainObject {
 	/**
 	 *
 	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
+	/**
+	 * Date of Diaries
+	 * PastOrPresent가 있어서 null값 못 받아요
+	 */
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "mm/dd/yyyy")
+	@PastOrPresent(message = "Date must be in the past or present")
+	private Date date;
+
+	/**
+	 * Meal type
+	 * annotation 잘 모르겠어서 테스트 해봐야 할 것 같네요,,ㅎㅎ
+	 */
+	@NotNull(message = "Type of meal is required")
+	@Pattern(regexp = "Breakfast|Lunch|Dinner|Snack", message = "Meal type must be one of 'Breakfast', 'Lunch', 'Dinner', or 'Snack'")
+	private String mealType;
+
 	@NotBlank(message = "name of food should not be empty")
 	private String foodName;
 
@@ -69,46 +87,6 @@ public class FoodDiary extends DomainObject {
 
 	@PositiveOrZero(message = "Grams of protein per serving must be Zero or a positive number")
 	private long proteinPerServing;
-
-	/**
-	 * Update this Hospital object from the HospitalForm object provided
-	 *
-	 * @param fd
-	 *           A FoodDiaryForm to convert to a FoodDiar
-	 * @return `this` FoodDiary object, after updates
-	 */
-	public FoodDiary update(final FoodDiaryForm fd) {
-		setId(fd.getId());
-		setDate(fd.getDate());
-		setMealType(fd.getMealType());
-		setFoodName(fd.getFoodName());
-		setServingNumber(fd.getServingNumber());
-		setCaloriesPerServing(fd.getCaloriesPerServing());
-		setFatPerServing(fd.getFatPerServing());
-		setSodiumPerServing(fd.getSodiumPerServing());
-		setCarbsPerServing(fd.getCarbsPerServing());
-		setSugarsPerServing(fd.getSugarsPerServing());
-		setFiberPerServing(fd.getFiberPerServing());
-		setProteinPerServing(fd.getProteinPerServing());
-		return this;
-	}
-
-	/**
-	 * Date of Diaries
-	 * PastOrPresent가 있어서 null값 못 받아요
-	 */
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "mm/dd/yyyy")
-	@PastOrPresent(message = "Date must be in the past or present")
-	private Date date;
-
-	/**
-	 * Meal type
-	 * annotation 잘 모르겠어서 테스트 해봐야 할 것 같네요,,ㅎㅎ
-	 */
-	@NotNull(message = "Type of meal is required")
-	@Pattern(regexp = "Breakfast|Lunch|Dinner|Snack", message = "Meal type must be one of 'Breakfast', 'Lunch', 'Dinner', or 'Snack'")
-	private String mealType;
 
 	/**
 	 * getter methods
