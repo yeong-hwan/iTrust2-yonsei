@@ -174,12 +174,6 @@ public class Patient extends User {
 
         setGender( Gender.parse( form.getGender() ) );
         
-        //set age based on birth date and current date
-        LocalDate today = LocalDate.now();
-    	Period ageCalc = Period.between(dateOfBirth, today);
-    	Integer age = ageCalc.getYears();
-        setAge(age);
-
         return this;
     }
 
@@ -264,11 +258,11 @@ public class Patient extends User {
     }
 
     public Integer getAge () {
+    	//set age based on birth date and current date
+        LocalDate today = LocalDate.now();
+    	Period ageCalc = Period.between(dateOfBirth, today);
+    	Integer age = ageCalc.getYears();
     	return age;
-    }
-    
-    public void setAge (final Integer age) {
-    	this.age = age;
     }
     
     public LocalDate getDateOfBirth () {

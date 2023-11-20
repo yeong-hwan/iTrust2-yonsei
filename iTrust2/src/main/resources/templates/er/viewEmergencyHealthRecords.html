@@ -130,7 +130,7 @@
 					};
 
 					// Send GET request to get patient emergency health records
-					$http.get('/iTrust2/api/v1/emergency_health_records/view?patientUsername =' + patient.username)
+					$http.get('/iTrust2/api/v1/emergency_health_records/view?patientUsername=' + patient.username)
 						.then(function (response) {
 							$scope.selectedPatientInfo = response.data;
 						})
