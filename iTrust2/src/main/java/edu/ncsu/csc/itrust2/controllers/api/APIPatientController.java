@@ -31,25 +31,25 @@ import edu.ncsu.csc.iTrust2.utils.LoggerUtil;
  *
  */
 @RestController
-@SuppressWarnings ( { "rawtypes", "unchecked" } )
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class APIPatientController extends APIController {
 
     @Autowired
     private PatientService patientService;
 
     @Autowired
-    private UserService    userService;
+    private UserService userService;
 
     @Autowired
-    private LoggerUtil     loggerUtil;
+    private LoggerUtil loggerUtil;
 
     /**
      * Retrieves and returns a list of all Patients stored in the system
      *
      * @return list of patients
      */
-    @GetMapping ( BASE_PATH + "/patients" )
-    public List<Patient> getPatients () {
+    @GetMapping(BASE_PATH + "/patients")
+    public List<Patient> getPatients() {
         final List<Patient> patients = (List<Patient>) patientService.findAll();
         return patients;
     }
@@ -61,18 +61,17 @@ public class APIPatientController extends APIController {
      *
      * @return The patient object for the currently authenticated user.
      */
-    @GetMapping ( BASE_PATH + "/patient" )
-    @PreAuthorize ( "hasRole('ROLE_PATIENT')" )
-    public ResponseEntity getPatient () {
-        final User self = userService.findByName( LoggerUtil.currentUser() );
-        final Patient patient = (Patient) patientService.findByName( self.getUsername() );
-        if ( patient == null ) {
-            return new ResponseEntity( errorResponse( "Could not find a patient entry for you, " + self.getUsername() ),
-                    HttpStatus.NOT_FOUND );
-        }
-        else {
-            loggerUtil.log( TransactionType.VIEW_DEMOGRAPHICS, self );
-            return new ResponseEntity( patient, HttpStatus.OK );
+    @GetMapping(BASE_PATH + "/patient")
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    public ResponseEntity getPatient() {
+        final User self = userService.findByName(LoggerUtil.currentUser());
+        final Patient patient = (Patient) patientService.findByName(self.getUsername());
+        if (patient == null) {
+            return new ResponseEntity(errorResponse("Could not find a patient entry for you, " + self.getUsername()),
+                    HttpStatus.NOT_FOUND);
+        } else {
+            loggerUtil.log(TransactionType.VIEW_DEMOGRAPHICS, self);
+            return new ResponseEntity(patient, HttpStatus.OK);
         }
     }
 
@@ -80,22 +79,21 @@ public class APIPatientController extends APIController {
      * Retrieves and returns the Patient with the username provided
      *
      * @param username
-     *            The username of the Patient to be retrieved, as stored in the
-     *            Users table
+     *                 The username of the Patient to be retrieved, as stored in the
+     *                 Users table
      * @return response
      */
-    @GetMapping ( BASE_PATH + "/patients/{username}" )
-    @PreAuthorize ( "hasRole('ROLE_HCP')" )
-    public ResponseEntity getPatient ( @PathVariable ( "username" ) final String username ) {
-        final Patient patient = (Patient) patientService.findByName( username );
-        if ( patient == null ) {
-            return new ResponseEntity( errorResponse( "No Patient found for username " + username ),
-                    HttpStatus.NOT_FOUND );
-        }
-        else {
-            loggerUtil.log( TransactionType.PATIENT_DEMOGRAPHICS_VIEW, LoggerUtil.currentUser(), username,
-                    "HCP retrieved demographics for patient with username " + username );
-            return new ResponseEntity( patient, HttpStatus.OK );
+    @GetMapping(BASE_PATH + "/patients/{username}")
+    @PreAuthorize("hasRole('ROLE_HCP')")
+    public ResponseEntity getPatient(@PathVariable("username") final String username) {
+        final Patient patient = (Patient) patientService.findByName(username);
+        if (patient == null) {
+            return new ResponseEntity(errorResponse("No Patient found for username " + username),
+                    HttpStatus.NOT_FOUND);
+        } else {
+            loggerUtil.log(TransactionType.PATIENT_DEMOGRAPHICS_VIEW, LoggerUtil.currentUser(), username,
+                    "HCP retrieved demographics for patient with username " + username);
+            return new ResponseEntity(patient, HttpStatus.OK);
         }
     }
 
@@ -105,63 +103,60 @@ public class APIPatientController extends APIController {
      * set in the Patient provided, the update will not take place
      *
      * @param id
-     *            The username of the Patient to be updated
+     *                 The username of the Patient to be updated
      * @param patientF
-     *            The updated Patient to save
+     *                 The updated Patient to save
      * @return response
      */
-    @PutMapping ( BASE_PATH + "/patients/{id}" )
-    public ResponseEntity updatePatient ( @PathVariable final String id, @RequestBody final PatientForm patientF ) {
+    @PutMapping(BASE_PATH + "/patients/{id}")
+    public ResponseEntity updatePatient(@PathVariable final String id, @RequestBody final PatientForm patientF) {
         // check that the user is an HCP or a patient with username equal to id
         boolean userEdit = false; // true if user edits his or her own
                                   // demographics, false if hcp edits them
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        final SimpleGrantedAuthority hcp = new SimpleGrantedAuthority( "ROLE_HCP" );
+        final SimpleGrantedAuthority hcp = new SimpleGrantedAuthority("ROLE_HCP");
         try {
-            userEdit = !auth.getAuthorities().contains( hcp );
+            userEdit = !auth.getAuthorities().contains(hcp);
 
-            if ( !auth.getName().equals( id ) && userEdit ) {
-                return new ResponseEntity( errorResponse( "You do not have permission to edit this record" ),
-                        HttpStatus.UNAUTHORIZED );
+            if (!auth.getName().equals(id) && userEdit) {
+                return new ResponseEntity(errorResponse("You do not have permission to edit this record"),
+                        HttpStatus.UNAUTHORIZED);
             }
 
-        }
-        catch ( final Exception e ) {
-            return new ResponseEntity( HttpStatus.UNAUTHORIZED );
+        } catch (final Exception e) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
 
         try {
-            final Patient patient = (Patient) patientService.findByName( id );
+            final Patient patient = (Patient) patientService.findByName(id);
 
             // Shouldn't be possible but let's check anyways
-            if ( null == patient ) {
-                return new ResponseEntity( errorResponse( "Patient not found" ), HttpStatus.NOT_FOUND );
+            if (null == patient) {
+                return new ResponseEntity(errorResponse("Patient not found"), HttpStatus.NOT_FOUND);
             }
 
-            patient.update( patientF );
+            patient.update(patientF);
 
-            final User dbPatient = patientService.findByName( id );
-            if ( null == dbPatient ) {
-                return new ResponseEntity( errorResponse( "No Patient found for id " + id ), HttpStatus.NOT_FOUND );
+            final User dbPatient = patientService.findByName(id);
+            if (null == dbPatient) {
+                return new ResponseEntity(errorResponse("No Patient found for id " + id), HttpStatus.NOT_FOUND);
             }
-            patientService.save( patient );
+            patientService.save(patient);
 
             // Log based on whether user or hcp edited demographics
-            if ( userEdit ) {
-                loggerUtil.log( TransactionType.EDIT_DEMOGRAPHICS, LoggerUtil.currentUser(),
-                        "User with username " + patient.getUsername() + "updated their demographics" );
-            }
-            else {
-                loggerUtil.log( TransactionType.PATIENT_DEMOGRAPHICS_EDIT, LoggerUtil.currentUser(),
+            if (userEdit) {
+                loggerUtil.log(TransactionType.EDIT_DEMOGRAPHICS, LoggerUtil.currentUser(),
+                        "User with username " + patient.getUsername() + "updated their demographics");
+            } else {
+                loggerUtil.log(TransactionType.PATIENT_DEMOGRAPHICS_EDIT, LoggerUtil.currentUser(),
                         patient.getUsername(),
-                        "HCP edited demographics for patient with username " + patient.getUsername() );
+                        "HCP edited demographics for patient with username " + patient.getUsername());
             }
-            return new ResponseEntity( patient, HttpStatus.OK );
-        }
-        catch ( final Exception e ) {
+            return new ResponseEntity(patient, HttpStatus.OK);
+        } catch (final Exception e) {
             return new ResponseEntity(
-                    errorResponse( "Could not update " + patientF.toString() + " because of " + e.getMessage() ),
-                    HttpStatus.BAD_REQUEST );
+                    errorResponse("Could not update " + patientF.toString() + " because of " + e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -172,20 +167,19 @@ public class APIPatientController extends APIController {
      *         message)
      *
      */
-    @GetMapping ( BASE_PATH + "/patient/findexperts/getzip" )
-    @PreAuthorize ( "hasRole( 'ROLE_PATIENT')" )
-    public ResponseEntity getPatientZip () {
+    @GetMapping(BASE_PATH + "/patient/findexperts/getzip")
+    @PreAuthorize("hasRole( 'ROLE_PATIENT')")
+    public ResponseEntity getPatientZip() {
         final String user = LoggerUtil.currentUser();
-        if ( user == null ) {
-            return new ResponseEntity( errorResponse( "Patient not found" ), HttpStatus.NOT_FOUND );
+        if (user == null) {
+            return new ResponseEntity(errorResponse("Patient not found"), HttpStatus.NOT_FOUND);
         }
-        final String zip = ( (Patient) patientService.findByName( user ) ).getZip();
-        if ( zip == null ) {
-            return new ResponseEntity( errorResponse( "Patient does not have zip stored" ), HttpStatus.NO_CONTENT );
-        }
-        else {
-            final String[] zipParts = zip.split( "-" );
-            return new ResponseEntity( zipParts, HttpStatus.OK );
+        final String zip = ((Patient) patientService.findByName(user)).getZip();
+        if (zip == null) {
+            return new ResponseEntity(errorResponse("Patient does not have zip stored"), HttpStatus.NO_CONTENT);
+        } else {
+            final String[] zipParts = zip.split("-");
+            return new ResponseEntity(zipParts, HttpStatus.OK);
 
         }
 

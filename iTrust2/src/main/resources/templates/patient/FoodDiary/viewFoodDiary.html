@@ -1,0 +1,176 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout :: head(title=~{::title},links=~{})">
+<title>View FoodDiary</title>
+
+<!-- Angular and Bootstrap files  -->
+<!-- <link rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
+
+</head>
+
+<body th:include="layout :: body" th:with="content=~{::content}">
+	<div th:fragment="content">
+
+		<script th:inline="javascript">
+		/* Otherwise Thymeleaf tries to parse Javascript as XML and breaks itself sometimes.  Sigh */
+		/*<![CDATA[*/
+			var app = angular.module("viewFoodDiaryApp", []);
+			app.controller('viewFoodDiaryCtrl', function($scope, $http) {
+
+				$scope.displayDiary = function(p) {
+					return p.date + "-" + p.MealType;
+				}
+
+				$scope.selectPatient = function(patient){
+					$scope.selectedPatient = patient.username;
+				}
+
+				$http.get("/iTrust2/api/v1/patients").then(
+						function(response) {
+							$scope.patients = response.data;
+						}, function(rejection){
+						});
+
+				$scope.getTotalNutrition= function(patient, date){
+
+					$scope.totNut = {};
+
+					$http({
+						method : 'GET',
+						url : '/iTrust2/api/v1/food_diary/view/' + patient.username + '/' + date
+					}).then(function(response){
+						$scope.totNut = response.data;
+					})
+
+				}
+
+				$scope.getFoodDiaries = function(patient){
+
+					$scope.FoodDiaries = {};
+					$http({
+
+						method: 'GET',
+						url : '/iTrust2/api/v1/food_diary/view/' + patient.username 
+
+					}).then(function(response){
+						$scope.FoodDiaries = response.data;
+					})
+				}
+
+				$scope.selectFoodDiary = function(FoodDiary){
+					$scope.selectedFoodDiary = FoodDiary;
+					$scope.getTotalNutrition();
+				}
+
+
+			});
+		</script>
+		<div ng-app="viewFoodDiaryApp" ng-controller="viewFoodDiaryCtrl">
+			
+			<!-- information on vertical rule found here: https://stackoverflow.com/questions/571900/is-there-a-vr-vertical-rule-in-html  -->
+			<div
+				style="float: left; width: 30%; border-left: 1px solid #bbb; padding-left: 1%; height: 100%; overflow-y: auto">
+				<h2 id="header0">FoodDiaries</h2>
+				<!-- Patient의 식사 Date 선택창-->
+				<ul style="overflow: auto;height=100%;">
+					<!-- Information on how labels wor from here: https://stackoverflow.com/questions/7863251/clicking-the-text-to-select-corresponding-radio-button -->
+					<li ng-repeat="FoodDiary in FoodDiaries"><h4>
+							<label> <input type="radio"
+								ng-model="$parent.selectedFoodDiary" name="FoodDiary"
+								value="{{FoodDiary}}"
+								ng-click='$parent.selectFoodDiary(FoodDiary)' />&nbsp;{{$parent.displayDiary(FoodDiary)}}
+							</label>
+						</h4></li>
+				</ul>
+			</div>
+			<div
+				style="float: left; width: 35%; border-left: 1px solid #bbb; padding-left: 1%; height: 100%; overflow-y: auto;">
+				<h2 id="header0">Date:{{selectedFoodDiary.date}}</h2>
+				<h2 id="header1">FoodName:{{selectedFoodDiary.name}} </h2>
+				<h2 id="header2">MealType:{{selectedFoodDiary.MealType}} </h2>
+				<br>
+				<div ng-show="selectedFoodDiary">
+					<table>
+						<tr>
+							<td style="text-align: left; padding: 10px"><b>Number of Servings:</b></td>
+							<td>{{selectedFoodDiary.serveNum}}</td>
+						</tr>
+						<tr>
+							<td style="text-align: left; padding: 5px"><b>Calories per Serving:</b></td>
+							<td>{{selectedFoodDiary.calories}}</td>
+						</tr>
+						<tr>
+							<td style="text-align: left; padding: 5px"><b>Grams of Fat per Serving:</b></td>
+							<td>{{selectedFoodDiary.serveNum}}</td>
+						</tr>
+						<tr>
+							<td style="text-align: left; padding: 5px"><b>Milligrams of Sodium per Serving:</b></td>
+							<td>{{selectedFoodDiary.serveNum}}</td>
+						</tr>
+						<tr>
+							<td style="text-align: leftt; padding: 5px"><b>Grams of Carbs per Serving:</b></td>
+							<td>{{selectedFoodDiary.serveNum}}</td>
+						</tr>
+						<tr>
+							<td style="text-align: left; padding: 5px"><b>Grams of Sugars per Serving:</b></td>
+							<td>{{selectedFoodDiary.serveNum}}</td>
+						</tr>
+						<tr>
+							<td style="text-align: left; padding: 5px"><b>Grams of Fiber per Serving:</b></td>
+							<td>{{selectedFoodDiary.serveNum}}</td>
+						</tr>
+						<tr>
+							<td style="text-align: left; padding: 5px"><b>Grams of Protein per Serving:</b></td>
+							<td>{{selectedFoodDiary.serveNum}}</td>
+						</tr>
+					</table>
+
+					<br />
+				</div>
+			</div>
+			<div ng-show="selectedFoodDiary">
+				<div
+				style="float: left; width: 35%; border-left: 1px solid #bbb; padding-left: 1%; height: 100%; overflow-y: auto;">
+					<h2 id="totals">Total Nutrition Information for Today</h2>
+					<br>
+					<table>
+						<tr>
+							<td style="text-align: left; padding: 5px"><b>Total Calories:</b></td>
+							<td>{{totNut.calories}}</td>
+						</tr>
+						<tr>
+							<td style="text-align: left; padding: 5px"><b>Total Fat:</b></td>
+							<td>{{totNut.fat}}</td>
+						</tr>
+						<tr>
+							<td style="text-align: left; padding: 5px"><b>Total Sodium:</b></td>
+							<td>{{totNut.sodium}}</td>
+						</tr>
+						<tr>
+							<td style="text-align: left; padding: 5px"><b>Total Carbs:</b></td>
+							<td>{{totNut.carbs}}</td>
+						</tr>
+						<tr>
+							<td style="text-align: left; padding: 5px"><b>Total Sugar:</b></td>
+							<td>{{totNut.sugar}}</td>
+						</tr>
+						<tr>
+							<td style="text-align:left; padding: 5px"><b>Total Fiber:</b></td>
+							<td>{{totNut.fiber}}</td>
+						</tr>
+						<tr>
+							<td style="text-align: left; padding: 5px"><b>Total Protein:</b></td>
+							<td>{{totNut.protein}}</td>
+						</tr>
+					</table>
+			
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>
