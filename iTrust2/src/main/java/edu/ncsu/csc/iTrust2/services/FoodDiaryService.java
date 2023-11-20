@@ -12,7 +12,9 @@ import org.springframework.stereotype.Component;
 
 
 import edu.ncsu.csc.iTrust2.forms.FoodDiaryForm;
+import edu.ncsu.csc.iTrust2.models.AppointmentRequest;
 import edu.ncsu.csc.iTrust2.models.FoodDiary;
+import edu.ncsu.csc.iTrust2.models.User;
 import edu.ncsu.csc.iTrust2.repositories.FoodDiaryRepository;
 
 
@@ -27,6 +29,15 @@ public class FoodDiaryService extends Service {
     protected JpaRepository getRepository() {
         return repository;
     }
+    
+    public List<FoodDiary> findByPatient ( final User patient ) {
+        return repository.findByPatient( patient );
+    }
+
+    public List<FoodDiary> findByHcp ( final User hcp ) {
+        return repository.findByHcp( hcp );
+    }
+
 
     // find by patient or HCP?
 
