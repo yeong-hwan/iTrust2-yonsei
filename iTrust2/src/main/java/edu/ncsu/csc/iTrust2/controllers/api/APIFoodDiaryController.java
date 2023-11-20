@@ -49,6 +49,11 @@ public class APIFoodDiaryController extends APIController {
         final List<FoodDiary> f = (List<FoodDiary>) foodDiaryService.findById( id );
         return ResponseEntity.ok(f);
     }
+    @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}")
+    public FoodDiary calculateDailyTotal() {
+        final FoodDiary dailyTotal = foodDiaryService.calculateDailyTotal(@PathVariable("date") Date date);
+        return dailyTotal;
+    }
 
 
     // @GetMapping ( BASE_PATH + "/fooddiary/{id}" )
