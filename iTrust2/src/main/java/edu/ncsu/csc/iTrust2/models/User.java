@@ -38,47 +38,47 @@ import edu.ncsu.csc.iTrust2.models.enums.Role;
  *
  */
 @Entity
-@JsonIgnoreProperties ( value = { "password" } )
+@JsonIgnoreProperties(value = { "password" })
 public class User extends DomainObject {
 
     /** For Hibernate */
-    protected User () {
+    protected User() {
     }
 
     /**
      * All-argument constructor for User
      *
      * @param username
-     *            Username
+     *                 Username
      * @param password
-     *            The _already encoded_ password of the user.
+     *                 The _already encoded_ password of the user.
      * @param role
-     *            Role of the user
+     *                 Role of the user
      * @param enabled
-     *            1 if the user is enabled 0 if not
+     *                 1 if the user is enabled 0 if not
      */
-    protected User ( final String username, final String password, final Role role, final Integer enabled ) {
-        setUsername( username );
-        setPassword( password );
-        addRole( role );
-        setEnabled( enabled );
+    protected User(final String username, final String password, final Role role, final Integer enabled) {
+        setUsername(username);
+        setPassword(password);
+        addRole(role);
+        setEnabled(enabled);
     }
 
     /**
      * Create a new user based off of the UserForm
      *
      * @param form
-     *            the filled-in user form with user information
+     *             the filled-in user form with user information
      */
-    protected User ( final UserForm form ) {
-        setUsername( form.getUsername() );
-        if ( !form.getPassword().equals( form.getPassword2() ) ) {
-            throw new IllegalArgumentException( "Passwords do not match!" );
+    protected User(final UserForm form) {
+        setUsername(form.getUsername());
+        if (!form.getPassword().equals(form.getPassword2())) {
+            throw new IllegalArgumentException("Passwords do not match!");
         }
         final PasswordEncoder pe = new BCryptPasswordEncoder();
-        setPassword( pe.encode( form.getPassword() ) );
-        setEnabled( null != form.getEnabled() ? 1 : 0 );
-        setRoles( form.getRoles().stream().map( Role::valueOf ).collect( Collectors.toSet() ) );
+        setPassword(pe.encode(form.getPassword()));
+        setEnabled(null != form.getEnabled() ? 1 : 0);
+        setRoles(form.getRoles().stream().map(Role::valueOf).collect(Collectors.toSet()));
 
     }
 
@@ -86,26 +86,26 @@ public class User extends DomainObject {
      * The username of the user
      */
     @Id
-    @Length ( max = 20 )
-    private String    username;
+    @Length(max = 20)
+    private String username;
 
     /**
      * The password of the user
      */
-    private String    password;
+    private String password;
 
     /**
      * Whether or not the user is enabled
      */
-    @Min ( 0 )
-    @Max ( 1 )
-    private Integer   enabled;
+    @Min(0)
+    @Max(1)
+    private Integer enabled;
 
     /**
      * The role of the user
      */
-    @ElementCollection ( targetClass = Role.class, fetch = FetchType.EAGER )
-    @Enumerated ( EnumType.STRING )
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
     /**
@@ -113,7 +113,7 @@ public class User extends DomainObject {
      *
      * @return the username of this user
      */
-    public String getUsername () {
+    public String getUsername() {
         return username;
     }
 
@@ -121,9 +121,9 @@ public class User extends DomainObject {
      * Set the username of this user
      *
      * @param username
-     *            the username to set this user to
+     *                 the username to set this user to
      */
-    public void setUsername ( final String username ) {
+    public void setUsername(final String username) {
         this.username = username;
     }
 
@@ -132,7 +132,7 @@ public class User extends DomainObject {
      *
      * @return the password of this user
      */
-    public String getPassword () {
+    public String getPassword() {
         return password;
     }
 
@@ -140,9 +140,9 @@ public class User extends DomainObject {
      * Set the password of this user
      *
      * @param password
-     *            the password to set this user to
+     *                 the password to set this user to
      */
-    public void setPassword ( final String password ) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 
@@ -151,7 +151,7 @@ public class User extends DomainObject {
      *
      * @return Whether or not the user is enabled
      */
-    public Integer getEnabled () {
+    public Integer getEnabled() {
         return enabled;
     }
 
@@ -159,9 +159,9 @@ public class User extends DomainObject {
      * Set whether or not the user is enabled
      *
      * @param enabled
-     *            Whether or not the user is enabled
+     *                Whether or not the user is enabled
      */
-    public void setEnabled ( final Integer enabled ) {
+    public void setEnabled(final Integer enabled) {
         this.enabled = enabled;
     }
 
@@ -170,7 +170,7 @@ public class User extends DomainObject {
      *
      * @return the role of this user
      */
-    public Collection<Role> getRoles () {
+    public Collection<Role> getRoles() {
         return roles;
     }
 
@@ -180,13 +180,13 @@ public class User extends DomainObject {
      * the only one present
      *
      * @param roles
-     *            the roles to set this user to
+     *              the roles to set this user to
      */
-    public void setRoles ( final Set<Role> roles ) {
+    public void setRoles(final Set<Role> roles) {
         /* Patient & admin can't have any other roles */
-        if ( ( roles.contains( Role.ROLE_PATIENT ) || roles.contains( Role.ROLE_ADMIN ) ) && 1 != roles.size() ) {
+        if ((roles.contains(Role.ROLE_PATIENT) || roles.contains(Role.ROLE_ADMIN)) && 1 != roles.size()) {
             throw new IllegalArgumentException(
-                    "Tried to create a Patient or Admin user with a secondary role.  Patient & admin can only have a single role!" );
+                    "Tried to create a Patient or Admin user with a secondary role.  Patient & admin can only have a single role!");
         }
 
         this.roles = roles;
@@ -198,19 +198,19 @@ public class User extends DomainObject {
      * existing role(s).
      *
      * @param role
-     *            the Role to add
+     *             the Role to add
      */
-    public void addRole ( final Role role ) {
-        if ( null == this.roles ) {
+    public void addRole(final Role role) {
+        if (null == this.roles) {
             this.roles = new HashSet<Role>();
         }
-        if ( role.equals( Role.ROLE_ADMIN ) || role.equals( Role.ROLE_PATIENT ) ) {
-            throw new IllegalArgumentException( "Admin and Patient roles cannot be added" );
+        if (role.equals(Role.ROLE_ADMIN) || role.equals(Role.ROLE_PATIENT)) {
+            throw new IllegalArgumentException("Admin and Patient roles cannot be added");
         }
-        if ( this.roles.contains( Role.ROLE_ADMIN ) || this.roles.contains( Role.ROLE_PATIENT ) ) {
-            throw new IllegalArgumentException( "Admins and Patients cannot have additional roles added" );
+        if (this.roles.contains(Role.ROLE_ADMIN) || this.roles.contains(Role.ROLE_PATIENT)) {
+            throw new IllegalArgumentException("Admins and Patients cannot have additional roles added");
         }
-        this.roles.add( role );
+        this.roles.add(role);
     }
 
     /**
@@ -219,13 +219,13 @@ public class User extends DomainObject {
      * @return the hashCode of this user
      */
     @Override
-    public int hashCode () {
+    public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ( ( enabled == null ) ? 0 : enabled.hashCode() );
-        result = prime * result + ( ( password == null ) ? 0 : password.hashCode() );
-        result = prime * result + ( ( roles == null ) ? 0 : roles.hashCode() );
-        result = prime * result + ( ( username == null ) ? 0 : username.hashCode() );
+        result = prime * result + ((enabled == null) ? 0 : enabled.hashCode());
+        result = prime * result + ((password == null) ? 0 : password.hashCode());
+        result = prime * result + ((roles == null) ? 0 : roles.hashCode());
+        result = prime * result + ((username == null) ? 0 : username.hashCode());
         return result;
     }
 
@@ -236,42 +236,39 @@ public class User extends DomainObject {
      *            the user to compate this user to
      */
     @Override
-    public boolean equals ( final Object obj ) {
-        if ( this == obj ) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
-        if ( obj == null ) {
+        if (obj == null) {
             return false;
         }
-        if ( getClass() != obj.getClass() ) {
+        if (getClass() != obj.getClass()) {
             return false;
         }
         final User other = (User) obj;
-        if ( enabled == null ) {
-            if ( other.enabled != null ) {
+        if (enabled == null) {
+            if (other.enabled != null) {
                 return false;
             }
-        }
-        else if ( !enabled.equals( other.enabled ) ) {
+        } else if (!enabled.equals(other.enabled)) {
             return false;
         }
-        if ( password == null ) {
-            if ( other.password != null ) {
+        if (password == null) {
+            if (other.password != null) {
                 return false;
             }
-        }
-        else if ( !password.equals( other.password ) ) {
+        } else if (!password.equals(other.password)) {
             return false;
         }
-        if ( roles != other.roles ) {
+        if (roles != other.roles) {
             return false;
         }
-        if ( username == null ) {
-            if ( other.username != null ) {
+        if (username == null) {
+            if (other.username != null) {
                 return false;
             }
-        }
-        else if ( !username.equals( other.username ) ) {
+        } else if (!username.equals(other.username)) {
             return false;
         }
         return true;
@@ -283,7 +280,7 @@ public class User extends DomainObject {
      * @return The Username
      */
     @Override
-    public String getId () {
+    public String getId() {
         return getUsername();
     }
 
@@ -292,8 +289,8 @@ public class User extends DomainObject {
      *
      * @return true if the user has the `ROLE_HCP` role
      */
-    public boolean isDoctor () {
-        return roles.contains( Role.ROLE_HCP );
+    public boolean isDoctor() {
+        return roles.contains(Role.ROLE_HCP);
     }
 
 }

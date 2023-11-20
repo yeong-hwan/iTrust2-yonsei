@@ -1,6 +1,5 @@
 package edu.ncsu.csc.iTrust2.models;
 
-
 import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 import javax.persistence.*;
@@ -8,29 +7,39 @@ import javax.validation.constraints.*;
 
 import edu.ncsu.csc.iTrust2.forms.FoodDiaryForm;
 
-
 @Entity
 public class FoodDiary extends DomainObject {
 	@Id
-	@GeneratedValue( strategy = GenerationType.AUTO )
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	/**
-	 * Date of Diaries
-	 * PastOrPresent가 있어서 null값 못 받아요
+	 * Construct an empty Food Diary. Used for Hibernate.
 	 */
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "mm/dd/yyyy")
-	@PastOrPresent(message = "Date must be in the past or present")
-	private Date date;
+	public FoodDiary() {
+	}
 
 	/**
-	 * Meal type
-	 * annotation 잘 모르겠어서 테스트 해봐야 할 것 같네요,,ㅎㅎ
+	 * Construct a Food Diary object from the foodDiaryForm object provided
+	 *
+	 * @param form
+	 *             A FoodDiaryForm to convert to a FoodDiary
 	 */
-	@NotNull(message = "Type of meal is required")
-	@Pattern(regexp = "Breakfast|Lunch|Dinner|Snack", message = "Meal type must be one of 'Breakfast', 'Lunch', 'Dinner', or 'Snack'")
-	private String mealType;
+	public FoodDiary(final FoodDiaryForm form) {
+		setId(form.getId());
+		setDate(form.getDate());
+		setMealType(form.getMealType());
+		setFoodName(form.getFoodName());
+		setServingNumber(form.getServingNumber());
+		setCaloriesPerServing(form.getCaloriesPerServing());
+		setFatPerServing(form.getFatPerServing());
+		setSodiumPerServing(form.getSodiumPerServing());
+		setCarbsPerServing(form.getCarbsPerServing());
+		setSugarsPerServing(form.getSugarsPerServing());
+		setFiberPerServing(form.getFiberPerServing());
+		setProteinPerServing(form.getProteinPerServing());
+	}
+
 	/**
 	 *
 	 */
@@ -62,54 +71,44 @@ public class FoodDiary extends DomainObject {
 	private long proteinPerServing;
 
 	/**
-	 * Construct an empty Food Diary. Used for Hibernate.
-	 */
-	public FoodDiary () {
-	}
-
-	/**
-	 * Construct a Food Diary object from the foodDiaryForm object provided
-	 *
-	 * @param fd
-	 *            A FoodDiaryForm to convert to a FoodDiary
-	 */
-	public FoodDiary ( final FoodDiaryForm fd ) {
-		setId( fd.getId() );
-		setDate( fd.getDate() );
-		setMealType( fd.getMealType() );
-		setFoodName( fd.getFoodName() );
-		setServingNumber( fd.getServingNumber() );
-		setCaloriesPerServing( fd.getCaloriesPerServing() );
-		setFatPerServing( fd.getFatPerServing() );
-		setSodiumPerServing( fd.getSodiumPerServing() );
-		setCarbsPerServing( fd.getCarbsPerServing() );
-		setSugarsPerServing( fd.getSugarsPerServing() );
-		setFiberPerServing( fd.getFiberPerServing() );
-		setProteinPerServing(fd.getProteinPerServing() );
-	}
-
-	/**
 	 * Update this Hospital object from the HospitalForm object provided
 	 *
 	 * @param fd
-	 *            A FoodDiaryForm to convert to a FoodDiar
+	 *           A FoodDiaryForm to convert to a FoodDiar
 	 * @return `this` FoodDiary object, after updates
 	 */
-	public FoodDiary update ( final FoodDiaryForm fd ) {
-		setId( fd.getId() );
-		setDate( fd.getDate() );
-		setMealType( fd.getMealType() );
-		setFoodName( fd.getFoodName() );
-		setServingNumber( fd.getServingNumber() );
-		setCaloriesPerServing( fd.getCaloriesPerServing() );
-		setFatPerServing( fd.getFatPerServing() );
-		setSodiumPerServing( fd.getSodiumPerServing() );
-		setCarbsPerServing( fd.getCarbsPerServing() );
-		setSugarsPerServing( fd.getSugarsPerServing() );
-		setFiberPerServing( fd.getFiberPerServing() );
-		setProteinPerServing(fd.getProteinPerServing() );
+	public FoodDiary update(final FoodDiaryForm fd) {
+		setId(fd.getId());
+		setDate(fd.getDate());
+		setMealType(fd.getMealType());
+		setFoodName(fd.getFoodName());
+		setServingNumber(fd.getServingNumber());
+		setCaloriesPerServing(fd.getCaloriesPerServing());
+		setFatPerServing(fd.getFatPerServing());
+		setSodiumPerServing(fd.getSodiumPerServing());
+		setCarbsPerServing(fd.getCarbsPerServing());
+		setSugarsPerServing(fd.getSugarsPerServing());
+		setFiberPerServing(fd.getFiberPerServing());
+		setProteinPerServing(fd.getProteinPerServing());
 		return this;
 	}
+
+	/**
+	 * Date of Diaries
+	 * PastOrPresent가 있어서 null값 못 받아요
+	 */
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "mm/dd/yyyy")
+	@PastOrPresent(message = "Date must be in the past or present")
+	private Date date;
+
+	/**
+	 * Meal type
+	 * annotation 잘 모르겠어서 테스트 해봐야 할 것 같네요,,ㅎㅎ
+	 */
+	@NotNull(message = "Type of meal is required")
+	@Pattern(regexp = "Breakfast|Lunch|Dinner|Snack", message = "Meal type must be one of 'Breakfast', 'Lunch', 'Dinner', or 'Snack'")
+	private String mealType;
 
 	/**
 	 * getter methods
@@ -153,9 +152,11 @@ public class FoodDiary extends DomainObject {
 	public Long getSugarsPerServing() {
 		return sugarsPerServing;
 	}
+
 	public Long getFiberPerServing() {
 		return fiberPerServing;
 	}
+
 	public Long getProteinPerServing() {
 		return proteinPerServing;
 	}
@@ -163,52 +164,51 @@ public class FoodDiary extends DomainObject {
 	/**
 	 * setter methods
 	 */
-	public void setId( final Long id ) {
+	public void setId(final Long id) {
 		this.id = id;
 	}
 
-	public void setDate( final Date date ) {
+	public void setDate(final Date date) {
 		this.date = date;
 	}
 
-	public void setMealType( final String mealType ) {
+	public void setMealType(final String mealType) {
 		this.mealType = mealType;
 	}
 
-	public void setFoodName( final String foodName ) {
+	public void setFoodName(final String foodName) {
 		this.foodName = foodName;
 	}
 
-	public void setServingNumber( final Long servingNumber ) {
+	public void setServingNumber(final Long servingNumber) {
 		this.servingNumber = servingNumber;
 	}
 
-	public void setCaloriesPerServing( final Long caloriesPerServing ) {
+	public void setCaloriesPerServing(final Long caloriesPerServing) {
 		this.caloriesPerServing = caloriesPerServing;
 	}
 
-	public void setFatPerServing( final Long fatPerServing ) {
+	public void setFatPerServing(final Long fatPerServing) {
 		this.fatPerServing = fatPerServing;
 	}
 
-	public void setSodiumPerServing( final Long sodiumPerServing ) {
+	public void setSodiumPerServing(final Long sodiumPerServing) {
 		this.sodiumPerServing = sodiumPerServing;
 	}
 
-	public void setCarbsPerServing( final Long carbsPerServing ) {
+	public void setCarbsPerServing(final Long carbsPerServing) {
 		this.carbsPerServing = carbsPerServing;
 	}
 
-	public void setSugarsPerServing( final Long sugarsPerServing ) {
+	public void setSugarsPerServing(final Long sugarsPerServing) {
 		this.sugarsPerServing = sugarsPerServing;
 	}
 
-	public void setFiberPerServing( final Long fiberPerServing ) {
+	public void setFiberPerServing(final Long fiberPerServing) {
 		this.fiberPerServing = fiberPerServing;
 	}
 
-	public void setProteinPerServing( final Long proteinPerServing ) {
+	public void setProteinPerServing(final Long proteinPerServing) {
 		this.proteinPerServing = proteinPerServing;
 	}
 }
-
