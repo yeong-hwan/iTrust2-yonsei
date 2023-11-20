@@ -23,6 +23,7 @@ public class FoodDiary extends DomainObject {
 	 *             A FoodDiaryForm to convert to a FoodDiary
 	 */
 	public FoodDiary(final FoodDiaryForm form) {
+		setUsername(user.getUsername());
 		setId(form.getId());
 		setDate(form.getDate());
 		setMealType(form.getMealType());
@@ -37,11 +38,15 @@ public class FoodDiary extends DomainObject {
 		setProteinPerServing(form.getProteinPerServing());
 	}
 
+	@ManyToOne // Many = FoodDiary, User = One 한명의 유저는 여러개의 게시글을 쓸 수 있다.
+	@JoinColumn(name = "userId") // foreign key (userId) references User (id)
+	private User user; // DB는 오브젝트를 저장할 수 없다. FK, 자바는 오브젝트를 저장할 수 있다.
+
+	private String username;
 	/**
 	 *
 	 */
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	/**
@@ -144,6 +149,10 @@ public class FoodDiary extends DomainObject {
 	 */
 	public void setId(final Long id) {
 		this.id = id;
+	}
+
+	public void setUsername(final String username) {
+		this.username = username;
 	}
 
 	public void setDate(final Date date) {
