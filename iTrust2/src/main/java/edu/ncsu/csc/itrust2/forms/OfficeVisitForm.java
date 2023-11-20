@@ -139,6 +139,7 @@ public class OfficeVisitForm implements Serializable {
     private List<DiagnosisForm>    diagnoses;
 
     private List<PrescriptionForm> prescriptions;
+    private EyecheckupForm eyecheckupForm;
 
     /**
      * Creates an OfficeVisitForm from the OfficeVisit provided
@@ -155,6 +156,7 @@ public class OfficeVisitForm implements Serializable {
         setPreScheduled( ( (Boolean) ( ov.getAppointment() != null ) ).toString() );
         setDiagnoses( new ArrayList<DiagnosisForm>() );
         setPrescriptions( ov.getPrescriptions().stream().map( PrescriptionForm::new ).collect( Collectors.toList() ) );
+        setEyecheckup(new EyecheckupForm(ov.getEyecheckup()));
     }
 
     /**
@@ -535,5 +537,14 @@ public class OfficeVisitForm implements Serializable {
      */
     public List<PrescriptionForm> getPrescriptions () {
         return prescriptions;
+    }
+
+    // 1118: Add Eyechecekup
+    public EyecheckupForm getEyecheckup(){
+        return eyecheckupForm;
+    }
+
+    public void setEyecheckup(EyecheckupForm eyecheckupForm) {
+        this.eyecheckupForm = eyecheckupForm;
     }
 }

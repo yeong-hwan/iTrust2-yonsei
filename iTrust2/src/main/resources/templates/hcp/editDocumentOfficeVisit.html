@@ -1,7 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:include="layout :: head(title=~{::title},links=~{::script})">
-<title>Document Office Visit</title>
+<title>Edit Office Visit</title>
 <script th:src="@{/js/dateTimeService.js}"
 		src="../js/dateTimeService.js"></script>
 </head>
@@ -9,15 +9,12 @@
 <body th:include="layout :: body" th:with="content=~{::content}">
 	<div th:fragment="content">
 		<div class="container">
+			<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.min.js"></script>
 
 			<script th:inline="javascript">
                 /* Otherwise Thymeleaf tries to parse Javascript as XML and breaks itself sometimes. */
                 /*<![CDATA[*/
                 var app = angular.module('myApp', ['dateTimeServices']);
-
-                /**
-                 * A filter to humanize the text to be more user friendly.
-                 */
                 app.filter('humanize', function() {
                     return function (input) {
                         return input.toLowerCase().split('_')
@@ -26,7 +23,92 @@
                     }
                 });
 
-                app.controller('documentOfficeVisitCtrl', function ($scope, $http, dateTimeService) {
+                app.controller('editDocumentOfficeVisitCtrl', function ($scope, $http, dateTimeService, $location) {
+										$scope.id = $location.absUrl().split('/').pop();
+
+										$http.get("/iTrust2/api/v1/officevisits/"+$scope.id).then(
+                        function (response) {
+                            $scope.data = response.data;
+														$scope.visit = {};
+														$scope.visit.actualPatient = response.data.patient;
+														$scope.visit.patient = response.data.patient.username;
+														$scope.visit.height = response.data.basicHealthMetrics.height;
+														$scope.visit.weight = response.data.basicHealthMetrics.weight;
+														$scope.visit.headCircumference = response.data.basicHealthMetrics.headCircumference;
+														$scope.visit.systolic = response.data.basicHealthMetrics.systolic;
+														$scope.visit.diastolic = response.data.basicHealthMetrics.diastolic;
+														$scope.visit.hdl = response.data.basicHealthMetrics.hdl;
+														$scope.visit.ldl = response.data.basicHealthMetrics.ldl;
+														$scope.visit.tri = response.data.basicHealthMetrics.tri;
+														$scope.visit.patientSmokingStatus = response.data.basicHealthMetrics.patientSmokingStatus;
+														$scope.visit.houseSmokingStatus = response.data.basicHealthMetrics.houseSmokingStatus;
+
+														$scope.visit.eyeCheckup = (response.data.eyecheckup != null)
+														if (response.data.eyecheckup != null) {
+															$scope.visit.visualAcuityOS = response.data.eyecheckup.visualAcuityOS;
+															$scope.visit.visualAcuityOD = response.data.eyecheckup.visualAcuityOD;
+															$scope.visit.sphereOD = response.data.eyecheckup.sphereOD;
+															$scope.visit.sphereOS = response.data.eyecheckup.sphereOS;
+															$scope.visit.cylinderOD = response.data.eyecheckup.cylinderOD;
+															$scope.visit.cylinderOS = response.data.eyecheckup.cylinderOS;
+															$scope.visit.axisOD = response.data.eyecheckup.axisOD;
+															$scope.visit.axisOS = response.data.eyecheckup.axisOS;
+															$scope.visit.surgeryType = response.data.surgeryType;
+														}
+
+														$scope.visit.hcp = response.data.hcp;
+														// $scope.visit.status
+														$scope.visit.type = response.data.type;
+														$scope.visit.hospital = response.data.hospital.name;
+														var date = new Date(response.data.date)
+														$scope.visitInputDate = date;
+														console.log(date.toLocaleTimeString('en-US', { hour12: false }).substring(0, 8 - 3))
+														$scope.visitInputTime = date;
+
+														$scope.visit.date = response.data.date;
+
+														$scope.diagnoses = [];
+														// console.log(response.data.diagnoses.length)
+														for (diagnose in response.data.diagnoses) {
+															console.log('a', diagnose)
+															var d = {
+																note: response.data.diagnoses[diagnose].note,
+																code: response.data.diagnoses[diagnose].code.code
+															};
+															$scope.diagnoses.push(d);
+                        		}
+
+														$scope.visit.prescriptions = response.data.prescriptions;
+														
+														$scope.visit.notes = response.data.notes;
+
+														$scope.visit.id = response.data.id;
+
+														console.log(response.data)
+
+														$scope.three = true;
+														$scope.threeAndUp = true;
+														$scope.twelveAndUp = true;
+
+														if (response.data.patient.dateOfBirth) {
+															const age = dateTimeService.getAge(new Date(response.data.patient.dateOfBirth), $scope.visitInputDate);
+																if (age < 3) {
+																		$scope.three = true;
+																		$scope.threeAndUp = false;
+																		$scope.twelveAndUp = false;
+																}
+																if (age >= 3) {
+																	$scope.three = false;
+																	$scope.threeAndUp = true;
+																		$scope.twelveAndUp = false;
+																}
+																if (age >= 12) {
+																		$scope.three = false;
+																		$scope.threeAndUp = false;
+																		$scope.twelveAndUp = true;
+																}
+														}
+                        });
 
                     /*method for checking added perscriptions for vailidity*/
                     var checkValidPrescription = function (p) {
@@ -75,10 +157,6 @@
                         }
                         return err.join(". ");
                     }
-
-                    $scope.three = false;
-                    $scope.threeAndUp = false;
-                    $scope.twelveAndUp = false;
 
                     /**
                      * Validates birthdate here when patient is selected.
@@ -243,41 +321,41 @@
 
                     /*Checks validity of eye health metrics*/
                     function checkEyeHealthMetrics() {
-                        if (/^[0-9]{1,3}?$/.test(String($scope.visualAcuityOS).replace(/^0+/, '')) == false) {
+                        if (/^[0-9]{1,3}?$/.test(String($scope.visit.visualAcuityOS).replace(/^0+/, '')) == false) {
                             $scope.errorMsg += "Visual Acuity OS must be an integer value between 20 and 200 inclusive\n"
-                        } else if (parseInt($scope.visualAcuityOS) < 20 || parseInt($scope.visualAcuityOS) > 200) {
+                        } else if (parseInt($scope.visit.visualAcuityOS) < 20 || parseInt($scope.visit.visualAcuityOS) > 200) {
                             $scope.errorMsg += "Visual Acuity OS must be an integer value between 20 and 200 inclusive\n"
                         }
 
-                        if (/^[0-9]{1,3}?$/.test(String($scope.visualAcuityOD).replace(/^0+/, '')) == false) {
+                        if (/^[0-9]{1,3}?$/.test(String($scope.visit.visualAcuityOD).replace(/^0+/, '')) == false) {
                             $scope.errorMsg += "Visual Acuity OD must be an integer value between 20 and 200 inclusive\n"
-                        } else if (parseInt($scope.visualAcuityOD) < 20 || parseInt($scope.visualAcuityOD) > 200) {
+                        } else if (parseInt($scope.visit.visualAcuityOD) < 20 || parseInt($scope.visit.visualAcuityOD) > 200) {
                             $scope.errorMsg += "Visual Acuity OD must be an integer value between 20 and 200 inclusive\n"
                         }
 
-                        if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.sphereOS)) == false) {
+                        if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.visit.sphereOS)) == false) {
                             $scope.errorMsg += "Sphere OS must be a floating point number up to two digits\n"
                         }
-                        if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.sphereOD)) == false) {
+                        if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.visit.sphereOD)) == false) {
                             $scope.errorMsg += "Sphere OD must be a floating point number up to two digits\n"
                         }
 
-                        if ($scope.cylinderOS != undefined || $scope.cylinderOD != undefined) {
-                            if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.cylinderOS)) == false) {
+                        if ($scope.visit.cylinderOS != undefined || $scope.visit.cylinderOD != undefined) {
+                            if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.visit.cylinderOS)) == false) {
                                 $scope.errorMsg += "Cylinder OS must be a floating point number up to two digits\n"
                             }
-                            if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.cylinderOD)) == false) {
+                            if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.visit.cylinderOD)) == false) {
                                 $scope.errorMsg += "Cylinder OD must be a floating point number up to two digits\n"
                             }
                             
-                            if (/^[0-9]{1,3}?$/.test(String($scope.axisOS).replace(/^0+/, '')) == false) {
+                            if (/^[0-9]{1,3}?$/.test(String($scope.visit.axisOS).replace(/^0+/, '')) == false) {
                                 $scope.errorMsg += "Axis OS must be an integer value between 1 and 180 inclusive\n"
-                            } else if (parseInt($scope.axisOS) < 1 || parseInt($scope.axisOS) > 180) {
+                            } else if (parseInt($scope.visit.axisOS) < 1 || parseInt($scope.visit.axisOS) > 180) {
                                 $scope.errorMsg += "Axis OS must be an integer value between 1 and 180 inclusive\n"
                             }
-                            if (/^[0-9]{1,3}?$/.test(String($scope.axisOD).replace(/^0+/, '')) == false) {
+                            if (/^[0-9]{1,3}?$/.test(String($scope.visit.axisOD).replace(/^0+/, '')) == false) {
                                 $scope.errorMsg += "Axis OD must be an integer value between 1 and 180 inclusive\n"
-                            } else if (parseInt($scope.axisOD) < 1 || parseInt($scope.axisOD) > 180) {
+                            } else if (parseInt($scope.visit.axisOD) < 1 || parseInt($scope.visit.axisOD) > 180) {
                                 $scope.errorMsg += "Axis OD must be an integer value between 1 and 180 inclusive\n"
                             }
                         }
@@ -357,12 +435,12 @@
                                 $scope.visit.labProcedures = $scope.procedures;
                                 
                                 $http({
-                                    method: 'POST',
-                                    url: '/iTrust2/api/v1/officevisits',
+                                    method: 'PUT',
+                                    url: '/iTrust2/api/v1/officevisits/'+$scope.visit.id,
                                     data: $scope.visit
                                 }).then(function (response) {
                                     $scope.errorMsg = "";
-                                    $scope.message = "Office visit created successfully";
+                                    $scope.message = "Office visit edited successfully";
                                 }, function (rejection) {
                                     $scope.message = "";
                                     $scope.errorMsg = "Error occurred creating office visit";
@@ -383,20 +461,6 @@
                                 });
 
                                 $scope.visit.labProcedures = $scope.procedures;
-
-																$scope.visit.eyecheckup = {
-																	patient: $scope.visit.patient,
-																	hcp: $scope.visit.hcp,
-																	visualAcuityOS: $scope.visualAcuityOS,
-																	visualAcuityOD: $scope.visualAcuityOD,
-																	sphereOS: $scope.sphereOS,
-																	sphereOD: $scope.sphereOD,
-																	cylinderOS: $scope.cylinderOS,
-																	cylinderOD: $scope.cylinderOD,
-																	axisOS: $scope.axisOS,
-																	axisOD: $scope.axisOD,
-																	// note: $scope.
-																};
 
                                 console.log($scope.visit)
                                 $http({
@@ -437,13 +501,6 @@
                     
                     // eyecheckup 정보 다 지우기
                     $scope.visualAcuityOS = "";
-                    $scope.visualAcuityOD = "";
-                    $scope.sphereOS = "";
-                    $scope.sphereOD = "";
-                    $scope.cylinderOD = "";
-                    $scope.cylinderOS = "";
-                    $scope.axisOS = "";
-                    $scope.axisOD = "";
 
                     // Clears local variables for diagnosis form
                     function resetDiagnosisForm() {
@@ -550,12 +607,12 @@
 			/*]]>*/
             </script>
 
-			<div ng-app="myApp" ng-controller="documentOfficeVisitCtrl">
+			<div ng-app="myApp" ng-controller="editDocumentOfficeVisitCtrl">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="panel panel-primary">
 							<div class="panel-heading">
-								<h3>Office Visit</h3>
+								<h3>Office Visit {{visit.id}}</h3>
 							</div>
 							<div class="panel-body">
 								<div class="row">
@@ -571,7 +628,7 @@
 											required="true" />
 									</div>
 
-									<div class="form-group col-md-2 text-right" >
+									<div class="form-group col-md-2 text-right">
 										<div class="checkbox">
 											<label> <input type="checkbox" name="preScheduled"
 												class="checkbox" ng-model="visit.prescheduled">Prescheduled?
@@ -615,7 +672,7 @@
 																name="{{type}}" value="{{type}}" required="true" />{{type
 																| humanize}}
 														</label></li>
-														<div class="checkbox" ng-if="types.includes('GENERAL_OPHTHALMOLOGY')">
+														<div class="checkbox">
 															<label> <input type="checkbox" name="eyeCheckup"
 																class="checkbox" ng-model="visit.eyeCheckup"  ng-checked="visit.type == 'OPHTHALMOLOGY_SURGERY' || visit.eyeCheckup">eyeCheckup?
 															</label>
@@ -840,7 +897,7 @@
 													</div>
 													<div class="col-xs-6">
 														<input class="form-control" name="visualAcuityOS"
-															ng-model="visualAcuityOS" required="true" type="text">
+															ng-model="visit.visualAcuityOS" required="true" type="text">
 													</div>
 												</div>
 												<div class="form-group row">
@@ -849,7 +906,7 @@
 													</div>
 													<div class="col-xs-6">
 														<input class="form-control" name="visualAcuityOD"
-															ng-model="visualAcuityOD" required="true" type="text">
+															ng-model="visit.visualAcuityOD" required="true" type="text">
 													</div>
 												</div>
 												<div class="form-group row">
@@ -858,7 +915,7 @@
 													</div>
 													<div class="col-xs-6">
 														<input class="form-control" name="sphereOS"
-															ng-model="sphereOS" required="true" type="text">
+															ng-model="visit.sphereOS" required="true" type="text">
 													</div>
 												</div>
 												<div class="form-group row">
@@ -867,7 +924,7 @@
 													</div>
 													<div class="col-xs-6">
 														<input class="form-control" name="sphereOD"
-															ng-model="sphereOD" required="true" type="text">
+															ng-model="visit.sphereOD" required="true" type="text">
 													</div>
 												</div>
 												<div class="form-group row">
@@ -876,7 +933,7 @@
 													</div>
 													<div class="col-xs-6">
 														<input class="form-control" name="cylinderOD"
-															ng-model="cylinderOD" required="true" type="text">
+															ng-model="visit.cylinderOD" required="true" type="text">
 													</div>
 												</div>
 												<div class="form-group row">
@@ -885,7 +942,7 @@
 													</div>
 													<div class="col-xs-6">
 														<input class="form-control" name="cylinderOS"
-															ng-model="cylinderOS" required="true" type="text">
+															ng-model="visit.cylinderOS" required="true" type="text">
 													</div>
 												</div>
 												<div class="form-group row">
@@ -894,7 +951,7 @@
 													</div>
 													<div class="col-xs-6">
 														<input class="form-control" name="axisOS"
-															ng-model="axisOS" required="true" type="text">
+															ng-model="visit.axisOS" required="true" type="text">
 													</div>
 												</div>
 												<div class="form-group row">
@@ -903,7 +960,7 @@
 													</div>
 													<div class="col-xs-6">
 														<input class="form-control" name="axisOD"
-															ng-model="axisOD" required="true" type="text">
+															ng-model="visit.axisOD" required="true" type="text">
 													</div>
 												</div>
 											</div>
@@ -1155,7 +1212,7 @@
 							<div class="panel-footer text-right">
 								<!-- button may have to be inside form tag, or just a submit function for the form? -->
 								<button class="btn btn-primary btn-lg" ng-click="submit()"
-									name="submit">Submit Office Visit</button>
+									name="submit">Edit Office Visit</button>
 							</div>
 						</div>
 					</div>

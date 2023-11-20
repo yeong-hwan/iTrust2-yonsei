@@ -40,7 +40,7 @@ public class APIOfficeVisitController extends APIController {
      * @return list of office visits
      */
     @GetMapping ( BASE_PATH + "/officevisits" )
-    @PreAuthorize ( "hasRole('ROLE_HCP')" )
+    @PreAuthorize ( "hasAnyRole('ROLE_HCP', 'ROLE_OD', 'ROLE_OPH')" )
     public List<OfficeVisit> getOfficeVisits () {
         loggerUtil.log( TransactionType.VIEW_ALL_OFFICE_VISITS, LoggerUtil.currentUser() );
         return (List<OfficeVisit>) officeVisitService.findAll();
@@ -52,7 +52,7 @@ public class APIOfficeVisitController extends APIController {
      * @return all of the office visits for the current HCP.
      */
     @GetMapping ( BASE_PATH + "/officevisits/HCP" )
-    @PreAuthorize ( "hasRole('ROLE_HCP')" )
+    @PreAuthorize ( "hasAnyRole('ROLE_HCP', 'ROLE_OD', 'ROLE_OPH')" )
     public List<OfficeVisit> getOfficeVisitsForHCP () {
         final User self = userService.findByName( LoggerUtil.currentUser() );
         loggerUtil.log( TransactionType.VIEW_ALL_OFFICE_VISITS, self );
@@ -82,7 +82,7 @@ public class APIOfficeVisitController extends APIController {
      * @return list of office visits
      */
     @GetMapping ( BASE_PATH + "/officevisits/{id}" )
-    @PreAuthorize ( "hasRole('ROLE_HCP')" )
+    @PreAuthorize ( "hasAnyRole('ROLE_HCP', 'ROLE_OD', 'ROLE_OPH')" )
     public ResponseEntity getOfficeVisit ( @PathVariable final Long id ) {
         final User self = userService.findByName( LoggerUtil.currentUser() );
         loggerUtil.log( TransactionType.GENERAL_CHECKUP_HCP_VIEW, self );
@@ -101,7 +101,7 @@ public class APIOfficeVisitController extends APIController {
      * @return response
      */
     @PostMapping ( BASE_PATH + "/officevisits" )
-    @PreAuthorize ( "hasRole('ROLE_HCP')" )
+    @PreAuthorize ( "hasAnyRole('ROLE_HCP', 'ROLE_OD', 'ROLE_OPH')" )
     public ResponseEntity createOfficeVisit ( @RequestBody final OfficeVisitForm visitForm ) {
         try {
             final OfficeVisit visit = officeVisitService.build( visitForm );
@@ -135,7 +135,7 @@ public class APIOfficeVisitController extends APIController {
      * @return response
      */
     @PutMapping ( BASE_PATH + "/officevisits/{id}" )
-    @PreAuthorize ( "hasRole('ROLE_HCP')" )
+    @PreAuthorize ( "hasAnyRole('ROLE_HCP', 'ROLE_OD', 'ROLE_OPH')" )
     public ResponseEntity updateOfficeVisit ( @PathVariable final Long id,
             @RequestBody final OfficeVisitForm visitForm ) {
         try {
