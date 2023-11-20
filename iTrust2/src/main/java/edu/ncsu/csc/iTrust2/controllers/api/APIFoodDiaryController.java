@@ -66,7 +66,7 @@ public class APIFoodDiaryController extends APIController {
      * @return the requested food diary
      */
     
-//    @GetMapping ( BASE_PATH + "/fooddiary{id}" )
+//    @GetMapping ( BASE_PATH + "/fooddiary/{id}" )
 //    @PreAuthorize ( "hasAnyRole('ROLE_PATIENT', 'ROLE_HCP)" )
 //    public ResponseEntity getFoodDiary ( @PathVariable final Long id ) {
 //    	final FoodDiary f = (FoodDiary) foodDiaryService.findById( id );
@@ -81,12 +81,12 @@ public class APIFoodDiaryController extends APIController {
     
 
 //    @GetMapping
-//    public ResponseEntity<List<FoodDiaryEntry>> getAllEntries() {
+//    public ResponseEntity<List<FoodDiary>> getAllEntries() {
 //        return ResponseEntity.ok(foodDiaryService.getAllEntries());
 //    }
 //
 //    @GetMapping("/{id}")
-//    public ResponseEntity<FoodDiaryEntry> getEntryById(@PathVariable Long id) {
+//    public ResponseEntity<FoodDiary> getEntryById(@PathVariable Long id) {
 //        FoodDiaryEntry entry = foodDiaryService.getEntryById(id);
 //        if (entry == null) {
 //            return ResponseEntity.notFound().build();
@@ -95,7 +95,7 @@ public class APIFoodDiaryController extends APIController {
 //    }
 //
 //    @PostMapping
-//    public ResponseEntity<FoodDiaryEntry> addEntry(@RequestBody FoodDiaryEntry entry) {
+//    public ResponseEntity<FoodDiary> addEntry(@RequestBody FoodDiaryEntry entry) {
 //        return ResponseEntity.ok(foodDiaryService.addEntry(entry));
 //    }
 }
