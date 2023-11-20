@@ -44,6 +44,12 @@ public class APIFoodDiaryController extends APIController {
         return patients;
     }
 
+    @GetMapping(BASE_PATH + "food_diary/view/{patientMID}")
+    public ResponseEntity List<FoodDiary> findByIdContains( @PathVariable("patientMID") Long id ) {
+        final List<FoodDiary> f = (List<FoodDiary>) foodDiaryService.findById( id );
+        return ResponseEntity.ok(f);
+    }
+
 
     // @GetMapping ( BASE_PATH + "/fooddiary/{id}" )
     // @PreAuthorize ( "hasAnyRole('ROLE_PATIENT', 'ROLE_HCP)" )
