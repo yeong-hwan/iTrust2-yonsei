@@ -38,7 +38,7 @@ public class APIFoodDiaryController extends APIController {
      *
      * @return list of patients
      */
-    @GetMapping(BASE_PATH + "/patients")
+    @GetMapping(BASE_PATH + "food_diary/view")
     public List<Patient> getPatients() {
         final List<Patient> patients = (List<Patient>) patientService.findAll();
         return patients;
