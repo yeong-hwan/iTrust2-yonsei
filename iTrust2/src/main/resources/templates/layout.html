@@ -121,11 +121,11 @@ a {
 					if (!(role.includes('HCP') || role.includes('OD') || role.includes('OPH') || role.includes('VIROLOGIST'))) {
 						navbarparent.removeChild(hcpdropdown);
 					}
-					if (!role.includes('VIROLOGIST')) {
-						navbarparent.removeChild(virologistdropdown);
-					}
 					if (!role.includes('ER')) {
 						navbarparent.removeChild(erdropdown);
+					}
+					if (!role.includes('VIROLOGIST')) {
+						navbarparent.removeChild(virologistdropdown);
 					}
 					if (!role.includes('LABTECH')) {
 						navbarparent.removeChild(ltdropdown);
@@ -185,8 +185,13 @@ a {
 								id="editPatientDemographics">Edit Patient</a></li>
 							<li><a href="/iTrust2/hcp/documentOfficeVisit"
 								id="documentOfficeVisit">Document Office Visit</a></li>
+<<<<<<< HEAD
 							<li><a href="/iTrust2/hcp/FoodDiary/viewPatientFoodDiary"
 								id="viewPatientFoodDiary">view Patient Food Diary</a></li>
+=======
+							<li><a href="/iTrust2/hcp/viewEmergencyHealthRecords"
+								id="hcpViewEmergencyRecords">View Emergency Health Records</a></li>
+>>>>>>> 4119eddd891a37c7b88523f3cbb0dadeebb9b207
 						</ul></li>
 					<li class="dropdown"><a class="dropdown-toggle"
 						data-toggle="dropdown" href="#">Edit<span class="caret"></span></a>
@@ -241,6 +246,22 @@ a {
 								id="editdemographics-patient">Edit Demographics</a></li>
 						</ul></li>
 				</ul>
+
+				
+				<!-- ER navbar -->
+				<ul id="er-dropdown" class="nav navbar-nav">
+					<li class="dropdown"><a class="dropdown-toggle"
+						data-toggle="dropdown" href="#" id="erPatientDropDown">Patient<span class="caret"></span></a>
+						<ul class="dropdown-menu" id="er-view">
+							<li>
+								<a href="/iTrust2/er/viewEmergencyHealthRecords" id="erViewEmergencyRecords">
+									View Emergency Health Records
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+
 				<ul id="extra-dropdown" class="nav navbar-nav">
 					<li><a
 						href="https://github.ncsu.edu/engr-csc326-staff/iTrust2-v8/wiki">About</a></li>

@@ -108,6 +108,7 @@ public class HCPController {
     }
 
     /**
+<<<<<<< HEAD:iTrust2/src/main/java/edu/ncsu/csc/itrust2/controllers/routing/HCPController.java
      * Method responsible for HCP's Accept/Reject requested appointment
      * functionality. This prepares the page.
      *
@@ -119,6 +120,18 @@ public class HCPController {
     @PreAuthorize("hasAnyRole('ROLE_HCP','ROLE_OPH','ROLE_OD')")
     public String viewPatientFoodDiary(final Model model) {
         return "/hcp/FoodDiary/viewPatientFoodDiary";
+=======
+     * Returns the form page for a ER to view emergency health records
+     *
+     * @param model
+     *            Data for the front end
+     * @return The page to display to the user
+     */
+    @GetMapping ( "/hcp/viewEmergencyHealthRecords" )
+    @PreAuthorize ( "hasRole('ROLE_HCP')" )
+    public String viewEmergencyHealthRecords ( final Model model ) {
+        return "hcp/viewEmergencyHealthRecords";
+>>>>>>> 4119eddd891a37c7b88523f3cbb0dadeebb9b207:iTrust2/src/main/java/edu/ncsu/csc/iTrust2/controllers/routing/HCPController.java
     }
 
 }
