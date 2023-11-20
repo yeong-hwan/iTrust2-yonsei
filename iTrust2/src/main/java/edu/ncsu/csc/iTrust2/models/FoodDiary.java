@@ -23,7 +23,7 @@ public class FoodDiary extends DomainObject {
 	 *             A FoodDiaryForm to convert to a FoodDiary
 	 */
 	public FoodDiary(final FoodDiaryForm form) {
-		setUsername(user.getUsername());
+		// setUsername(user.getUsername());
 		setId(form.getId());
 		setDate(form.getDate());
 		setMealType(form.getMealType());
@@ -42,7 +42,7 @@ public class FoodDiary extends DomainObject {
 	@JoinColumn(name = "userId") // foreign key (userId) references User (id)
 	private User user; // DB는 오브젝트를 저장할 수 없다. FK, 자바는 오브젝트를 저장할 수 있다.
 
-	private String username;
+	// private String username;
 	/**
 	 *
 	 */
