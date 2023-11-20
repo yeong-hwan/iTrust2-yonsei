@@ -12,7 +12,7 @@ public interface FoodDiaryRepository extends JpaRepository<FoodDiary, Long> {
 //
 //    public List<FoodDiary> findByPatient ( User patient );
 //
-//    public List<FoodDiaryEntry> findAllByOrderByDateDesc();
+//    public List<FoodDiary> findAllByOrderByDateDesc();
 //
-//    public List<FoodDiaryEntry> findAllByDate(Date date);
+//    public List<FoodDiary> findAllByDate(Date date);
 }

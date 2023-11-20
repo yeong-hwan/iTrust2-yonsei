@@ -41,15 +41,36 @@ public class FoodDiaryService extends Service {
 
     // find by patient or HCP?
 
-//    public List<FoodDiaryEntry> getAllEntries() {
+//    public List<FoodDiary> getAllEntries() {
 //        return repository.findAllByOrderByDateDesc();
 //    }
 //
-//    public FoodDiaryEntry getEntryById(Long id) {
+//    public FoodDiary getEntryById(Long id) {
 //        return repository.findById(id).orElse(null);
 //    }
 //
-//    public FoodDiaryEntry addEntry(FoodDiaryEntry entry) {
+//    public FoodDiary addEntry(FoodDiary entry) {
 //        return repository.save(entry);
 //    }
+
+
+
+    /**
+     * 5~11 더하는 건데,, 작동할지는 모르겠습니다,, 만들고 수정하는걸로,,
+     */
+    public FoodDiary calculateDailyTotal(Date date) {
+        List<FoodDiary> entries = foodDiaryRepository.findAllByDate(date);
+        FoodDiary dailyTotal = new FoodDiary();
+        dailyTotal.setDate(date);
+        dailyTotal.setServingNumber(entries.stream().mapToLong(FoodDiaryEntry::getServings).sum());
+        dailyTotal.setCaloriesPerServing(entries.stream().mapToLong(e -> e.getCaloriesPerServing * e.getServingNumber()).sum());
+        dailyTotal.setFatPerServing(entries.stream().mapToLong(e -> e.getFatPerServing() * e.getServingNumber()).sum());
+        dailyTotal.setSodiumPerServing(entries.stream().mapToLong(e -> e.getSodiumPerServing * e.getServingNumber()).sum());
+        dailyTotal.setCarbsPerServing(entries.stream().mapToLong(e -> e.getCarbsPerServing * e.getServingNumber()).sum());
+        dailyTotal.setSugarsPerServing(entries.stream().mapToLong(e -> e.getSugarsPerServing * e.getServingNumber()).sum());
+        dailyTotal.setFiberPerServing(entries.stream().mapToLong(e -> e.getFiberPerServing * e.getServingNumber()).sum());
+        dailyTotal.setProteinPerServing(entries.stream().mapToLong(e -> e.getProteinPerServing * e.getServingNumber()).sum());
+
+        return dailyTotal;
+    }
 }
