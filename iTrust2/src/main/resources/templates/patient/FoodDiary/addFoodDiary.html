@@ -25,7 +25,7 @@
 			    		$scope.err[0] = "";
 		    		}
 
-					if (!/^[1-9]\d+$/.test(FoodDiary.servingNumber)){
+					if (!/^[1-9]\d*$|^0$/.test(FoodDiary.servingNumber)){
 						$scope.err[1]="Number of serving must be a positive integer";
 						if(FoodDiary.servingNumber === undefined || FoodDiary.servingNumber===""){
 							$scope.err[1]="Make sure no fields are empty";

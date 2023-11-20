@@ -35,11 +35,11 @@
 									$scope.selectedPatient = patient.username;
 								}
 		
-								$http.get("/iTrust2/api/v1/patients").then(
-										function(response) {
-											$scope.patients = response.data;
-										}, function(rejection){
-										});
+								// $http.get("/iTrust2/api/v1/patients").then(
+								// 		function(response) {
+								// 			$scope.patients = response.data;
+								// 		}, function(rejection){
+								// 		});
 
 								$scope.getTotalNutrition= function(patient, date){
 
@@ -146,42 +146,42 @@
 				<div
 					style="float: left; width: 30%; border-left: 1px solid #bbb; padding-left: 1%; height: 100%; overflow-y: auto;">
 					<h2 id="header0">Date: {{selectedFoodDiary.date}}</h2>
-					<h2 id="header1">FoodName: {{selectedFoodDiary.name}} </h2>
-					<h2 id="header2">MealType: {{selectedFoodDiary.MealType}} </h2>
+					<h2 id="header1">FoodName: {{selectedFoodDiary.foodName}} </h2>
+					<h2 id="header2">MealType: {{selectedFoodDiary.mealType}} </h2>
 					
 					<div ng-show="selectedFoodDiary">
-						<table >
+						<table>
 							<tr>
-								<td style="text-align: left; padding: 5px"><b>Number of Servings:</b></td>
-								<td>{{selectedFoodDiary.serveNum}}</td>
+								<td style="text-align: left; padding: 10px"><b>Number of Servings:</b></td>
+								<td>{{selectedFoodDiary.servingNumber}}</td>
 							</tr>
 							<tr>
 								<td style="text-align: left; padding: 5px"><b>Calories per Serving:</b></td>
-								<td>{{selectedFoodDiary.calories}}</td>
+								<td>{{selectedFoodDiary.caloriesPerServing}}</td>
 							</tr>
 							<tr>
 								<td style="text-align: left; padding: 5px"><b>Grams of Fat per Serving:</b></td>
-								<td>{{selectedFoodDiary.serveNum}}</td>
+								<td>{{selectedFoodDiary.fatPerServing}}</td>
 							</tr>
 							<tr>
 								<td style="text-align: left; padding: 5px"><b>Milligrams of Sodium per Serving:</b></td>
-								<td>{{selectedFoodDiary.serveNum}}</td>
+								<td>{{selectedFoodDiary.sodiumPerServing}}</td>
 							</tr>
 							<tr>
 								<td style="text-align: leftt; padding: 5px"><b>Grams of Carbs per Serving:</b></td>
-								<td>{{selectedFoodDiary.serveNum}}</td>
+								<td>{{selectedFoodDiary.carbsPerServing}}</td>
 							</tr>
 							<tr>
 								<td style="text-align: left; padding: 5px"><b>Grams of Sugars per Serving:</b></td>
-								<td>{{selectedFoodDiary.serveNum}}</td>
+								<td>{{selectedFoodDiary.sugarPerServing}}</td>
 							</tr>
 							<tr>
 								<td style="text-align: left; padding: 5px"><b>Grams of Fiber per Serving:</b></td>
-								<td>{{selectedFoodDiary.serveNum}}</td>
+								<td>{{selectedFoodDiary.fiberPerServing}}</td>
 							</tr>
 							<tr>
 								<td style="text-align: left; padding: 5px"><b>Grams of Protein per Serving:</b></td>
-								<td>{{selectedFoodDiary.serveNum}}</td>
+								<td>{{selectedFoodDiary.proteinPerServing}}</td>
 							</tr>
 						</table>
 					</div>
