@@ -44,28 +44,6 @@ public class APIFoodDiaryController extends APIController {
         return patients;
     }
 
-    /**
-     * Retrieves a list of certain patient's FoodDiaries in the DB.
-     * 
-     * @return list of certain patient's food diaries
-     */
-    // @GetMapping ( BASE_PATH + "/fooddiary/HCP/{id}" )
-    @GetMapping(BASE_PATH + "/fooddiary/HCP/{id}")
-    public List<FoodDiary> getFoodDiaryEntryForHCP() {
-        final User self = userService.findByName(LoggerUtil.currentUser());
-        loggerUtil.log(TransactionType.HCP_VIEW_FOOD_DIARY_ENTRY, self);
-        // final List<FoodDiary> diaries // = foodDiaryService.
-        // return diaries
-        return null;
-    }
-
-    /**
-     * Returns a single food diary using the given id.
-     * 
-     * @param id
-     * 
-     * @return the requested food diary
-     */
 
     // @GetMapping ( BASE_PATH + "/fooddiary/{id}" )
     // @PreAuthorize ( "hasAnyRole('ROLE_PATIENT', 'ROLE_HCP)" )
