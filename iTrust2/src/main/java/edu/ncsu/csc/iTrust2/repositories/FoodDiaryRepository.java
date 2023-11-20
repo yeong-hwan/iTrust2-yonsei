@@ -20,10 +20,9 @@ import edu.ncsu.csc.iTrust2.models.User;
  */
 public interface FoodDiaryRepository extends JpaRepository<FoodDiary, Long> {
 
-<<<<<<< HEAD
   List<FoodDiary> findAllByIdContaining(Long id);
 
   List<FoodDiary> findAllByDateContaining(Date date);
 
-  List<FoodDiary> findByMealTypeContaining(String mealType);
+  List<FoodDiary> findAllByMealTypeContaining(String mealType);
 }
