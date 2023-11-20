@@ -28,7 +28,7 @@ public class EyecheckupService extends Service{
         eyecheckup.setPatient(userService.findByName(ovf.getPatient()));
         eyecheckup.setHcp(userService.findByName(ovf.getHcp()));
 
-        EyecheckupForm eyecheckupForm = ovf.getEyecheckupForm();
+        EyecheckupForm eyecheckupForm = ovf.getEyecheckup();
 
         eyecheckup.setVisualAcuityOD(eyecheckupForm.getVisualAcuityOD());
         eyecheckup.setVisualAcuityOS(eyecheckupForm.getVisualAcuityOS());

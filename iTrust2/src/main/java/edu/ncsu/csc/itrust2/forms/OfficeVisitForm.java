@@ -12,7 +12,6 @@ import org.hibernate.validator.constraints.Length;
 import edu.ncsu.csc.iTrust2.models.OfficeVisit;
 import edu.ncsu.csc.iTrust2.models.enums.HouseholdSmokingStatus;
 import edu.ncsu.csc.iTrust2.models.enums.PatientSmokingStatus;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 /**
  * Office Visit form used to document an Office Visit by the HCP. This will be
@@ -157,9 +156,7 @@ public class OfficeVisitForm implements Serializable {
         setPreScheduled( ( (Boolean) ( ov.getAppointment() != null ) ).toString() );
         setDiagnoses( new ArrayList<DiagnosisForm>() );
         setPrescriptions( ov.getPrescriptions().stream().map( PrescriptionForm::new ).collect( Collectors.toList() ) );
-        if (ov.getEyecheckup() != null){
-            setEyecheckupForm(new EyecheckupForm(ov.getEyecheckup()));
-        }
+        setEyecheckup(new EyecheckupForm(ov.getEyecheckup()));
     }
 
     /**
@@ -543,11 +540,11 @@ public class OfficeVisitForm implements Serializable {
     }
 
     // 1118: Add Eyechecekup
-    public EyecheckupForm getEyecheckupForm(){
+    public EyecheckupForm getEyecheckup(){
         return eyecheckupForm;
     }
 
-    public void setEyecheckupForm(EyecheckupForm eyecheckupForm) {
+    public void setEyecheckup(EyecheckupForm eyecheckupForm) {
         this.eyecheckupForm = eyecheckupForm;
     }
 }
