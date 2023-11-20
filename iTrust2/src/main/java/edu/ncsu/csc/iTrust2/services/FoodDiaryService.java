@@ -10,11 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
+
+import edu.ncsu.csc.iTrust2.forms.FoodDiaryForm;
+import edu.ncsu.csc.iTrust2.models.FoodDiary;
 import edu.ncsu.csc.iTrust2.repositories.FoodDiaryRepository;
+
 
 @Component
 @Transactional
-public class FoodDiary extends Service {
+public class FoodDiaryService extends Service {
 
     @Autowired
     private FoodDiaryRepository repository;
@@ -26,15 +30,15 @@ public class FoodDiary extends Service {
 
     // find by patient or HCP?
 
-    public List<FoodDiaryEntry> getAllEntries() {
-        return repository.findAllByOrderByDateDesc();
-    }
-
-    public FoodDiaryEntry getEntryById(Long id) {
-        return repository.findById(id).orElse(null);
-    }
-
-    public FoodDiaryEntry addEntry(FoodDiaryEntry entry) {
-        return repository.save(entry);
-    }
+//    public List<FoodDiaryEntry> getAllEntries() {
+//        return repository.findAllByOrderByDateDesc();
+//    }
+//
+//    public FoodDiaryEntry getEntryById(Long id) {
+//        return repository.findById(id).orElse(null);
+//    }
+//
+//    public FoodDiaryEntry addEntry(FoodDiaryEntry entry) {
+//        return repository.save(entry);
+//    }
 }

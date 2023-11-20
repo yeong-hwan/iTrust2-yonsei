@@ -1,10 +1,12 @@
 package edu.ncsu.csc.iTrust2.models;
 
+
 import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import edu.ncsu.csc.iTrust2.forms.foodDiaryForm;
+
+import edu.ncsu.csc.iTrust2.forms.FoodDiaryForm;
 
 
 @Entity
@@ -36,59 +38,33 @@ public class FoodDiary extends DomainObject {
 	private String foodName;
 
 	@Positive(message = "Number of Servings should be a positive number")
-	private long servings;
+	private long servingNumber;
 
 	@PositiveOrZero(message = "Calories per serving must be Zero or a positive number")
-	private long calories;
+	private long caloriesPerServing;
 
 	@PositiveOrZero(message = "Grams of fat per serving must be Zero or a positive number")
-	private long fat;
+	private long fatPerServing;
 
 	@PositiveOrZero(message = "Milligrams of sodium per serving must be Zero or a positive number")
-	private long sodium;
+	private long sodiumPerServing;
 
 	@PositiveOrZero(message = "Grams of carbs per serving must be Zero or a positive number")
-	private long carbs;
+	private long carbsPerServing;
 
 	@PositiveOrZero(message = "Grams of sugars per serving must be Zero or a positive number")
-	private long sugars;
+	private long sugarsPerServing;
 
 	@PositiveOrZero(message = "Grams of fiber per serving must be Zero or a positive number")
-	private long fiber;
+	private long fiberPerServing;
 
 	@PositiveOrZero(message = "Grams of protein per serving must be Zero or a positive number")
-	private long protein;
-	/**
-	 * Construct a Hospital object from all of its individual fields.
-	 *
-	 * @param name
-	 *            Name of the Hospital
-	 * @param address
-	 *            Address of the Hospital
-	 * @param zip
-	 *            ZIP of the Hospital
-	 * @param state
-	 *            State of the Hospital
-	 */
-	public foodDiary ( final Long id, final Date date, final String mealType, final String foodName, final long servings, final long calories, final long fat, final long sodium, final long carbs, final long sugars, final long fiber, final long protein) {
-		setId( id )
-		setDate( date )
-		setMealType( mealType )
-		setFoodName( foodName )
-		setServingNumber( servingNumber )
-		setCaloriesPerServing( caloriesPerServing )
-		setFatPerServing( fatPerServing )
-		setSodiumPerServing( sodiumPerServing )
-		setCarbsPerServing( carbsPerServing )
-		setSugarsPerServing( sugarsPerServing )
-		setFiberPerServing( fiberPerServing )
-		setProteinPerServing( proteinPerServing )
-	}
+	private long proteinPerServing;
 
 	/**
 	 * Construct an empty Food Diary. Used for Hibernate.
 	 */
-	public foodDiary () {
+	public void FoodDiary () {
 	}
 
 	/**
@@ -97,19 +73,19 @@ public class FoodDiary extends DomainObject {
 	 * @param fd
 	 *            A FoodDiaryForm to convert to a FoodDiary
 	 */
-	public foodDiary ( final foodDiaryForm fd ) {
-		setId( fd.getId )
-		setDate( fd.getDate )
-		setMealType( fd.getMealType )
-		setFoodName( fd.getFoodName )
-		setServingNumber( fd.getServingNumber )
-		setCaloriesPerServing( fd.getCaloriesPerServing )
-		setFatPerServing( fd.getFatPerServing )
-		setSodiumPerServing( fd.getSodiumPerServing )
-		setCarbsPerServing( fd.getCarbsPerServing )
-		setSugarsPerServing( fd.getSugarsPerServing )
-		setFiberPerServing( fd.getFiberPerServing )
-		setProteinPerServing(fd.getProteinPerServing )
+	public FoodDiary ( final FoodDiaryForm fd ) {
+		setId( fd.getId() );
+		setDate( fd.getDate() );
+		setMealType( fd.getMealType() );
+		setFoodName( fd.getFoodName() );
+		setServingNumber( fd.getServingNumber() );
+		setCaloriesPerServing( fd.getCaloriesPerServing() );
+		setFatPerServing( fd.getFatPerServing() );
+		setSodiumPerServing( fd.getSodiumPerServing() );
+		setCarbsPerServing( fd.getCarbsPerServing() );
+		setSugarsPerServing( fd.getSugarsPerServing() );
+		setFiberPerServing( fd.getFiberPerServing() );
+		setProteinPerServing(fd.getProteinPerServing() );
 	}
 
 	/**
@@ -119,19 +95,19 @@ public class FoodDiary extends DomainObject {
 	 *            A FoodDiaryForm to convert to a FoodDiar
 	 * @return `this` FoodDiary object, after updates
 	 */
-	public foodDiary update ( final foodDiaryForm fd ) {
-		setId( fd.getId )
-		setDate( fd.getDate )
-		setMealType( fd.getMealType )
-		setFoodName( fd.getFoodName )
-		setServingNumber( fd.getServingNumber )
-		setCaloriesPerServing( fd.getCaloriesPerServing )
-		setFatPerServing( fd.getFatPerServing )
-		setSodiumPerServing( fd.getSodiumPerServing )
-		setCarbsPerServing( fd.getCarbsPerServing )
-		setSugarsPerServing( fd.getSugarsPerServing )
-		setFiberPerServing( fd.getFiberPerServing )
-		setProteinPerServing(fd.getProteinPerServing )
+	public FoodDiary update ( final FoodDiaryForm fd ) {
+		setId( fd.getId() );
+		setDate( fd.getDate() );
+		setMealType( fd.getMealType() );
+		setFoodName( fd.getFoodName() );
+		setServingNumber( fd.getServingNumber() );
+		setCaloriesPerServing( fd.getCaloriesPerServing() );
+		setFatPerServing( fd.getFatPerServing() );
+		setSodiumPerServing( fd.getSodiumPerServing() );
+		setCarbsPerServing( fd.getCarbsPerServing() );
+		setSugarsPerServing( fd.getSugarsPerServing() );
+		setFiberPerServing( fd.getFiberPerServing() );
+		setProteinPerServing(fd.getProteinPerServing() );
 		return this;
 	}
 
@@ -142,7 +118,7 @@ public class FoodDiary extends DomainObject {
 		return id;
 	}
 
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 
@@ -191,7 +167,7 @@ public class FoodDiary extends DomainObject {
 		this.id = id;
 	}
 
-	public void setDate( final String date ) {
+	public void setDate( final Date date ) {
 		this.date = date;
 	}
 
@@ -236,4 +212,3 @@ public class FoodDiary extends DomainObject {
 	}
 }
 
-}

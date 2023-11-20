@@ -1,5 +1,7 @@
 package edu.ncsu.csc.iTrust2.forms;
 
+import java.util.Date;
+
 import edu.ncsu.csc.iTrust2.models.FoodDiary;
 
 /**
@@ -11,7 +13,7 @@ import edu.ncsu.csc.iTrust2.models.FoodDiary;
 public class FoodDiaryForm {
 	
 	private Long id;
-	private String date;
+	private Date date;
 	private String mealType;
 	private String foodName;
 	private Long servingNumber;
@@ -55,7 +57,7 @@ public class FoodDiaryForm {
 		return id;
 	}
 		
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 	
@@ -104,7 +106,7 @@ public class FoodDiaryForm {
 		this.id = id;
 	}
 	
-	public void setDate( final String date ) {
+	public void setDate( final Date date ) {
 		this.date = date;
 	}
 	
