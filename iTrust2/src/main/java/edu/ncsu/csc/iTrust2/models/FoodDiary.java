@@ -64,7 +64,7 @@ public class FoodDiary extends DomainObject {
 	/**
 	 * Construct an empty Food Diary. Used for Hibernate.
 	 */
-	public void FoodDiary () {
+	public FoodDiary () {
 	}
 
 	/**
