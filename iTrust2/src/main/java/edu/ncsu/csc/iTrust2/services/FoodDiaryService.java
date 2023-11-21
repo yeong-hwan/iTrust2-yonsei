@@ -28,8 +28,8 @@ public class FoodDiaryService extends Service {
         return repository;
     }
 
-    public List<FoodDiary> findByIdContains(final Long id) {
-        return repository.findAllByIdContaining(id);
+    public List<FoodDiary> findByIdContains(final String username) {
+        return repository.findAllByIdContaining(username);
     }
 
     public List<FoodDiary> findByDateContains(final Date date) {
