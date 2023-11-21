@@ -28,6 +28,9 @@ public class APIFoodDiaryController extends APIController {
 
     @Autowired
     private FoodDiaryService foodDiaryService;
+    
+    @Autowired
+    private PatientService patientService;
 
     @Autowired
     private UserService userService;
@@ -55,13 +58,12 @@ public class APIFoodDiaryController extends APIController {
         }
         
         
-
     }
 
      @GetMapping(BASE_PATH + "food_diary/view")
-     public List<Patient> getPatients() {
-	     final List<Patient> patients = (List<Patient>) PatientService.findByNameContains();
-	     return patients;
+     public ResponseEntity<List<Patient>> getPatients() {
+         List<Patient> patients = patientService.findByNameContains("");
+         return ResponseEntity.ok(patients);
      }
 
      @GetMapping(BASE_PATH + "food_diary/view/{patientMID}")
@@ -72,16 +74,16 @@ public class APIFoodDiaryController extends APIController {
 
      @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}")
      public FoodDiary calculateDailyTotal(@PathVariable("patientMID") String id, @PathVariable("date") Date date) {
-         final FoodDiary dailyTotal = foodDiaryService.calculateDailyTotal(id, date));
+         final FoodDiary dailyTotal = foodDiaryService.calculateDailyTotal(id, date);
      return dailyTotal;
      }
 
-    @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}/{mealType}")
-    public ResponseEntity List<FoodDiary> viewEntries(@PathVariable("patientMID") String id, @PathVariable("date") Date date, @PathVariable("mealType") String mealType) {
-	    final List<FoodDiary> f = (List<FoodDiary>)
-	    foodDiaryService.findByIdDateContains( id, date );
-    return ResponseEntity.ok(f);
-    }
+   
+	@GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}/{mealType}")
+	public ResponseEntity<List<FoodDiary>> viewEntries(@PathVariable("patientMID") String id, @PathVariable("date") Date date, @PathVariable("mealType") String mealType) {
+	    List<FoodDiary> entries = foodDiaryService.findByIdDateContains( id, date );
+	    return ResponseEntity.ok(entries);
+	}
 
     // @GetMapping ( BASE_PATH + "/fooddiary/{id}" )
     // @PreAuthorize ( "hasAnyRole('ROLE_PATIENT', 'ROLE_HCP)" )
