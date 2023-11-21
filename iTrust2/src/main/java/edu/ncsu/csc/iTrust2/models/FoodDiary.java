@@ -23,6 +23,7 @@ public class FoodDiary extends DomainObject {
 	 *             A FoodDiaryForm to convert to a FoodDiary
 	 */
 	public FoodDiary(final FoodDiaryForm form) {
+		setUsername(form.getUsername());
 		setId(form.getId());
 		setDate(form.getDate());
 		setMealType(form.getMealType());
@@ -94,6 +95,8 @@ public class FoodDiary extends DomainObject {
 	@PositiveOrZero(message = "Grams of protein per serving must be Zero or a positive number")
 	private long proteinPerServing;
 
+	private String username;
+
 	/**
 	 * getter methods
 	 */
@@ -101,8 +104,8 @@ public class FoodDiary extends DomainObject {
 		return id;
 	}
 
-	public User getPatient() {
-		return patient;
+	public String getUsername() {
+		return username;
 	}
 
 	public Date getDate() {
@@ -156,8 +159,8 @@ public class FoodDiary extends DomainObject {
 		this.id = id;
 	}
 
-	public void setPatient(final User user) {
-		this.patient = user;
+	public void setUsername(final String username) {
+		this.username = username;
 	}
 
 	public void setDate(final Date date) {
