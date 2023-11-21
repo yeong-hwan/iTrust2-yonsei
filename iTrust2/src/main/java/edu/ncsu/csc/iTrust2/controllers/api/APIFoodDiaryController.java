@@ -30,6 +30,9 @@ public class APIFoodDiaryController extends APIController {
     private FoodDiaryService foodDiaryService;
 
     @Autowired
+    private PatientService patientService;
+
+    @Autowired
     private UserService userService;
 
     /*
@@ -54,29 +57,32 @@ public class APIFoodDiaryController extends APIController {
                     errorResponse("Could not create " + entry.getUsername() + " because of " + e.getMessage()),
                     HttpStatus.BAD_REQUEST);
         }
+
+    }
+
+    @GetMapping(BASE_PATH + "food_diary/view")
+    public ResponseEntity<List<Patient>> getPatients() {
+        List<Patient> patients = patientService.findByNameContains("");
+        return ResponseEntity.ok(patients);
     }
 
     @GetMapping(BASE_PATH + "food_diary/view/{patientMID}")
-    public ResponseEntity findByIdContains(String username) {
-        final List<FoodDiary> f = (List<FoodDiary>) foodDiaryService.findById(username);
+    public ResponseEntity findByIdContains(@PathVariable("patientMID") String id) {
+        final List<FoodDiary> f = (List<FoodDiary>) foodDiaryService.findById(id);
         return ResponseEntity.ok(f);
     }
 
-    // @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}")
-    // public FoodDiary calculateDailyTotal() {
-    // final FoodDiary dailyTotal =
-    // foodDiaryService.calculateDailyTotal(@PathVariable("patientMID") Long id,
-    // @PathVariable("date") Date date);
-    // return dailyTotal;
-    // }
+    @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}")
+    public FoodDiary calculateDailyTotal(@PathVariable("patientMID") String id, @PathVariable("date") Date date) {
+        final FoodDiary dailyTotal = foodDiaryService.calculateDailyTotal(id, date);
+        return dailyTotal;
+    }
 
-    // @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}/{mealType}")
-    // public ResponseEntity List<FoodDiary> viewEntries(
-    // @PathVariable("patientMID") Long id, @PathVariable("date") Date date,
-    // @PathVariable("mealType") String mealType) {
-    // final List<FoodDiary> f = (List<FoodDiary>)
-    // foodDiaryService.findByIdDateContains( id, date );
-    // return ResponseEntity.ok(f);
-    // }
+    @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}/{mealType}")
+    public ResponseEntity<List<FoodDiary>> viewEntries(@PathVariable("patientMID") String id,
+            @PathVariable("date") Date date, @PathVariable("mealType") String mealType) {
+        List<FoodDiary> entries = foodDiaryService.findByIdDateContains(id, date);
+        return ResponseEntity.ok(entries);
+    }
 
 }

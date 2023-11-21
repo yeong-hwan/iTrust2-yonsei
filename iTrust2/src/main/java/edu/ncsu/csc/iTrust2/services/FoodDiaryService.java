@@ -36,7 +36,7 @@ public class FoodDiaryService extends Service {
         return repository.findAllByDateContaining(date);
     }
 
-    public List<FoodDiary> findByIdDateContains(final Long id, final Date date) {
+    public List<FoodDiary> findByIdDateContains(final String id, final Date date) {
         return repository.findAllByIdAndDateContaining(id, date);
     }
 
@@ -51,7 +51,7 @@ public class FoodDiaryService extends Service {
     /**
      * 5~11 더하는 건데,, 작동할지는 모르겠습니다,, 만들고 수정하는걸로,,
      */
-    public FoodDiary calculateDailyTotal(Long id, Date date) {
+    public FoodDiary calculateDailyTotal(String id, Date date) {
         List<FoodDiary> entries = repository.findAllByIdAndDateContaining(id, date);
         FoodDiary dailyTotal = new FoodDiary();
         dailyTotal.setDate(date);
