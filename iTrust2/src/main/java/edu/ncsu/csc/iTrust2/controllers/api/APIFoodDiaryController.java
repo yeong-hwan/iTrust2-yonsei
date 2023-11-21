@@ -70,8 +70,8 @@ public class APIFoodDiaryController extends APIController {
     }
 
     @GetMapping(BASE_PATH + "food_diary/view/{patientMID}")
-    public ResponseEntity findByIdContains(@PathVariable("patientMID") String id) {
-        final List<FoodDiary> f = (List<FoodDiary>) foodDiaryService.findByIdContains(id);
+    public ResponseEntity findByUsernameContains(@PathVariable("patientMID") String username) {
+        final List<FoodDiary> f = (List<FoodDiary>) foodDiaryService.findByUsernameContains(username);
         return ResponseEntity.ok(f);
     }
 
