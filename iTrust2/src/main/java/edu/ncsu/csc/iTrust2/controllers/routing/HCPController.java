@@ -22,12 +22,12 @@ public class HCPController {
      * Returns the Landing screen for the HCP
      *
      * @param model
-     *            Data from the front end
+     *              Data from the front end
      * @return The page to display
      */
-    @RequestMapping ( value = "hcp/index" )
-    @PreAuthorize ( "hasAnyRole('ROLE_HCP', 'ROLE_OPH','ROLE_OD')" )
-    public String index ( final Model model ) {
+    @RequestMapping(value = "hcp/index")
+    @PreAuthorize("hasAnyRole('ROLE_HCP', 'ROLE_OPH','ROLE_OD')")
+    public String index(final Model model) {
         return Role.ROLE_HCP.getLanding();
     }
 
@@ -36,9 +36,9 @@ public class HCPController {
      *
      * @return The page to display
      */
-    @GetMapping ( "/hcp/editPatientDemographics" )
-    @PreAuthorize ( "hasAnyRole('ROLE_HCP',  'ROLE_OPH','ROLE_OD')" )
-    public String editPatientDemographics () {
+    @GetMapping("/hcp/editPatientDemographics")
+    @PreAuthorize("hasAnyRole('ROLE_HCP',  'ROLE_OPH','ROLE_OD')")
+    public String editPatientDemographics() {
         return "/hcp/editPatientDemographics";
     }
 
@@ -47,9 +47,9 @@ public class HCPController {
      *
      * @return The page to display
      */
-    @GetMapping ( "/hcp/editPrescriptions" )
-    @PreAuthorize ( "hasAnyRole('ROLE_HCP', 'ROLE_OPH','ROLE_OD')" )
-    public String editPrescriptions () {
+    @GetMapping("/hcp/editPrescriptions")
+    @PreAuthorize("hasAnyRole('ROLE_HCP', 'ROLE_OPH','ROLE_OD')")
+    public String editPrescriptions() {
         return "/hcp/editPrescriptions";
     }
 
@@ -57,12 +57,12 @@ public class HCPController {
      * Returns the ER for the given model
      *
      * @param model
-     *            model to check
+     *              model to check
      * @return role
      */
-    @RequestMapping ( value = "hcp/records" )
-    @PreAuthorize ( "hasAnyRole('ROLE_HCP', 'ROLE_OPH','ROLE_OD')" )
-    public String emergencyRecords ( final Model model ) {
+    @RequestMapping(value = "hcp/records")
+    @PreAuthorize("hasAnyRole('ROLE_HCP', 'ROLE_OPH','ROLE_OD')")
+    public String emergencyRecords(final Model model) {
         return "personnel/records";
     }
 
@@ -71,26 +71,26 @@ public class HCPController {
      * functionality. This prepares the page.
      *
      * @param model
-     *            Data for the front end
+     *              Data for the front end
      * @return The page to display to the user
      */
-    @GetMapping ( "/hcp/appointmentRequests" )
-    @PreAuthorize ( "hasAnyRole('ROLE_HCP','ROLE_OPH','ROLE_OD')" )
-    public String requestAppointmentForm ( final Model model ) {
+    @GetMapping("/hcp/appointmentRequests")
+    @PreAuthorize("hasAnyRole('ROLE_HCP','ROLE_OPH','ROLE_OD')")
+    public String requestAppointmentForm(final Model model) {
         return "hcp/appointmentRequests";
     }
-    
+
     /**
      * Method responsible for HCP's Accept/Reject requested appointment
      * functionality. This prepares the page.
      *
      * @param model
-     *            Data for the front end
+     *              Data for the front end
      * @return The page to display to the user
      */
-    @GetMapping ( "/hcp/appointmentOphthalmologistRequests" )
-    @PreAuthorize ( "hasAnyRole('ROLE_OPH', 'ROLE_OD')" )
-    public String requestOphthalmologistAppointmentForm ( final Model model ) {
+    @GetMapping("/hcp/appointmentOphthalmologistRequests")
+    @PreAuthorize("hasAnyRole('ROLE_OPH', 'ROLE_OD')")
+    public String requestOphthalmologistAppointmentForm(final Model model) {
         return "hcp/appointmentOphthalmologistRequests";
     }
 
@@ -98,26 +98,28 @@ public class HCPController {
      * Returns the form page for a HCP to document an OfficeVisit
      *
      * @param model
-     *            The data for the front end
+     *              The data for the front end
      * @return Page to display to the user
      */
-    @GetMapping ( "/hcp/documentOfficeVisit" )
-    @PreAuthorize ( "hasAnyRole('ROLE_HCP', 'ROLE_OPH','ROLE_OD')" )
-    public String documentOfficeVisit ( final Model model ) {
+    @GetMapping("/hcp/documentOfficeVisit")
+    @PreAuthorize("hasAnyRole('ROLE_HCP', 'ROLE_OPH','ROLE_OD')")
+    public String documentOfficeVisit(final Model model) {
         return "/hcp/documentOfficeVisit";
     }
 
     /**
-     * Returns the form page for a ER to view emergency health records
+     * HEAD:iTrust2/src/main/java/edu/ncsu/csc/itrust2/controllers/routing/HCPController.java
+     * Method responsible for HCP's Accept/Reject requested appointment
+     * functionality. This prepares the page.
      *
      * @param model
-     *            Data for the front end
+     *              Data for the front end
      * @return The page to display to the user
      */
-    @GetMapping ( "/hcp/viewEmergencyHealthRecords" )
-    @PreAuthorize ( "hasRole('ROLE_HCP')" )
-    public String viewEmergencyHealthRecords ( final Model model ) {
-        return "hcp/viewEmergencyHealthRecords";
+    @GetMapping("hcp/FoodDiary/viewPatientFoodDiary")
+    @PreAuthorize("hasAnyRole('ROLE_HCP','ROLE_OPH','ROLE_OD')")
+    public String viewPatientFoodDiary(final Model model) {
+        return "/hcp/FoodDiary/viewPatientFoodDiary";
     }
 
 }
