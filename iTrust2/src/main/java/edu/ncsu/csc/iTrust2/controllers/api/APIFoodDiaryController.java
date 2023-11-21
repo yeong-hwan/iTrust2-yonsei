@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import java.sql.Date;
 import java.util.List;
 
 import edu.ncsu.csc.iTrust2.forms.FoodDiaryForm;
@@ -47,13 +48,12 @@ public class APIFoodDiaryController extends APIController {
     // return ResponseEntity.ok(f);
     // }
 
-    // @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}")
-    // public FoodDiary calculateDailyTotal() {
-    // final FoodDiary dailyTotal =
-    // foodDiaryService.calculateDailyTotal(@PathVariable("patientMID") Long id,
-    // @PathVariable("date") Date date);
-    // return dailyTotal;
-    // }
+    @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}")
+    public FoodDiary calculateDailyTotal() {
+        final FoodDiary dailyTotal =
+        foodDiaryService.calculateDailyTotal(@PathVariable("patientMID") Long id, @PathVariable("date") Date date);
+    return dailyTotal;
+    }
 
     // @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}/{mealType}")
     // public ResponseEntity List<FoodDiary> viewEntries(
@@ -77,20 +77,4 @@ public class APIFoodDiaryController extends APIController {
     // }
     // }
     //
-
-    // @GetMapping
-    // public ResponseEntity<List<FoodDiary>> getAllEntries() {
-    // return ResponseEntity.ok(foodDiaryService.getAllEntries());
-    // }
-    //
-    // @GetMapping("/{id}")
-    // public ResponseEntity<FoodDiary> getEntryById(@PathVariable Long id) {
-    // FoodDiaryEntry entry = foodDiaryService.getEntryById(id);
-    // if (entry == null) {
-    // return ResponseEntity.notFound().build();
-    // }
-    // return ResponseEntity.ok(entry);
-    // }
-    //
-
 }

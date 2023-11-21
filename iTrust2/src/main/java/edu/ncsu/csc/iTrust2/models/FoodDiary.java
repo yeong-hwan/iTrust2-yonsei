@@ -37,16 +37,17 @@ public class FoodDiary extends DomainObject {
 		setProteinPerServing(form.getProteinPerServing());
 	}
 
-	@NotNull
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "patient_id", columnDefinition = "varchar(100)")
-	private User patient;
+	// @NotNull
+	// @ManyToOne(cascade = CascadeType.ALL)
+	// @JoinColumn(name = "patient_id", columnDefinition = "varchar(100)")
+	// private User patient;
 
 	// private String username;
 	/**
 	 *
 	 */
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	/**
