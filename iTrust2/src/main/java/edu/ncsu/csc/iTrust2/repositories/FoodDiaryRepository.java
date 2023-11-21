@@ -26,5 +26,5 @@ public interface FoodDiaryRepository extends JpaRepository<FoodDiary, Long> {
 
   List<FoodDiary> findAllByMealTypeContaining(String mealType);
 
-  List<FoodDiary> findAllByIdAndDateContaining(Long id, Date date);
+  List<FoodDiary> findAllByIdAndDateContaining(String id, Date date);
 }
