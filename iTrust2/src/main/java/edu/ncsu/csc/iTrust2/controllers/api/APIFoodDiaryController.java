@@ -45,6 +45,10 @@ public class APIFoodDiaryController extends APIController {
         // final User self = userService.findByName( LoggerUtil.currentUser() );
         try {
             final FoodDiary foodDiary = new FoodDiary(entry);
+
+            final User self = userService.findByName(LoggerUtil.currentUser());
+            foodDiary.setUsername(self.getUsername());
+
             foodDiaryService.save(foodDiary);
             // =====================================
             // !! You should add FOOD_DIARY_ADD to TransactionType.java !!
@@ -57,7 +61,6 @@ public class APIFoodDiaryController extends APIController {
                     errorResponse("Could not create " + entry.getUsername() + " because of " + e.getMessage()),
                     HttpStatus.BAD_REQUEST);
         }
-
     }
 
     @GetMapping(BASE_PATH + "food_diary/view")
