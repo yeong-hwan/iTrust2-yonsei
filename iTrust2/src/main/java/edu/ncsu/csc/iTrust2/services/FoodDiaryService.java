@@ -52,7 +52,7 @@ public class FoodDiaryService extends Service {
      * 5~11 더하는 건데,, 작동할지는 모르겠습니다,, 만들고 수정하는걸로,,
      */
     public FoodDiary calculateDailyTotal(Long id, Date date) {
-        List<FoodDiary> entries = repository.findAllByDateContaining(id, date);
+        List<FoodDiary> entries = repository.findAllByIdAndDateContaining(id, date);
         FoodDiary dailyTotal = new FoodDiary();
         dailyTotal.setDate(date);
         dailyTotal.setServingNumber(entries.stream().mapToLong(FoodDiary::getServingNumber).sum());
@@ -64,17 +64,17 @@ public class FoodDiaryService extends Service {
                 entries.stream().mapToLong(e -> e.getSodiumPerServing() *
                         e.getServingNumber()).sum());
         dailyTotal.setCarbsPerServing(entries.stream().mapToLong(e -> e.getCarbsPerServing() *
-                        e.getServingNumber()).sum());
+                e.getServingNumber()).sum());
         dailyTotal.setSugarsPerServing(
                 entries.stream().mapToLong(e -> e.getSugarsPerServing() *
                         e.getServingNumber()).sum());
         dailyTotal.setFiberPerServing(entries.stream().mapToLong(e -> e.getFiberPerServing() *
-                        e.getServingNumber()).sum());
+                e.getServingNumber()).sum());
         dailyTotal.setProteinPerServing(
                 entries.stream().mapToLong(e -> e.getProteinPerServing() *
                         e.getServingNumber()).sum());
 
         return dailyTotal;
     }
-    
+
 }

@@ -62,14 +62,12 @@ public class APIPatientController extends APIController {
     private DiagnosisService diagnosisService;
 
     /**
-     * Retrieves and returns a list of all Pat
+     * Retrieves and returns a list of all Patients stored in the system
      *
-     * 
      * @return list of patients
      */
     @GetMapping(BASE_PATH + "/patients")
-    public List<Patient> ePatients() {
-
+    public List<Patient> getPatients() {
         final List<Patient> patients = (List<Patient>) patientService.findAll();
         return patients;
     }
@@ -95,33 +93,22 @@ public class APIPatientController extends APIController {
         }
     }
 
-    **-A'searchQuery'
-
-    can be
-    either a
-    part of
-
-    name(inc*
-
-    - If the qu
-    ry is empt
-    , returnall ptients*
-    
-    
-    
-
-    
-     * - If the query is not empty, return all patients whose name or username contains the query
-     * - It also takes a parameter 'searchType', which can be 'name' or 'usern
-     * me' 
+    /*
+     * @yewon 2023.11.19
+     * *****************************************************
+     * GET patient list given a query, named 'searchQuery'
+     * - A 'searchQuery' can be either a part of name(including firstname and
+     * lastname) or a part of username
+     * - If the query is empty, return all patients
+     * - If the query is not empty, return all patients whose name or username
+     * contains the query
+     * - It also takes a parameter 'searchType', which can be 'name' or 'username'
      * - If the searchType is 'name', the query is a part of name
      * - If the searchType is 'username', the query is a part of username
-     * * ************************************************
+     * *****************************************************
      */
-
     @GetMapping(BASE_PATH + "/emergency_health_records/search")
-    @Pr
-
+    @PreAuthorize("hasAnyRole('ROLE_HCP', 'ROLE_ER')")
     public ResponseEntity getPatientsByQuery(@RequestParam final String searchQuery,
             @RequestParam final String searchType) {
         List<Patient> patients = null;
@@ -168,18 +155,16 @@ public class APIPatientController extends APIController {
         }
     }
 
-    *
-
-    @param
-    userna e
-
-    **
-    Users table*@return response
-
-    *
-
-    GtMapping(BASE_PAPr
-
+    /**
+     * Retrieves and returns the Patient with the username provided
+     *
+     * @param username
+     *                 The username of the Patient to be retrieved, as stored in the
+     *                 Users table
+     * @return response
+     */
+    @GetMapping(BASE_PATH + "/patients/{username}")
+    @PreAuthorize("hasRole('ROLE_HCP')")
     public ResponseEntity getPatient(@PathVariable("username") final String username) {
         final Patient patient = (Patient) patientService.findByName(username);
         if (patient == null) {
@@ -278,31 +263,20 @@ public class APIPatientController extends APIController {
 
         }
 
-    }/
+    }
 
-    **-
-
-    Only accessible
-    by ER
-    and HCP*
-
-    -
-    turns pat
-    ent not found 404 erro
-
-    if
-    username is
-    not in database*-
-    If username
-    is found, returns
-    relevant emergency
-    health record
-    information including
-    diagnoses and prescriptions******************************************************/
-
+    /*
+     * Gyumin Noh
+     * *****************************************************
+     * GET patient list given a patient's username (patientMID)
+     * - Only accessible by ER and HCP
+     * - Returns patient not found 404 error if username is not in database
+     * - If username is found, returns relevant emergency health record information
+     * including diagnoses and prescriptions
+     * *****************************************************
+     */
     @GetMapping(BASE_PATH + "/emergency_health_records/view")
-    @Pr
-
+    @PreAuthorize("hasAnyRole('ROLE_HCP', 'ROLE_ER')")
     public ResponseEntity getRecordsByPatientId(@RequestParam final String patientMID) {
         final Authentication authorized = SecurityContextHolder.getContext().getAuthentication();
         final SimpleGrantedAuthority hcp = new SimpleGrantedAuthority("ROLE_HCP");
