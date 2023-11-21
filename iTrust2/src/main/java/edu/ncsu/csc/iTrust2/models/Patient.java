@@ -258,6 +258,11 @@ public class Patient extends User {
     }
 
     public Integer getAge () {
+        // if date of birth is null, return null
+        if (dateOfBirth == null) {
+        	return 0;
+        }
+
     	//set age based on birth date and current date
         LocalDate today = LocalDate.now();
     	Period ageCalc = Period.between(dateOfBirth, today);
