@@ -115,9 +115,12 @@
 						"bloodType": "AB+",
 						"diagnoses": [
 							{
-								"code_id": "D001",
-								"note": "Example Diagnosis 1",
-							},
+								"code" :
+									{
+										"code": "D001",
+										"description": "Example Diagnosis 1",
+									},
+							}
 						],
 						"prescriptions": [
 							{
@@ -211,8 +214,8 @@
 								</thead>
 								<tbody>
 									<tr ng-repeat="diagnosis in selectedPatientInfo.diagnoses">
-										<td>{{ diagnosis.code_id }}</td>
-										<td>{{ diagnosis.note }}</td>
+										<td>{{ diagnosis.code.code }}</td>
+										<td>{{ diagnosis.code.description }}</td>
 									</tr>
 								</tbody>
 							</table>
