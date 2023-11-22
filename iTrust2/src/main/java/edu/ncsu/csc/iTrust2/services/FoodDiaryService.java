@@ -2,6 +2,10 @@ package edu.ncsu.csc.iTrust2.services;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import javax.transaction.Transactional;
@@ -36,8 +40,8 @@ public class FoodDiaryService extends Service {
         return repository.findAllByDateContaining(date);
     }
 
-    public List<FoodDiary> findByIdDateContains(final String id, final Date date) {
-        return repository.findAllByIdAndDateContaining(id, date);
+    public List<FoodDiary> findByUsernameAndDateContains(final String username, final Date date) {
+        return repository.findAllByUsernameAndDateContaining(username, date);
     }
 
     public List<FoodDiary> findByMealTypeContains(final String mealType) {
@@ -51,9 +55,23 @@ public class FoodDiaryService extends Service {
     /**
      * 5~11 더하는 건데,, 작동할지는 모르겠습니다,, 만들고 수정하는걸로,,
      */
-    public FoodDiary calculateDailyTotal(String id, Date date) {
-        List<FoodDiary> entries = repository.findAllByIdAndDateContaining(id, date);
+    public FoodDiary calculateDailyTotal(String username, Date date) {
+        List<FoodDiary> entries = repository.findAllByUsernameAndDateContaining(username, date);
         FoodDiary dailyTotal = new FoodDiary();
+        // dummy data for null prevention
+        dailyTotal.setUsername("patient");
+        dailyTotal.setId((long) 1);
+        dailyTotal.setMealType("Lunch");
+        dailyTotal.setFoodName("DailyTotal");
+
+        // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd
+        // HH:mm:ss.SSS Z");
+        // OffsetDateTime odtWithTime = OffsetDateTime.parse("2011/02/14 09:30:00.999",
+        // formatter);
+        // LocalDateTime localDateTime = LocalDateTime.ofInstant(instant,
+        // ZoneId.systemDefault());
+
+        // real data for total values
         dailyTotal.setDate(date);
         dailyTotal.setServingNumber(entries.stream().mapToLong(FoodDiary::getServingNumber).sum());
         dailyTotal.setCaloriesPerServing(

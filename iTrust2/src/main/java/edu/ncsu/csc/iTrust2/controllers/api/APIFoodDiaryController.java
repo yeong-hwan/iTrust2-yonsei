@@ -1,6 +1,8 @@
 package edu.ncsu.csc.iTrust2.controllers.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,20 +73,21 @@ public class APIFoodDiaryController extends APIController {
 
     @GetMapping(BASE_PATH + "food_diary/view/{patientMID}")
     public ResponseEntity findByUsernameContains(@PathVariable("patientMID") String username) {
-        final List<FoodDiary> f = (List<FoodDiary>) foodDiaryService.findByUsernameContains(username);
-        return ResponseEntity.ok(f);
+        final List<FoodDiary> foodDiaryList = (List<FoodDiary>) foodDiaryService.findByUsernameContains(username);
+        return ResponseEntity.ok(foodDiaryList);
     }
 
     @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}")
-    public FoodDiary calculateDailyTotal(@PathVariable("patientMID") String id, @PathVariable("date") Date date) {
-        final FoodDiary dailyTotal = foodDiaryService.calculateDailyTotal(id, date);
+    public FoodDiary calculateDailyTotal(@PathVariable("patientMID") String username,
+            @PathVariable("date") Date date) {
+        final FoodDiary dailyTotal = foodDiaryService.calculateDailyTotal(username, date);
         return dailyTotal;
     }
 
     @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}/{mealType}")
-    public ResponseEntity<List<FoodDiary>> viewEntries(@PathVariable("patientMID") String id,
+    public ResponseEntity<List<FoodDiary>> viewEntries(@PathVariable("patientMID") String username,
             @PathVariable("date") Date date, @PathVariable("mealType") String mealType) {
-        List<FoodDiary> entries = foodDiaryService.findByIdDateContains(id, date);
+        List<FoodDiary> entries = foodDiaryService.findByUsernameAndDateContains(username, date);
         return ResponseEntity.ok(entries);
     }
 
