@@ -117,7 +117,10 @@
 					if (!valid) {
 						$scope.message ="";
 					} else {
-						$http.post("/iTrust2/api/v1/food_diary/add", $scope.FoodDiary).then(
+						// $http.post("/iTrust2/api/v1/food_diary/add", $scope.FoodDiary).then(
+						$http({method:'POST',
+							   url:"/iTrust2/api/v1/food_diary/add",
+							   data:$scope.FoodDiary}).then(
 							function (response) {
 								
 								$scope.FoodDiary.date = "";
