@@ -87,7 +87,8 @@
 			<!-- information on vertical rule found here: https://stackoverflow.com/questions/571900/is-there-a-vr-vertical-rule-in-html  -->
 			<div
 				style="float: left; width: 30%; border-left: 1px solid #bbb; padding-left: 1%; height: 100%; overflow-y: auto">
-				<h2 id="header0">FoodDiaries</h2>
+				<h2 style="font-size: 25PX;" id="header0">FoodDiaries</h2>
+				<hr style="width : 90%; border: solid 1px #bbb;">
 				<!-- Patient의 식사 Date 선택창-->
 				<ul style="overflow: auto;height=100%;">
 					<!-- Information on how labels wor from here: https://stackoverflow.com/questions/7863251/clicking-the-text-to-select-corresponding-radio-button -->
@@ -103,84 +104,69 @@
 			</div>
 			<div
 				style="float: left; width: 40%; border-left: 1px solid #bbb; padding-left: 1%; height: 100%; overflow-y: auto;">
-				<h2 id="header0">Date: {{selectedFoodDiary.date}}</h2>
-				<h2 id="header1">FoodName: {{selectedFoodDiary.foodName}} </h2>
-				<h2 id="header2">MealType: {{selectedFoodDiary.mealType}} </h2>
-				<br>
-				<div ng-show="selectedFoodDiary">
-					<table>
-						<tr>
-							<td style="text-align: left; padding: 10px"><b>Number of Servings:</b></td>
-							<td>{{selectedFoodDiary.servingNumber}}</td>
-						</tr>
-						<tr>
-							<td style="text-align: left; padding: 5px"><b>Calories per Serving:</b></td>
-							<td>{{selectedFoodDiary.caloriesPerServing}}</td>
-						</tr>
-						<tr>
-							<td style="text-align: left; padding: 5px"><b>Grams of Fat per Serving:</b></td>
-							<td>{{selectedFoodDiary.fatPerServing}}</td>
-						</tr>
-						<tr>
-							<td style="text-align: left; padding: 5px"><b>Milligrams of Sodium per Serving:</b></td>
-							<td>{{selectedFoodDiary.sodiumPerServing}}</td>
-						</tr>
-						<tr>
-							<td style="text-align: leftt; padding: 5px"><b>Grams of Carbs per Serving:</b></td>
-							<td>{{selectedFoodDiary.carbsPerServing}}</td>
-						</tr>
-						<tr>
-							<td style="text-align: left; padding: 5px"><b>Grams of Sugars per Serving:</b></td>
-							<td>{{selectedFoodDiary.sugarsPerServing}}</td>
-						</tr>
-						<tr>
-							<td style="text-align: left; padding: 5px"><b>Grams of Fiber per Serving:</b></td>
-							<td>{{selectedFoodDiary.fiberPerServing}}</td>
-						</tr>
-						<tr>
-							<td style="text-align: left; padding: 5px"><b>Grams of Protein per Serving:</b></td>
-							<td>{{selectedFoodDiary.proteinPerServing}}</td>
-						</tr>
-					</table>
+				<h2 style="font-size: 25PX;" id="header0">Date: {{selectedFoodDiary.date}}</h2>
+				<h2 style="font-size: 25PX;" id="header1">FoodName: {{selectedFoodDiary.foodName}} </h2>
+				<h2 style="font-size: 25PX;" id="header2">MealType: {{selectedFoodDiary.mealType}} </h2>
+				<hr style="width : 90%; border: solid 1px #bbb;">
 
+				<div ng-show="selectedFoodDiary">
+					<div style="line-height:300%">
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Number of Servings:  </b>{{selectedFoodDiary.servingNumber}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Calories per Serving:  </b>{{selectedFoodDiary.caloriesPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Grams of Fat per Serving:  </b>{{selectedFoodDiary.fatPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Milligrams of Sodium per Serving:  </b>{{selectedFoodDiary.sodiumPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Grams of Carbs per Serving:  </b>{{selectedFoodDiary.carbsPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Grams of Sugars per Serving:  </b>{{selectedFoodDiary.sugarsPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Grams of Fiber per Serving:  </b>{{selectedFoodDiary.fiberPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Grams of Protein per Serving:  </b>{{selectedFoodDiary.proteinPerServing}}</div>
+						<br>
+					</div>
+					
 					<br />
 				</div>
 			</div>
 			<div ng-show="selectedFoodDiary">
 				<div
 				style="float: left; width: 30%; border-left: 1px solid #bbb; padding-left: 1%; height: 100%; overflow-y: auto;">
-					<h2 id="totals">Total Nutrition Information for Today</h2>
-					<br>
-					<table>
-						<tr>
-							<td style="text-align: left; padding: 5px"><b>Total Calories:</b></td>
-							<td>{{totNut.caloriesPerServing}}</td>
-						</tr>
-						<tr>
-							<td style="text-align: left; padding: 5px"><b>Total Fat:</b></td>
-							<td>{{totNut.fatPerServing}}</td>
-						</tr>
-						<tr>
-							<td style="text-align: left; padding: 5px"><b>Total Sodium:</b></td>
-							<td>{{totNut.sodiumPerServing}}</td>
-						</tr>
-						<tr>
-							<td style="text-align: left; padding: 5px"><b>Total Carbs:</b></td>
-							<td>{{totNut.carbsPerServing}}</td>
-						</tr>
-						<tr>
-							<td style="text-align: left; padding: 5px"><b>Total Sugars:</b></td>
-							<td>{{totNut.sugarsPerServing}}</td>
-						</tr>
-						<tr>
-							<td style="text-align:left; padding: 5px"><b>Total Fiber:</b></td>
-							<td>{{totNut.fiberPerServing}}</td>
-						</tr>
-						<tr>
-							<td style="text-align: left; padding: 5px"><b>Total Protein:</b></td>
-							<td>{{totNut.proteinPerServing}}</td>
-						</tr>
-					</table>
+					<h2 style="font-size: 25PX;" id="totals">Total Nutrition Information for Today</h2>
+					<hr style="width : 90%; border: solid 1px #bbb;">
+					
+					<div style="line-height:300%">
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Total Calories(kcal):  </b>{{totNut.caloriesPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Total Fat(g):  </b>{{totNut.fatPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Total Sodium(mg):  </b>{{totNut.sodiumPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Total Carbs(g):  </b>{{totNut.carbsPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Total Sugars(g):  </b>{{totNut.sugarsPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Total Fiber(g):  </b>{{totNut.fiberPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Total Protein(g):  </b>{{totNut.proteinPerServing}}</div>
+						<br>
+					</div>
 			
 				</div>
 			</div>
