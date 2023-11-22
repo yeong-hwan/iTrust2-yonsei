@@ -22,9 +22,9 @@ public interface FoodDiaryRepository extends JpaRepository<FoodDiary, Long> {
 
   List<FoodDiary> findAllByUsernameContaining(String username);
 
-  List<FoodDiary> findAllByDateContaining(Date date);
+  List<FoodDiary> findAllByDateContaining(String date);
 
   List<FoodDiary> findAllByMealTypeContaining(String mealType);
 
-  List<FoodDiary> findAllByUsernameAndDateContaining(String id, Date date);
+  List<FoodDiary> findAllByUsernameAndDateContaining(String id, String date);
 }

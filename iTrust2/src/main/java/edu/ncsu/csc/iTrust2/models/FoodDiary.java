@@ -55,10 +55,10 @@ public class FoodDiary extends DomainObject {
 	 * Date of Diaries
 	 * PastOrPresent가 있어서 null값 못 받아요
 	 */
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "mm/dd/yyyy")
-	@PastOrPresent(message = "Date must be in the past or present")
-	private Date date;
+	// @Temporal(TemporalType.DATE)
+	// @DateTimeFormat(pattern = "mm/dd/yyyy")
+	// @PastOrPresent(message = "Date must be in the past or present")
+	private String date;
 
 	/**
 	 * Meal type
@@ -108,7 +108,7 @@ public class FoodDiary extends DomainObject {
 		return username;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
@@ -163,7 +163,7 @@ public class FoodDiary extends DomainObject {
 		this.username = username;
 	}
 
-	public void setDate(final Date date) {
+	public void setDate(final String date) {
 		this.date = date;
 	}
 
@@ -205,8 +205,5 @@ public class FoodDiary extends DomainObject {
 
 	public void setProteinPerServing(final Long proteinPerServing) {
 		this.proteinPerServing = proteinPerServing;
-	}
-
-	public void setId(int i) {
 	}
 }

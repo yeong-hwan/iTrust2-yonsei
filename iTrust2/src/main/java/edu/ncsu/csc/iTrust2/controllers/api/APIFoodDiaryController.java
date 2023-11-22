@@ -50,10 +50,13 @@ public class APIFoodDiaryController extends APIController {
         // return ResponseEntity.ok(foodDiaryService.addEntry(entry));
         // final User self = userService.findByName( LoggerUtil.currentUser() );
         try {
+            // System.out.println(entry);
+
             final FoodDiary foodDiary = new FoodDiary(entry);
 
             final User self = userService.findByName(LoggerUtil.currentUser());
             foodDiary.setUsername(self.getUsername());
+            // System.out.println(self.getUsername());
 
             foodDiaryService.save(foodDiary);
             // =====================================
@@ -83,22 +86,24 @@ public class APIFoodDiaryController extends APIController {
 
     @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}")
     public FoodDiary calculateDailyTotal(@PathVariable("patientMID") String username,
-            @PathVariable("date") Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-        String formattedDateString = simpleDateFormat.format(date);
-        Date formattedDate;
-        try {
-            formattedDate = (Date) simpleDateFormat.parse(formattedDateString);
-            System.out.println(formattedDate);
+            @PathVariable("date") String date) {
 
-            java.sql.Date sqlDate = new java.sql.Date(formattedDate.getTime());
-            final FoodDiary dailyTotal = foodDiaryService.calculateDailyTotal(username, sqlDate);
-            return dailyTotal;
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return null;
+        // SimpleDateFormat simpleDateFormat = new
+        // SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        // String formattedDateString = simpleDateFormat.format(date);
+        // Date formattedDate;
+        // try {
+        // formattedDate = (Date) simpleDateFormat.parse(formattedDateString);
+        // System.out.println(formattedDate);
+
+        // java.sql.Date sqlDate = new java.sql.Date(formattedDate.getTime());
+        final FoodDiary dailyTotal = foodDiaryService.calculateDailyTotal(username, date);
+        return dailyTotal;
+        // } catch (ParseException e) {
+        // // TODO Auto-generated catch block
+        // e.printStackTrace();
+        // }
+        // return null;
 
     }
 

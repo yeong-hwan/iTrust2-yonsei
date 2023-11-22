@@ -15,7 +15,7 @@ public class FoodDiaryForm {
 
 	private String username;
 	private Long id;
-	private Date date;
+	private String date;
 	private String mealType;
 	private String foodName;
 	private Long servingNumber;
@@ -66,7 +66,7 @@ public class FoodDiaryForm {
 		return id;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
@@ -121,7 +121,7 @@ public class FoodDiaryForm {
 		this.id = id;
 	}
 
-	public void setDate(final Date date) {
+	public void setDate(final String date) {
 		this.date = date;
 	}
 

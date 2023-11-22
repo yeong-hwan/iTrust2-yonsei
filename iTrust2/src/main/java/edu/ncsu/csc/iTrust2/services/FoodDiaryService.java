@@ -36,11 +36,11 @@ public class FoodDiaryService extends Service {
         return repository.findAllByUsernameContaining(username);
     }
 
-    public List<FoodDiary> findByDateContains(final Date date) {
+    public List<FoodDiary> findByDateContains(final String date) {
         return repository.findAllByDateContaining(date);
     }
 
-    public List<FoodDiary> findByUsernameAndDateContains(final String username, final Date date) {
+    public List<FoodDiary> findByUsernameAndDateContains(final String username, final String date) {
         return repository.findAllByUsernameAndDateContaining(username, date);
     }
 
@@ -55,7 +55,7 @@ public class FoodDiaryService extends Service {
     /**
      * 5~11 더하는 건데,, 작동할지는 모르겠습니다,, 만들고 수정하는걸로,,
      */
-    public FoodDiary calculateDailyTotal(String username, Date date) {
+    public FoodDiary calculateDailyTotal(String username, String date) {
         List<FoodDiary> entries = repository.findAllByUsernameAndDateContaining(username, date);
         FoodDiary dailyTotal = new FoodDiary();
         // dummy data for null prevention
