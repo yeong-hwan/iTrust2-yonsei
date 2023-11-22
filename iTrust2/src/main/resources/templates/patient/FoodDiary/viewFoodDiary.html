@@ -1,0 +1,177 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout :: head(title=~{::title},links=~{})">
+<title>View FoodDiary</title>
+
+<!-- Angular and Bootstrap files  -->
+<!-- <link rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
+
+</head>
+
+<body th:include="layout :: body" th:with="content=~{::content}">
+	<div th:fragment="content">
+
+		<script th:inline="javascript">
+		/* Otherwise Thymeleaf tries to parse Javascript as XML and breaks itself sometimes.  Sigh */
+		/*<![CDATA[*/
+
+		
+			let patient;
+
+			var app = angular.module("viewFoodDiaryApp", []);
+			app.controller('viewFoodDiaryCtrl', function($scope, $http) {
+
+				$scope.displayDiary = function(p) {
+					return p.date + "-" + p.mealType;
+				}
+
+				$scope.selectPatient = function(patient){
+					$scope.selectedPatient = patient.username;
+				}
+
+				$http.get("/iTrust2/api/v1/patients").then(
+						function(response) {
+							$scope.patients = response.data;
+						}, function(rejection){
+						});
+
+				$scope.getTotalNutrition= function(username, date){
+
+
+					$http({
+						method : 'GET',
+						url : '/iTrust2/api/v1/food_diary/view/'+username+'/' + date
+					}).then(function(response){
+						$scope.totNut = response.data;
+						
+					
+					})
+
+				}
+
+				$http.get('/iTrust2/api/v1/patient').then(
+					function(response){
+						$scope.patient = response.data;
+						$scope.getFoodDiaries($scope.patient);
+				
+						
+					}
+				);
+
+				$scope.getFoodDiaries = function(patient){
+					$scope.FoodDiaries = {};
+					$http({
+
+						method: 'GET',
+						url : '/iTrust2/api/v1/food_diary/view/' + patient.username 
+
+					}).then(function(response){
+						$scope.FoodDiaries = response.data;
+					})
+				}
+
+				$scope.selectFoodDiary = function(FoodDiary){
+					$scope.selectedFoodDiary = FoodDiary;
+					$scope.getTotalNutrition($scope.selectedFoodDiary.username, $scope.selectedFoodDiary.date);
+					
+				}
+
+
+			});
+		</script>
+		<div ng-app="viewFoodDiaryApp" ng-controller="viewFoodDiaryCtrl">
+			
+			<!-- information on vertical rule found here: https://stackoverflow.com/questions/571900/is-there-a-vr-vertical-rule-in-html  -->
+			<div
+				style="float: left; width: 30%; border-left: 1px solid #bbb; padding-left: 1%; height: 100%; overflow-y: auto">
+				<h2 style="font-size: 25PX;" id="header0">FoodDiaries</h2>
+				<hr style="width : 90%; border: solid 1px #bbb;">
+				<!-- Patient의 식사 Date 선택창-->
+				<ul style="overflow: auto;height=100%;">
+					<!-- Information on how labels wor from here: https://stackoverflow.com/questions/7863251/clicking-the-text-to-select-corresponding-radio-button -->
+					<li ng-repeat="FoodDiary in FoodDiaries"><h4>
+							<label> <input type="radio"
+								ng-model="$parent.selectedFoodDiary" name="FoodDiary"
+								value="{{FoodDiary}}"
+								ng-click='$parent.selectFoodDiary(FoodDiary)' />&nbsp;{{$parent.displayDiary(FoodDiary)}}
+							</label>
+							<!-- <li ng-init = 'getTotalNutrition(selectedFoodDiary.username, selectedFoodDiary.date)'></li> -->
+						</h4></li>
+				</ul>
+			</div>
+			<div
+				style="float: left; width: 40%; border-left: 1px solid #bbb; padding-left: 1%; height: 100%; overflow-y: auto;">
+				<h2 style="font-size: 25PX;" id="header0">Date: {{selectedFoodDiary.date}}</h2>
+				<h2 style="font-size: 25PX;" id="header1">FoodName: {{selectedFoodDiary.foodName}} </h2>
+				<h2 style="font-size: 25PX;" id="header2">MealType: {{selectedFoodDiary.mealType}} </h2>
+				<hr style="width : 90%; border: solid 1px #bbb;">
+
+				<div ng-show="selectedFoodDiary">
+					<div style="line-height:300%">
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Number of Servings:  </b>{{selectedFoodDiary.servingNumber}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Calories per Serving:  </b>{{selectedFoodDiary.caloriesPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Grams of Fat per Serving:  </b>{{selectedFoodDiary.fatPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Milligrams of Sodium per Serving:  </b>{{selectedFoodDiary.sodiumPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Grams of Carbs per Serving:  </b>{{selectedFoodDiary.carbsPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Grams of Sugars per Serving:  </b>{{selectedFoodDiary.sugarsPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Grams of Fiber per Serving:  </b>{{selectedFoodDiary.fiberPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Grams of Protein per Serving:  </b>{{selectedFoodDiary.proteinPerServing}}</div>
+						<br>
+					</div>
+					
+					<br />
+				</div>
+			</div>
+			<div ng-show="selectedFoodDiary">
+				<div
+				style="float: left; width: 30%; border-left: 1px solid #bbb; padding-left: 1%; height: 100%; overflow-y: auto;">
+					<h2 style="font-size: 25PX;" id="totals">Total Nutrition Information for Today</h2>
+					<hr style="width : 90%; border: solid 1px #bbb;">
+					
+					<div style="line-height:300%">
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Total Calories(kcal):  </b>{{totNut.caloriesPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Total Fat(g):  </b>{{totNut.fatPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Total Sodium(mg):  </b>{{totNut.sodiumPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Total Carbs(g):  </b>{{totNut.carbsPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Total Sugars(g):  </b>{{totNut.sugarsPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Total Fiber(g):  </b>{{totNut.fiberPerServing}}</div>
+						<br>
+
+						<div style="text-align: left; padding: 5px; font-size: x-large; display: inline;"><b>Total Protein(g):  </b>{{totNut.proteinPerServing}}</div>
+						<br>
+					</div>
+			
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>

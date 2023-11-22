@@ -154,6 +154,8 @@ a {
 						<ul class="dropdown-menu">
 							<li><a href="/iTrust2/admin/hospitals" id="deletehospital">Manage
 									Hospitals</a></li>
+							<li><a href="/iTrust2/admin/hospitals" id="deletehospital">Manage
+								Hospitals</a></li>
 							<li><a href="/iTrust2/admin/users" id="users">Manage
 									Users</a></li>
 							<li><a href="/iTrust2/admin/drugs" id="drugs">Manage
@@ -183,6 +185,8 @@ a {
 								id="editPatientDemographics">Edit Patient</a></li>
 							<li><a href="/iTrust2/hcp/documentOfficeVisit"
 								id="documentOfficeVisit">Document Office Visit</a></li>
+							<li><a href="/iTrust2/hcp/FoodDiary/viewPatientFoodDiary"
+								id="viewPatientFoodDiary">view Patient Food Diary</a></li>
 							<li><a href="/iTrust2/hcp/viewEmergencyHealthRecords"
 								id="hcpViewEmergencyRecords">View Emergency Health Records</a></li>
 						</ul></li>
@@ -204,6 +208,15 @@ a {
 					<li class="dropdown"><a class="dropdown-toggle"
 						data-toggle="dropdown" href="#">Patient<span class="caret"></span></a>
 						<ul class="dropdown-menu">
+
+	<!-- pateint에 food diary menu를 patient에 추가함-->
+							<li><a 
+							href = "/iTrust2/patient/FoodDiary/viewFoodDiary"
+							id = "viewFoodDiary">viewFoodDiary</a></li>
+							<li><a 
+								href = "/iTrust2/patient/FoodDiary/addFoodDiary"
+								id = "addFoodDiary">addFoodDiary</a></li>
+							<!---->
 						</ul></li>
 					<li class="dropdown"><a class="dropdown-toggle"
 						data-toggle="dropdown" id="appointments" href="#">Appointments<span
