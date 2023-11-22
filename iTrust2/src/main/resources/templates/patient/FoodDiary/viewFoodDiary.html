@@ -24,11 +24,24 @@
 			var app = angular.module("viewFoodDiaryApp", []);
 			app.controller('viewFoodDiaryCtrl', function($scope, $http) {
 
-				$scope.displayDiary = function(p) {
-					return p.date + "-" + p.mealType;
+				$http.get('/iTrust2/api/v1/patient').then(
+					function(response){
+						$scope.patient = response.data;
+						patient = $scope.patient;
+						// console.log($scope.patient);
+						$scope.getFoodDiaries($scope.patient);
+					}
+				);
+				
+				$scope.displayDiary = function(foodDiary) {
+					console.log("displayDiary");
+
+					return foodDiary.date + "-" + foodDiary.mealType;
 				}
 
 				$scope.selectPatient = function(patient){
+					console.log('selectPatient');
+					
 					$scope.selectedPatient = patient.username;
 				}
 
@@ -39,6 +52,7 @@
 						});
 
 				$scope.getTotalNutrition= function(patient, date){
+					consoel.log('getTotalNutrition');
 
 					$scope.totNut = {};
 
@@ -51,16 +65,10 @@
 
 				}
 
-				$http.get('/iTrust2/api/v1/patient').then(
-					function(response){
-						$scope.patient = response.data;
-						let patient = $scope.patient;
-						console.log($scope.patient);
-					}
-				);
-
 				$scope.getFoodDiaries = function(patient){
-					
+					console.log("getFoodDiary");
+					console.log(patient);
+
 					console.log(patient.username);
 
 					$scope.FoodDiaries = {};
@@ -71,12 +79,14 @@
 
 					}).then(function(response){
 						$scope.FoodDiaries = response.data;
-						console.log($scope.FoodDiaries );
 					})
 				}
 
 				$scope.selectFoodDiary = function(FoodDiary){
+					console.log("selectedFoodDiary");
+
 					$scope.selectedFoodDiary = FoodDiary;
+					console.log($scope.selectedFoodDiary);
 					$scope.getTotalNutrition();
 				}
 
@@ -93,7 +103,8 @@
 				<ul style="overflow: auto;height=100%;">
 					<!-- Information on how labels wor from here: https://stackoverflow.com/questions/7863251/clicking-the-text-to-select-corresponding-radio-button -->
 					<li ng-repeat="FoodDiary in FoodDiaries"><h4>
-							<label> <input type="radio"
+							<label>
+									<input type="radio"
 								ng-model="$parent.selectedFoodDiary" name="FoodDiary"
 								value="{{FoodDiary}}"
 								ng-click='$parent.selectFoodDiary(FoodDiary)' />&nbsp;{{$parent.displayDiary(FoodDiary)}}
