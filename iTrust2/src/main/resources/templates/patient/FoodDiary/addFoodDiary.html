@@ -1,4 +1,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
+
+<script th:src="@{/js/dateTimeService.js}" src="../js/dateTimeService.js"></script>
+<head th:include="layout :: head(title=~{::title},links=~{})">
+
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
 <head th:include="layout :: head(title=~{::title},links=~{})">
@@ -70,9 +74,9 @@
 					}else {
 			    		$scope.err[5] = "";
 		    		}
-					if ( !/^[1-9]\d*$|^0$/.test(FoodDiary.sugarPerServing)){
+					if ( !/^[1-9]\d*$|^0$/.test(FoodDiary.sugarsPerServing)){
 						$scope.err[6]="Grams of sugars must be a positive integer or zero";
-						if(FoodDiary.sugarPerServing === undefined || FoodDiary.sugarPerServing===""){
+						if(FoodDiary.sugarsPerServing === undefined || FoodDiary.sugarsPerServing===""){
 							$scope.err[6]="Make sure no fields are empty";
 						}
 						valid = false;
@@ -117,12 +121,27 @@
 					if (!valid) {
 						$scope.message ="";
 					} else {
-						// $http.post("/iTrust2/api/v1/food_diary/add", $scope.FoodDiary).then(
+						const inputDate = $scope.FoodDiary.date;
+						const year = inputDate.getFullYear();
+						const month = String(inputDate.getMonth() + 1).padStart(2, '0');
+						const day = String(inputDate.getDate()).padStart(2, '0');
+						const formattedDateString = `${year}-${month}-${day}`;
+						
+						console.log($scope.FoodDiary.date);
+						console.log(formattedDateString);
+						console.log(typeof formattedDateString);
+
+						$scope.FoodDiary.date = formattedDateString;
+						// $scope.FoodDiary.id = 1;
+						// $scope.FoodDiary.username = 'test1234';
+
+						console.log($scope.FoodDiary);
+
+
 						$http({method:'POST',
 							   url:"/iTrust2/api/v1/food_diary/add",
 							   data:$scope.FoodDiary}).then(
 							function (response) {
-								
 								$scope.FoodDiary.date = "";
 								$scope.FoodDiary.foodName = "";
 								$scope.FoodDiary.mealType = "";
@@ -131,7 +150,7 @@
 								$scope.FoodDiary.fatPerServing = "";
 								$scope.FoodDiary.sodiumPerServing = "";
 								$scope.FoodDiary.carbsPerServing = "";
-								$scope.FoodDiary.sugarPerServing = "";
+								$scope.FoodDiary.sugarsPerServing = "";
 								$scope.FoodDiary.fiberPerServing = "";
 								$scope.FoodDiary.proteinPerServing = "";
 
@@ -139,9 +158,9 @@
 							}, function (rejection) {
 								$scope.message = "Could not add FoodDiary.";
 							});
-					}}
-				
 
+							
+					}}
 			});
 			
 </script>
@@ -255,7 +274,7 @@ input[type=text] {
 						<tr>
 							<td style="text-align: left; padding: 10px"><b>Grams of Sugars per Serving:</b></td>
 							<td>
-								<input type="text" name="sugar" id="sugar" ng-model="FoodDiary.sugarPerServing" />
+								<input type="text" name="sugars" id="sugars" ng-model="FoodDiary.sugarsPerServing" />
 								
 							</td>
 							<td style="color: red" ng-show="err[6]">{{err[6]}}</td>

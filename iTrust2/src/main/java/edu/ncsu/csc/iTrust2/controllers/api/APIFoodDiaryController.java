@@ -56,7 +56,7 @@ public class APIFoodDiaryController extends APIController {
 
             final User self = userService.findByName(LoggerUtil.currentUser());
             foodDiary.setUsername(self.getUsername());
-            // System.out.println(self.getUsername());
+            foodDiary.setId((long) 1);
 
             foodDiaryService.save(foodDiary);
             // =====================================
