@@ -17,6 +17,10 @@
 		<script th:inline="javascript">
 		/* Otherwise Thymeleaf tries to parse Javascript as XML and breaks itself sometimes.  Sigh */
 		/*<![CDATA[*/
+
+		
+			let patient;
+
 			var app = angular.module("viewFoodDiaryApp", []);
 			app.controller('viewFoodDiaryCtrl', function($scope, $http) {
 
@@ -47,7 +51,17 @@
 
 				}
 
+				$http.get('/iTrust2/api/v1/patient').then(
+					function(response){
+						$scope.patient = response.data;
+						let patient = $scope.patient;
+						console.log($scope.patient);
+					}
+				);
+
 				$scope.getFoodDiaries = function(patient){
+					
+					console.log(patient.username);
 
 					$scope.FoodDiaries = {};
 					$http({
@@ -57,6 +71,7 @@
 
 					}).then(function(response){
 						$scope.FoodDiaries = response.data;
+						console.log($scope.FoodDiaries );
 					})
 				}
 
@@ -116,7 +131,7 @@
 						</tr>
 						<tr>
 							<td style="text-align: left; padding: 5px"><b>Grams of Sugars per Serving:</b></td>
-							<td>{{selectedFoodDiary.sugarPerServing}}</td>
+							<td>{{selectedFoodDiary.sugarsPerServing}}</td>
 						</tr>
 						<tr>
 							<td style="text-align: left; padding: 5px"><b>Grams of Fiber per Serving:</b></td>
@@ -154,8 +169,8 @@
 							<td>{{totNut.carbs}}</td>
 						</tr>
 						<tr>
-							<td style="text-align: left; padding: 5px"><b>Total Sugar:</b></td>
-							<td>{{totNut.sugar}}</td>
+							<td style="text-align: left; padding: 5px"><b>Total Sugars:</b></td>
+							<td>{{totNut.sugars}}</td>
 						</tr>
 						<tr>
 							<td style="text-align:left; padding: 5px"><b>Total Fiber:</b></td>
