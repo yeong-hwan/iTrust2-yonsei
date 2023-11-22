@@ -84,11 +84,22 @@ public class APIFoodDiaryController extends APIController {
         return ResponseEntity.ok(foodDiaryList);
     }
 
+    // @GetMapping(BASE_PATH + "food_diary/view/{date}")
+    // public FoodDiary calculateDailyTotal(@PathVariable("date") String date) {
+    // final User self = userService.findByName(LoggerUtil.currentUser());
+    // String username = self.getUsername();
+
+    // final FoodDiary dailyTotal = foodDiaryService.calculateDailyTotal(username,
+    // date);
+    // return dailyTotal;
+    // }
+
     @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}")
-    public String calculateDailyTotal(@PathVariable("patientMID") String username,
+    public FoodDiary calculateDailyTotal(@PathVariable("patientMID") String username,
             @PathVariable("date") String date) {
-        final FoodDiary dailyTotal = foodDiaryService.calculateDailyTotal(username, date);
-        return dailyTotal.getDate();
+        final FoodDiary dailyTotal = foodDiaryService.calculateDailyTotal(username,
+                date);
+        return dailyTotal;
     }
 
     @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}/{mealType}")

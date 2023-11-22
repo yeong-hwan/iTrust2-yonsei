@@ -24,24 +24,11 @@
 			var app = angular.module("viewFoodDiaryApp", []);
 			app.controller('viewFoodDiaryCtrl', function($scope, $http) {
 
-				$http.get('/iTrust2/api/v1/patient').then(
-					function(response){
-						$scope.patient = response.data;
-						patient = $scope.patient;
-						// console.log($scope.patient);
-						$scope.getFoodDiaries($scope.patient);
-					}
-				);
-				
-				$scope.displayDiary = function(foodDiary) {
-					console.log("displayDiary");
-
-					return foodDiary.date + "-" + foodDiary.mealType;
+				$scope.displayDiary = function(p) {
+					return p.date + "-" + p.mealType;
 				}
 
 				$scope.selectPatient = function(patient){
-					console.log('selectPatient');
-					
 					$scope.selectedPatient = patient.username;
 				}
 
@@ -51,26 +38,30 @@
 						}, function(rejection){
 						});
 
-				$scope.getTotalNutrition= function(patient, date){
-					consoel.log('getTotalNutrition');
+				$scope.getTotalNutrition= function(username, date){
 
-					$scope.totNut = {};
 
 					$http({
 						method : 'GET',
-						url : '/iTrust2/api/v1/food_diary/view/' + patient.username + '/' + date
+						url : '/iTrust2/api/v1/food_diary/view/'+username+'/' + date
 					}).then(function(response){
 						$scope.totNut = response.data;
+						
+					
 					})
 
 				}
 
+				$http.get('/iTrust2/api/v1/patient').then(
+					function(response){
+						$scope.patient = response.data;
+						$scope.getFoodDiaries($scope.patient);
+				
+						
+					}
+				);
+
 				$scope.getFoodDiaries = function(patient){
-					console.log("getFoodDiary");
-					console.log(patient);
-
-					console.log(patient.username);
-
 					$scope.FoodDiaries = {};
 					$http({
 
@@ -83,11 +74,9 @@
 				}
 
 				$scope.selectFoodDiary = function(FoodDiary){
-					console.log("selectedFoodDiary");
-
 					$scope.selectedFoodDiary = FoodDiary;
-					console.log($scope.selectedFoodDiary);
-					$scope.getTotalNutrition();
+					$scope.getTotalNutrition($scope.selectedFoodDiary.username, $scope.selectedFoodDiary.date);
+					
 				}
 
 
@@ -103,20 +92,20 @@
 				<ul style="overflow: auto;height=100%;">
 					<!-- Information on how labels wor from here: https://stackoverflow.com/questions/7863251/clicking-the-text-to-select-corresponding-radio-button -->
 					<li ng-repeat="FoodDiary in FoodDiaries"><h4>
-							<label>
-									<input type="radio"
+							<label> <input type="radio"
 								ng-model="$parent.selectedFoodDiary" name="FoodDiary"
 								value="{{FoodDiary}}"
 								ng-click='$parent.selectFoodDiary(FoodDiary)' />&nbsp;{{$parent.displayDiary(FoodDiary)}}
 							</label>
+							<!-- <li ng-init = 'getTotalNutrition(selectedFoodDiary.username, selectedFoodDiary.date)'></li> -->
 						</h4></li>
 				</ul>
 			</div>
 			<div
-				style="float: left; width: 35%; border-left: 1px solid #bbb; padding-left: 1%; height: 100%; overflow-y: auto;">
-				<h2 id="header0">Date:{{selectedFoodDiary.date}}</h2>
-				<h2 id="header1">FoodName:{{selectedFoodDiary.foodName}} </h2>
-				<h2 id="header2">MealType:{{selectedFoodDiary.mealType}} </h2>
+				style="float: left; width: 40%; border-left: 1px solid #bbb; padding-left: 1%; height: 100%; overflow-y: auto;">
+				<h2 id="header0">Date: {{selectedFoodDiary.date}}</h2>
+				<h2 id="header1">FoodName: {{selectedFoodDiary.foodName}} </h2>
+				<h2 id="header2">MealType: {{selectedFoodDiary.mealType}} </h2>
 				<br>
 				<div ng-show="selectedFoodDiary">
 					<table>
@@ -159,7 +148,7 @@
 			</div>
 			<div ng-show="selectedFoodDiary">
 				<div
-				style="float: left; width: 35%; border-left: 1px solid #bbb; padding-left: 1%; height: 100%; overflow-y: auto;">
+				style="float: left; width: 30%; border-left: 1px solid #bbb; padding-left: 1%; height: 100%; overflow-y: auto;">
 					<h2 id="totals">Total Nutrition Information for Today</h2>
 					<br>
 					<table>
