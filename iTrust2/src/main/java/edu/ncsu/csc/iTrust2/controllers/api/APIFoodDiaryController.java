@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import edu.ncsu.csc.iTrust2.forms.FoodDiaryForm;
@@ -20,6 +22,8 @@ import edu.ncsu.csc.iTrust2.services.FoodDiaryService;
 import edu.ncsu.csc.iTrust2.services.PatientService;
 import edu.ncsu.csc.iTrust2.services.UserService;
 import edu.ncsu.csc.iTrust2.utils.LoggerUtil;
+
+import java.text.SimpleDateFormat;
 
 @RestController
 @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -80,15 +84,31 @@ public class APIFoodDiaryController extends APIController {
     @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}")
     public FoodDiary calculateDailyTotal(@PathVariable("patientMID") String username,
             @PathVariable("date") Date date) {
-        final FoodDiary dailyTotal = foodDiaryService.calculateDailyTotal(username, date);
-        return dailyTotal;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        String formattedDateString = simpleDateFormat.format(date);
+        Date formattedDate;
+        try {
+            formattedDate = (Date) simpleDateFormat.parse(formattedDateString);
+            System.out.println(formattedDate);
+
+            java.sql.Date sqlDate = new java.sql.Date(formattedDate.getTime());
+            final FoodDiary dailyTotal = foodDiaryService.calculateDailyTotal(username, sqlDate);
+            return dailyTotal;
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
-    @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}/{mealType}")
-    public ResponseEntity<List<FoodDiary>> viewEntries(@PathVariable("patientMID") String username,
-            @PathVariable("date") Date date, @PathVariable("mealType") String mealType) {
-        List<FoodDiary> entries = foodDiaryService.findByUsernameAndDateContains(username, date);
-        return ResponseEntity.ok(entries);
-    }
+    // @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}/{mealType}")
+    // public ResponseEntity<List<FoodDiary>>
+    // viewEntries(@PathVariable("patientMID") String username,
+    // @PathVariable("date") Date date, @PathVariable("mealType") String mealType) {
+    // List<FoodDiary> entries =
+    // foodDiaryService.findByUsernameAndDateContains(username, date);
+    // return ResponseEntity.ok(entries);
+    // }
 
 }

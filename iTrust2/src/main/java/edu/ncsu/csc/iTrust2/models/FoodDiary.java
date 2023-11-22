@@ -206,4 +206,7 @@ public class FoodDiary extends DomainObject {
 	public void setProteinPerServing(final Long proteinPerServing) {
 		this.proteinPerServing = proteinPerServing;
 	}
+
+	public void setId(int i) {
+	}
 }
