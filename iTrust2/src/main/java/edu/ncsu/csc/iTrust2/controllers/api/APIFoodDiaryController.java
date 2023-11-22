@@ -85,10 +85,10 @@ public class APIFoodDiaryController extends APIController {
     }
 
     @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}")
-    public FoodDiary calculateDailyTotal(@PathVariable("patientMID") String username,
+    public String calculateDailyTotal(@PathVariable("patientMID") String username,
             @PathVariable("date") String date) {
         final FoodDiary dailyTotal = foodDiaryService.calculateDailyTotal(username, date);
-        return dailyTotal;
+        return dailyTotal.getDate();
     }
 
     @GetMapping(BASE_PATH + "food_diary/view/{patientMID}/{date}/{mealType}")
