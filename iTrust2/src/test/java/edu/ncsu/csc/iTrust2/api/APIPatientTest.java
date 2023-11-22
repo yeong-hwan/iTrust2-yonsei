@@ -291,13 +291,13 @@ public class APIPatientTest {
                 .content(TestUtils.asJsonString(patient))).andExpect(status().isOk());
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("patientMID", "johnDoe");
+        params.add("patientUsername", "johnDoe");
 
         mvc.perform(get("/api/v1/emergency_health_records/view").params(params))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.patient.lastName").value("Doe"))
-                .andExpect(jsonPath("$.patient.age").value(46));
+                .andExpect(jsonPath("$.lastName").value("Doe"))
+                .andExpect(jsonPath("$.age").value(46));
     }
 
 }
