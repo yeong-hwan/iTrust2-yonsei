@@ -108,3 +108,33 @@ UC19는 식단일지 입출력이 필요함.
 ### 11/09 Cell2 meeting
 - UC 19에 대한 API, DB 제안  
 ![cell2_api-table](img/cell2_api-table.png){: width="800" height="1000"}
+
+- - -
+# UC API Documentations
+
+## API Documentation for UC15 Emergency Health Records
+
+| Function | Endpoint | Method | Request Payload | Success Response | Error Responses |
+|----------|----------|--------|------------------|-------------------|-----------------|
+| Search Emergency Health Records | `/api/emergency_health_records/search` | `GET` | `searchType` (String), `searchQuery` (String) | `200 OK` - List of Patients | `400 Bad Request` - Invalid search type or query<br>`404 Not Found` - No matching patients<br>`401 Unauthorized` - User not authenticated |
+| View Patient's Emergency Health Records | `/api/emergency_health_records/view/{patientUsername}` | `GET` | `patientUsername` (String) | `200 OK` - Patient's Emergency Health Record | `404 Not Found` - Patient not found<br>`401 Unauthorized` - User not authenticated |
+
+## API Documentation for UC19 Food Diary
+
+| Function | Endpoint | Method | Request Payload | Success Response | Error Responses |
+|----------|----------|--------|------------------|-------------------|-----------------|
+| Add Food Diary Entry | `/api/food_diary/add` | `POST` | `date` (-), `foodName` (String), `mealType` (String), `servingNumber` (-), `caloriesPerServing` (-), `fatPerServing` (-), `sodiumPerServing` (-), `carbsPerServing` (-), `sugarsPerServing` (-), `fiberPerServing` (-), `proteinPerServing` (-) | `200 OK` - Success Message | `400 Bad Request` - Missing or incorrect information <br>`401 Unauthorized` - User not authenticated |
+| View Patient Lists | `/api/food_diary/view` | `GET` |  | `200 OK` - Patients list | `404 Not Found` - Patient list not found</U> <br>`401 Unauthorized` - User not authenticated |
+| View Patient's Food Diary Date Lists | `/api/food_diary/view/{patientMID}` | `GET` | `patientMID` (String) | `200 OK` - Patients Date list | `404 Not Found` - Patient list not found <br>`401 Unauthorized` - User not authenticated |
+| View Patient's Food Diary | `/api/food_diary/view/{patientMID}/{date}/{mealType}` | `GET` | `patientMID` (String), `date` (-) `mealType` (String) | `200 OK` - Patient's Food diary | `404 Not Found` - Patient not found <br>`401 Unauthorized` - User not authenticated |
+| View Patient Nutrition Info (Total amount Per Day) | `api/food_diary/view/{patientMID}/{date}`| `GET` | `patientMID` (String), `date` (-) | `200 OK` - Patient's Nutrition Info | `404 Not Found` - No result found <br>`401 Unauthorized` - User not authenticated |
+
+## API Documentation for UC19 Food Diary
+
+| Function | Endpoint | Method | Request Payload | Success Response | Error Responses |
+|----------|----------|--------|------------------|-------------------|-----------------|
+| Add Food Diary Entry | `/api/food_diary/add` | `POST` | `date` (-), `foodName` (String), `mealType` (String), `servingNumber` (-), `caloriesPerServing` (-), `fatPerServing` (-), `sodiumPerServing` (-), `carbsPerServing` (-), `sugarsPerServing` (-), `fiberPerServing` (-), `proteinPerServing` (-) | `200 OK` - Success Message | `400 Bad Request` - Missing or incorrect information <br>`401 Unauthorized` - User not authenticated |
+| View Patient Lists | `/api/food_diary/view` | `GET` |  | `200 OK` - Patients list | `404 Not Found` - Patient list not found</U> <br>`401 Unauthorized` - User not authenticated |
+| View Patient's Food Diary Date Lists | `/api/food_diary/view/{patientMID}` | `GET` | `patientMID` (String) | `200 OK` - Patients Date list | `404 Not Found` - Patient list not found <br>`401 Unauthorized` - User not authenticated |
+| View Patient's Food Diary | `/api/food_diary/view/{patientMID}/{date}/{mealType}` | `GET` | `patientMID` (String), `date` (-) `mealType` (String) | `200 OK` - Patient's Food diary | `404 Not Found` - Patient not found <br>`401 Unauthorized` - User not authenticated |
+| View Patient Nutrition Info (Total amount Per Day) | `api/food_diary/view/{patientMID}/{date}`| `GET` | `patientMID` (String), `date` (-) | `200 OK` - Patient's Nutrition Info | `404 Not Found` - No result found <br>`401 Unauthorized` - User not authenticated |
