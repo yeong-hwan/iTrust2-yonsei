@@ -46,6 +46,9 @@ public class OfficeVisitService extends Service {
     @Autowired
     private DiagnosisService          diagnosisService;
 
+    @Autowired
+    private EyecheckupService eyecheckupService;
+
     @Override
     protected JpaRepository getRepository () {
         return repository;
@@ -110,6 +113,11 @@ public class OfficeVisitService extends Service {
         }
         ov.setHospital( hospitalService.findByName( ovf.getHospital() ) );
         ov.setBasicHealthMetrics( bhmService.build( ovf ) );
+
+        // add eyecheckup
+        if(ovf.getEyecheckup() != null){
+            ov.setEyecheckup(eyecheckupService.build(ovf));
+        }
 
         // associate all diagnoses with this visit
         if ( ovf.getDiagnoses() != null ) {
