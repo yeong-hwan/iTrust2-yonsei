@@ -107,5 +107,28 @@ public class PatientController {
     public String viewDiagnoses ( final Model model ) {
         return "/patient/officeVisit/viewDiagnoses";
     }
+    
+    /**
+     * @param model
+     *              data for front end
+     * @return The page for the patient to view their diagnoses
+     */
+    @GetMapping(value = "patient/FoodDiary/viewFoodDiary")
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    public String viewFoodDiary(final Model model) {
+        return "/patient/FoodDiary/viewFoodDiary";
+    }
 
+    /**
+     * @param model
+     *              data for front end
+     * @return The page for the patient to view their diagnoses
+     */
+    @GetMapping(value = "patient/FoodDiary/addFoodDiary")
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    public String addFoodDiary(final Model model) {
+        return "/patient/FoodDiary/addFoodDiary";
+    }
+
+    
 }
