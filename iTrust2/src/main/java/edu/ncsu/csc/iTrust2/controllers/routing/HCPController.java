@@ -154,5 +154,19 @@ public class HCPController {
     public String viewPatientFoodDiary(final Model model) {
         return "/hcp/FoodDiary/viewPatientFoodDiary";
     }
+    
+
+    /* 
+     * Returns the form page for a ER to view emergency health records
+     *
+     * @param model
+     *            Data for the front end
+     * @return The page to display to the user
+     */
+    @GetMapping ( "/hcp/viewEmergencyHealthRecords" )
+    @PreAuthorize ( "hasAnyRole('ROLE_HCP','ROLE_OPH','ROLE_OD')" )
+    public String viewEmergencyHealthRecords ( final Model model ) {
+        return "hcp/viewEmergencyHealthRecords";
+    }
 
 }
