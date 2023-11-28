@@ -370,9 +370,10 @@
                             }
                         }
                         else if ($scope.visit.type == 'OPHTHALMOLOGY_SURGERY' || $scope.visit.eyeCheckup) {
-													console.log('eyecheckup')
+							console.log('eyecheckup')
                         	// check 함수
                         	checkEyeHealthMetrics();
+                        	checkBasicHealthMetrics();
                         	if ($scope.errorMsg == "") {
                         		/* 체크해야 할 것: eyecheckup 여부 */
                         		/* surgery인 경우 surgery type 넣고...eyecheckup 넣고... */
@@ -384,19 +385,19 @@
 
                                 $scope.visit.labProcedures = $scope.procedures;
 
-																$scope.visit.eyecheckup = {
-																	patient: $scope.visit.patient,
-																	hcp: $scope.visit.hcp,
-																	visualAcuityOS: $scope.visualAcuityOS,
-																	visualAcuityOD: $scope.visualAcuityOD,
-																	sphereOS: $scope.sphereOS,
-																	sphereOD: $scope.sphereOD,
-																	cylinderOS: $scope.cylinderOS,
-																	cylinderOD: $scope.cylinderOD,
-																	axisOS: $scope.axisOS,
-																	axisOD: $scope.axisOD,
-																	// note: $scope.
-																};
+								$scope.visit.eyecheckup = {
+									patient: $scope.visit.patient,
+									hcp: $scope.visit.hcp,
+									visualAcuityOS: $scope.visualAcuityOS,
+									visualAcuityOD: $scope.visualAcuityOD,
+									sphereOS: $scope.sphereOS,
+									sphereOD: $scope.sphereOD,
+									cylinderOS: $scope.cylinderOS,
+									cylinderOD: $scope.cylinderOD,
+									axisOS: $scope.axisOS,
+									axisOD: $scope.axisOD,
+									// note: $scope.
+								};
 
                                 console.log($scope.visit)
                                 $http({

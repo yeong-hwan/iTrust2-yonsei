@@ -321,39 +321,39 @@
 
                     /*Checks validity of eye health metrics*/
                     function checkEyeHealthMetrics() {
-                        if (/^[0-9]{1,3}?$/.test(String($scope.visit.visualAcuityOS).replace(/^0+/, '')) == false) {
+                        if (/^[0-9]{1,3}?$/.test(String($scope.visualAcuityOS).replace(/^0+/, '')) == false) {
                             $scope.errorMsg += "Visual Acuity OS must be an integer value between 20 and 200 inclusive\n"
                         } else if (parseInt($scope.visit.visualAcuityOS) < 20 || parseInt($scope.visit.visualAcuityOS) > 200) {
                             $scope.errorMsg += "Visual Acuity OS must be an integer value between 20 and 200 inclusive\n"
                         }
 
-                        if (/^[0-9]{1,3}?$/.test(String($scope.visit.visualAcuityOD).replace(/^0+/, '')) == false) {
+                        if (/^[0-9]{1,3}?$/.test(String($scope.visualAcuityOD).replace(/^0+/, '')) == false) {
                             $scope.errorMsg += "Visual Acuity OD must be an integer value between 20 and 200 inclusive\n"
                         } else if (parseInt($scope.visit.visualAcuityOD) < 20 || parseInt($scope.visit.visualAcuityOD) > 200) {
                             $scope.errorMsg += "Visual Acuity OD must be an integer value between 20 and 200 inclusive\n"
                         }
 
-                        if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.visit.sphereOS)) == false) {
+                        if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.sphereOS)) == false) {
                             $scope.errorMsg += "Sphere OS must be a floating point number up to two digits\n"
                         }
-                        if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.visit.sphereOD)) == false) {
+                        if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.sphereOD)) == false) {
                             $scope.errorMsg += "Sphere OD must be a floating point number up to two digits\n"
                         }
 
-                        if ($scope.visit.cylinderOS != undefined || $scope.visit.cylinderOD != undefined) {
+                        if ($scope.visit.cylinderOS != undefined || $scope.cylinderOD != undefined) {
                             if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.visit.cylinderOS)) == false) {
                                 $scope.errorMsg += "Cylinder OS must be a floating point number up to two digits\n"
                             }
-                            if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.visit.cylinderOD)) == false) {
+                            if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.cylinderOD)) == false) {
                                 $scope.errorMsg += "Cylinder OD must be a floating point number up to two digits\n"
                             }
                             
-                            if (/^[0-9]{1,3}?$/.test(String($scope.visit.axisOS).replace(/^0+/, '')) == false) {
+                            if (/^[0-9]{1,3}?$/.test(String($scope.axisOS).replace(/^0+/, '')) == false) {
                                 $scope.errorMsg += "Axis OS must be an integer value between 1 and 180 inclusive\n"
                             } else if (parseInt($scope.visit.axisOS) < 1 || parseInt($scope.visit.axisOS) > 180) {
                                 $scope.errorMsg += "Axis OS must be an integer value between 1 and 180 inclusive\n"
                             }
-                            if (/^[0-9]{1,3}?$/.test(String($scope.visit.axisOD).replace(/^0+/, '')) == false) {
+                            if (/^[0-9]{1,3}?$/.test(String($scope.axisOD).replace(/^0+/, '')) == false) {
                                 $scope.errorMsg += "Axis OD must be an integer value between 1 and 180 inclusive\n"
                             } else if (parseInt($scope.visit.axisOD) < 1 || parseInt($scope.visit.axisOD) > 180) {
                                 $scope.errorMsg += "Axis OD must be an integer value between 1 and 180 inclusive\n"
@@ -448,9 +448,20 @@
                             }
                         }
                         else if ($scope.visit.type == 'OPHTHALMOLOGY_SURGERY' || $scope.visit.eyeCheckup) {
-													console.log('eyecheckup')
+							console.log('eyecheckup')
                         	// check 함수
+                       		$scope.visualAcuityOS = $scope.visit.visualAcuityOS;
+                            $scope.visualAcuityOD = $scope.visit.visualAcuityOD;
+                            $scope.sphereOS = $scope.visit.sphereOS;
+                            $scope.sphereOD = $scope.visit.sphereOD;
+                            $scope.cylinderOS = $scope.visit.cylinderOS;
+                            $scope.cylinderOD = $scope.visit.cylinderOD;
+                            $scope.axisOS = $scope.visit.axisOS;
+                            $scope.axisOD = $scope.visit.axisOD;
+                                
+							checkBasicHealthMetrics();
                         	checkEyeHealthMetrics();
+                        	
                         	if ($scope.errorMsg == "") {
                         		/* 체크해야 할 것: eyecheckup 여부 */
                         		/* surgery인 경우 surgery type 넣고...eyecheckup 넣고... */
@@ -461,11 +472,24 @@
                                 });
 
                                 $scope.visit.labProcedures = $scope.procedures;
-
+                                
+                                $scope.visit.eyecheckup = {
+									patient: $scope.visit.patient,
+									hcp: $scope.visit.hcp,
+									visualAcuityOS: $scope.visualAcuityOS,
+									visualAcuityOD: $scope.visualAcuityOD,
+									sphereOS: $scope.sphereOS,
+									sphereOD: $scope.sphereOD,
+									cylinderOS: $scope.cylinderOS,
+									cylinderOD: $scope.cylinderOD,
+									axisOS: $scope.axisOS,
+									axisOD: $scope.axisOD,
+									// note: $scope.
+								};
                                 console.log($scope.visit)
                                 $http({
-                                    method: 'POST',
-                                    url: '/iTrust2/api/v1/officevisits',
+                                    method: 'PUT',
+                                    url: '/iTrust2/api/v1/officevisits/'+$scope.visit.id,
                                     data: $scope.visit
                                 }).then(function (response) {
                                     $scope.errorMsg = "";
@@ -501,6 +525,13 @@
                     
                     // eyecheckup 정보 다 지우기
                     $scope.visualAcuityOS = "";
+                    $scope.visualAcuityOD = "";
+                    $scope.sphereOS = "";
+                    $scope.sphereOD = "";
+                    $scope.cylinderOD = "";
+                    $scope.cylinderOS = "";
+                    $scope.axisOS = "";
+                    $scope.axisOD = "";
 
                     // Clears local variables for diagnosis form
                     function resetDiagnosisForm() {
