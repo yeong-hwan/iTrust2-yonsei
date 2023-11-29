@@ -399,7 +399,32 @@
 									// note: $scope.
 								};
 
-                                console.log($scope.visit)
+                                $http({
+                                    method: 'POST',
+                                    url: '/iTrust2/api/v1/officevisits',
+                                    data: $scope.visit
+                                }).then(function (response) {
+                                    $scope.errorMsg = "";
+                                    $scope.message = "Office visit created successfully";
+                                }, function (rejection) {
+                                    $scope.message = "";
+                                    $scope.errorMsg = "Error occurred creating office visit";
+                                })
+                            }
+                        }
+												else if ($scope.visit.type == 'GENERAL_OPHTHALMOLOGY') {
+                        	// check 함수
+                        	checkBasicHealthMetrics();
+                        	if ($scope.errorMsg == "") {
+                        		/* 체크해야 할 것: eyecheckup 여부 */
+                        		/* surgery인 경우 surgery type 넣고...eyecheckup 넣고... */
+                                $scope.visit.diagnoses = $scope.diagnoses;
+                                $scope.visit.prescriptions = $scope.prescriptions;
+                                $scope.visit.prescriptions.forEach(function (p) {
+                                    p.patient = $scope.visit.patient;
+                                });
+
+                                $scope.visit.labProcedures = $scope.procedures;
                                 $http({
                                     method: 'POST',
                                     url: '/iTrust2/api/v1/officevisits',
@@ -765,7 +790,7 @@
 									</div>
 
 									<!-- Diagnosis Panel  -->
-									<div ng-show="visit.type == 'GENERAL_CHECKUP' || visit.eyeCheckup && visit.type != 'OPHTHALMOLOGY_SURGERY'" class="col-md-4">
+									<div ng-show="visit.type == 'GENERAL_CHECKUP' || visit.type == 'GENERAL_OPHTHALMOLOGY' || visit.eyeCheckup && visit.type != 'OPHTHALMOLOGY_SURGERY'" class="col-md-4">
 										<div class="panel panel-info">
 											<div class="panel-heading">
 												<h4>Diagnosis</h4>
@@ -940,7 +965,7 @@
 
 
 									<!-- Prescription Panel -->
-									<div ng-show="visit.type == 'GENERAL_CHECKUP'" class="col-md-4">
+									<div ng-show="visit.type == 'GENERAL_CHECKUP' || visit.type == 'GENERAL_OPHTHALMOLOGY'" class="col-md-4">
 										<div class="panel panel-info">
 											<div class="panel-heading">
 												<h4>Prescription</h4>
