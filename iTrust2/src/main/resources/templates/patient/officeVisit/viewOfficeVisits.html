@@ -20,15 +20,17 @@
 		/*<![CDATA[*/
 			var app = angular.module("viewOfficeVisits", []);
 			app.controller('controller', function($scope, $http) {
-				// get all diagnoses of patient and display in table			
+				// get all visits of patient and display in table			
 				$http.get("/iTrust2/api/v1/officevisits/myofficevisits").then(
 						function(response) {
 							console.log(response.data)
-							$scope.diagnoses = response.data;
+							$scope.visits = response.data;
+							console.log(response.data[0].date)
+							console.log(new Date(response.data[0].date))
 							$scope.message = "";
 						}, function(rejection) {
 							$scope.diagoses = [];
-							$scope.message = "Unable to display diagnoses";
+							$scope.message = "Unable to display visits";
 						});
 				
 				
@@ -41,8 +43,14 @@
 				}
 				
 				// Format a date from given json
-				$scope.getDate = function getDate(date) {
+				$scope.getDate = function getDate(dateString) {
 					/* The months start at 0... only the months.  So we have to add 1 to get the correct input.*/
+					var dateObject = new Date(dateString);
+					var date = {
+						year: dateObject.getFullYear(),
+						month: dateObject.getMonth(),
+						dayOfMonth: dateObject.getDate()
+					};
 					month = date.month + 1;
 					return twoDigit(month) + "/" + twoDigit(date.dayOfMonth) + "/" + date.year;
 				}
@@ -61,18 +69,18 @@
 						<tr>
 							<th>Date</th>
 							<th>HCP</th>
-							<th>ICD-10 Code</th>
-							<th>Description</th>
-							<th>Notes</th>
+							<th>Hospital</th>
+							<th>Type</th>
+							<th>Details</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="d in diagnoses" name="diagnosis">
-							<td name="date">{{getDate(d.visit.date)}}</td>
-							<td name="hcp">{{d.visit.hcp.username}}</td>
-							<td name="code">{{d.code.code}}</td>
-							<td name="description">{{d.code.description}}</td>
-							<td name="note">{{d.note}}</td>
+						<tr ng-repeat="d in visits" name="visit">
+							<td name="date">{{getDate(d.date)}}</td>
+							<td name="hcp">{{d.hcp.username}}</td>
+							<td name="hospital">{{d.hospital.name}}</td>
+							<td name="type">{{d.type.toLowerCase().split('_')[0].charAt(0).toUpperCase() + d.type.toLowerCase().split('_')[0].substring(1) + ' ' + d.type.toLowerCase().split('_')[1].charAt(0).toUpperCase() + d.type.toLowerCase().split('_')[1].substring(1)}}</td>
+							<td ng-if="d.type.includes('SURGERY')" name="details"><button class="btn btn-primary"><a ng-href="/iTrust2/patient/officeVisit/viewSurgeryDetails/{{d.id}}" id="viewSurgeryDetails" style="color: white; text-decoration: none;">view surgery details</a></button></td>
 						</tr>
 					</tbody>
 				</table>
