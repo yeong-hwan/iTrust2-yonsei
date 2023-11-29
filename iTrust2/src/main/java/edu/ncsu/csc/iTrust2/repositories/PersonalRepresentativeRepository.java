@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import edu.ncsu.csc.iTrust2.models.PersonalRepresentative;
 
 public interface PersonalRepresentativeRepository extends JpaRepository<PersonalRepresentative, Long> {
-  List<PersonalRepresentative> findAllByAssignorConataining(String assignor);
+  List<PersonalRepresentative> findAllByAssignorContaining(String assignor);
 
   List<PersonalRepresentative> findAllByAssigneeContaining(String assignee);
 
