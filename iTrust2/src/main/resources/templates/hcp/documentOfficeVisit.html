@@ -765,7 +765,7 @@
 									</div>
 
 									<!-- Diagnosis Panel  -->
-									<div ng-show="visit.type == 'GENERAL_CHECKUP' || visit.eyeCheckup && visit.type != 'OPHTHALMOLOGY_SURGERY'" class="col-md-4">
+									<div ng-show="visit.type == 'GENERAL_CHECKUP' || visit.type == 'GENERAL_OPHTHALMOLOGY' || visit.eyeCheckup && visit.type != 'OPHTHALMOLOGY_SURGERY'" class="col-md-4">
 										<div class="panel panel-info">
 											<div class="panel-heading">
 												<h4>Diagnosis</h4>
@@ -940,7 +940,7 @@
 
 
 									<!-- Prescription Panel -->
-									<div ng-show="visit.type == 'GENERAL_CHECKUP'" class="col-md-4">
+									<div ng-show="visit.type == 'GENERAL_CHECKUP' || visit.type == 'GENERAL_OPHTHALMOLOGY'" class="col-md-4">
 										<div class="panel panel-info">
 											<div class="panel-heading">
 												<h4>Prescription</h4>
