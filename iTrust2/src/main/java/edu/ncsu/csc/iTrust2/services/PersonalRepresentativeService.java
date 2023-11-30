@@ -34,4 +34,5 @@ public class PersonalRepresentativeService extends Service {
   public List<PersonalRepresentative> findByAssginorAndAssigneeContains(final String assignor, final String assignee) {
     return repository.findAllByAssignorAndAssigneeContaining(assignor, assignee);
   }
+
 }

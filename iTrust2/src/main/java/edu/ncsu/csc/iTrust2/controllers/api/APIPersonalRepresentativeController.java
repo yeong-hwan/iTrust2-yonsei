@@ -2,13 +2,16 @@ package edu.ncsu.csc.iTrust2.controllers.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.ncsu.csc.iTrust2.forms.PersonalRepresentativeForm;
+import edu.ncsu.csc.iTrust2.models.Drug;
 import edu.ncsu.csc.iTrust2.models.PersonalRepresentative;
 import edu.ncsu.csc.iTrust2.models.User;
 import edu.ncsu.csc.iTrust2.services.PatientService;
@@ -96,5 +99,22 @@ public class APIPersonalRepresentativeController extends APIController {
         .findByAssgineeContains(self.getUsername());
 
     return ResponseEntity.ok(assigneeAssignorPair);
+  }
+
+  @DeleteMapping(BASE_PATH +
+      "/personal_representetives/release/{id}")
+  public ResponseEntity releasePersonalRepresentative(@PathVariable final String id) {
+    try {
+      final PersonalRepresentative personalRepresentative = (PersonalRepresentative) personalRepresentativeService
+          .findById(Long.parseLong(id));
+
+      personalRepresentativeService.delete(personalRepresentative);
+
+      return new ResponseEntity(id, HttpStatus.OK);
+
+    } catch (final Exception e) {
+      return new ResponseEntity(errorResponse("Error: " + e.getMessage()),
+          HttpStatus.BAD_REQUEST);
+    }
   }
 }
