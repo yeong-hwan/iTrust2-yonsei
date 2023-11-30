@@ -18,6 +18,8 @@ import edu.ncsu.csc.iTrust2.services.PatientService;
 import edu.ncsu.csc.iTrust2.services.PersonalRepresentativeService;
 import edu.ncsu.csc.iTrust2.services.UserService;
 import edu.ncsu.csc.iTrust2.utils.LoggerUtil;
+
+import java.util.ArrayList;
 import java.util.List;
 // import io.swagger.annotations.Api;
 
@@ -116,5 +118,23 @@ public class APIPersonalRepresentativeController extends APIController {
       return new ResponseEntity(errorResponse("Error: " + e.getMessage()),
           HttpStatus.BAD_REQUEST);
     }
+  }
+
+  @GetMapping(BASE_PATH +
+      "/personal_representetives/view/{patient_1}/{patient_2}")
+  public ResponseEntity viewRelationship(@PathVariable("patient_1") final String patient_1,
+      @PathVariable("patient_2") final String patient_2) {
+
+    final List<PersonalRepresentative> relationship1 = personalRepresentativeService
+        .findByAssginorAndAssigneeContains(patient_1, patient_2);
+
+    final List<PersonalRepresentative> relationship2 = personalRepresentativeService
+        .findByAssginorAndAssigneeContains(patient_2, patient_1);
+
+    final List<PersonalRepresentative> joinedRelationship = new ArrayList<>();
+    joinedRelationship.addAll(relationship1);
+    joinedRelationship.addAll(relationship2);
+
+    return ResponseEntity.ok(joinedRelationship);
   }
 }
