@@ -2,6 +2,7 @@ package edu.ncsu.csc.iTrust2.controllers.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import edu.ncsu.csc.iTrust2.services.PatientService;
 import edu.ncsu.csc.iTrust2.services.PersonalRepresentativeService;
 import edu.ncsu.csc.iTrust2.services.UserService;
 import edu.ncsu.csc.iTrust2.utils.LoggerUtil;
+import java.util.List;
 // import io.swagger.annotations.Api;
 
 import org.springframework.http.HttpStatus;
@@ -72,5 +74,27 @@ public class APIPersonalRepresentativeController extends APIController {
           errorResponse("Error: " + e.getMessage()),
           HttpStatus.BAD_REQUEST);
     }
+  }
+
+  @GetMapping(BASE_PATH +
+      "/personal_representetives/view/assignee")
+  public ResponseEntity viewAssignee() {
+    final User self = userService.findByName(LoggerUtil.currentUser());
+
+    final List<PersonalRepresentative> assignorAssigneePair = personalRepresentativeService
+        .findByAssginorContains(self.getUsername());
+
+    return ResponseEntity.ok(assignorAssigneePair);
+  }
+
+  @GetMapping(BASE_PATH +
+      "/personal_representetives/view/assignor")
+  public ResponseEntity viewAssignor() {
+    final User self = userService.findByName(LoggerUtil.currentUser());
+
+    final List<PersonalRepresentative> assigneeAssignorPair = personalRepresentativeService
+        .findByAssgineeContains(self.getUsername());
+
+    return ResponseEntity.ok(assigneeAssignorPair);
   }
 }
