@@ -1,5 +1,6 @@
 package edu.ncsu.csc.iTrust2.models;
 
+import edu.ncsu.csc.iTrust2.models.enums.SurgeryType;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -63,6 +64,11 @@ public class OfficeVisit extends DomainObject {
     @OneToOne ( cascade = CascadeType.ALL )
     @JoinColumn ( name = "eyecheckup_id" )
     private Eyecheckup eyecheckup;
+
+    /*
+    1201 : Add surgeryType column
+     */
+    private SurgeryType surgeryType;
 
     /**
      * The date of this office visit
@@ -396,6 +402,14 @@ public class OfficeVisit extends DomainObject {
 
     public void setEyecheckup(final Eyecheckup eyecheckup){
         this.eyecheckup = eyecheckup;
+    }
+
+    public void setSurgeryType(final SurgeryType surgeryType){
+        this.surgeryType = surgeryType;
+    }
+
+    public SurgeryType getSurgeryType(){
+        return surgeryType;
     }
 
 }

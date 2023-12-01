@@ -119,6 +119,11 @@ public class OfficeVisitService extends Service {
             ov.setEyecheckup(eyecheckupService.build(ovf));
         }
 
+        // add surgeryType
+        if (ovf.getSurgeryType() != null){
+            ov.setSurgeryType(ovf.getSurgeryType());
+        }
+
         // associate all diagnoses with this visit
         if ( ovf.getDiagnoses() != null ) {
             ov.setDiagnoses(
