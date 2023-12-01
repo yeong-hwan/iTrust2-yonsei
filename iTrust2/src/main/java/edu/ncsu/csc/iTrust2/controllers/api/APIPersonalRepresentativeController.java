@@ -2,6 +2,7 @@ package edu.ncsu.csc.iTrust2.controllers.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,13 +39,10 @@ public class APIPersonalRepresentativeController extends APIController {
   private PersonalRepresentativeService personalRepresentativeService;
 
   @Autowired
-  private PatientService patientService;
-
-  @Autowired
   private UserService userService;
 
   @PostMapping(BASE_PATH +
-      "/personal_representetives/assign/assignee/{assingeePatientMID}")
+      "/personal_representetives/assign/assignee")
   public ResponseEntity assignAssignee(@RequestBody PersonalRepresentativeForm form) {
     try {
       final PersonalRepresentative personalRepresentative = new PersonalRepresentative(form);
@@ -63,7 +61,7 @@ public class APIPersonalRepresentativeController extends APIController {
   }
 
   @PostMapping(BASE_PATH +
-      "/personal_representetives/assign/assignor/{assingorPatientMID}")
+      "/personal_representetives/assign/assignor")
   public ResponseEntity assignAssignor(@RequestBody PersonalRepresentativeForm form) {
     try {
       final PersonalRepresentative personalRepresentative = new PersonalRepresentative(form);
@@ -121,20 +119,44 @@ public class APIPersonalRepresentativeController extends APIController {
   }
 
   @GetMapping(BASE_PATH +
-      "/personal_representetives/view/{patient_1}/{patient_2}")
-  public ResponseEntity viewRelationship(@PathVariable("patient_1") final String patient_1,
-      @PathVariable("patient_2") final String patient_2) {
+      "/personal_representetives/view/relationship")
+  public ResponseEntity viewRelationship(@RequestBody PersonalRepresentativeForm form) {
+    try {
+      PersonalRepresentative personalRepresentative = new PersonalRepresentative(form);
 
-    final List<PersonalRepresentative> relationship1 = personalRepresentativeService
-        .findByAssginorAndAssigneeContains(patient_1, patient_2);
+      String patient_1 = personalRepresentative.getAssignee();
+      String patient_2 = personalRepresentative.getAssignor();
 
-    final List<PersonalRepresentative> relationship2 = personalRepresentativeService
-        .findByAssginorAndAssigneeContains(patient_2, patient_1);
+      final List<PersonalRepresentative> relationship1 = personalRepresentativeService
+          .findByAssginorAndAssigneeContains(patient_1, patient_2);
 
-    final List<PersonalRepresentative> joinedRelationship = new ArrayList<>();
-    joinedRelationship.addAll(relationship1);
-    joinedRelationship.addAll(relationship2);
+      final List<PersonalRepresentative> relationship2 = personalRepresentativeService
+          .findByAssginorAndAssigneeContains(patient_2, patient_1);
 
-    return ResponseEntity.ok(joinedRelationship);
+      final List<PersonalRepresentative> joinedRelationship = new ArrayList<>();
+      joinedRelationship.addAll(relationship1);
+      joinedRelationship.addAll(relationship2);
+
+      return ResponseEntity.ok(joinedRelationship);
+
+    } catch (final Exception e) {
+      return new ResponseEntity(errorResponse("Error: " + e.getMessage()),
+          HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @PostMapping(BASE_PATH + "/personal_representetives/assgin/relationship")
+  public ResponseEntity assignRelationship(@RequestBody PersonalRepresentativeForm form) {
+    try {
+      final PersonalRepresentative personalRepresentative = new PersonalRepresentative(form);
+
+      personalRepresentativeService.save(personalRepresentative);
+
+      return new ResponseEntity(personalRepresentative, HttpStatus.OK);
+
+    } catch (final Exception e) {
+      return new ResponseEntity(errorResponse("Error: " + e.getMessage()),
+          HttpStatus.BAD_REQUEST);
+    }
   }
 }
