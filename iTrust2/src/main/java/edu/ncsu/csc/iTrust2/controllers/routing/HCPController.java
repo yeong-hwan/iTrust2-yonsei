@@ -109,16 +109,15 @@ public class HCPController {
     }
 
     /**
-<<<<<<< HEAD:iTrust2/src/main/java/edu/ncsu/csc/iTrust2/controllers/routing/HCPController.java
      * Returns the form page for a HCP to view an OfficeVisit
      *
      * @param model
-     *            The data for the front end
+     *              The data for the front end
      * @return Page to display to the user
      */
-    @GetMapping ( "/hcp/editOfficeVisit" )
-    @PreAuthorize ( "hasAnyRole('ROLE_HCP', 'ROLE_OPH','ROLE_OD')" )
-    public String editOfficeVisit ( final Model model ) {
+    @GetMapping("/hcp/editOfficeVisit")
+    @PreAuthorize("hasAnyRole('ROLE_HCP', 'ROLE_OPH','ROLE_OD')")
+    public String editOfficeVisit(final Model model) {
         return "/hcp/editOfficeVisit";
     }
 
@@ -126,27 +125,26 @@ public class HCPController {
      * Returns the form page for a HCP to edit an OfficeVisit
      *
      * @param model
-     *            The data for the front end
+     *              The data for the front end
      * @return Page to display to the user
      */
-    @GetMapping ( "/hcp/editDocumentOfficeVisit/{id}" )
-    @PreAuthorize ( "hasAnyRole('ROLE_HCP', 'ROLE_OPH','ROLE_OD')" )
-    public String editDocumentOfficeVisit ( @PathVariable String id, final Model model ) {
+    @GetMapping("/hcp/editDocumentOfficeVisit/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_HCP', 'ROLE_OPH','ROLE_OD')")
+    public String editDocumentOfficeVisit(@PathVariable String id, final Model model) {
         model.addAttribute("id", id);
         return "/hcp/editDocumentOfficeVisit";
     }
 
-
-    /* 
+    /*
      * Returns the form page for a ER to view emergency health records
-=======
-     * HEAD:iTrust2/src/main/java/edu/ncsu/csc/itrust2/controllers/routing/HCPController.java
+     * HEAD:iTrust2/src/main/java/edu/ncsu/csc/itrust2/controllers/routing/
+     * HCPController.java
      * Method responsible for HCP's Accept/Reject requested appointment
      * functionality. This prepares the page.
->>>>>>> origin/feature/team2-BE:iTrust2/src/main/java/edu/ncsu/csc/itrust2/controllers/routing/HCPController.java
      *
      * @param model
-     *              Data for the front end
+     * Data for the front end
+     * 
      * @return The page to display to the user
      */
     @GetMapping("hcp/FoodDiary/viewPatientFoodDiary")
