@@ -85,11 +85,28 @@ public class APIOfficeVisitController extends APIController {
     @PreAuthorize ( "hasAnyRole('ROLE_HCP', 'ROLE_OD', 'ROLE_OPH')" )
     public ResponseEntity getOfficeVisit ( @PathVariable final Long id ) {
         final User self = userService.findByName( LoggerUtil.currentUser() );
-        loggerUtil.log( TransactionType.GENERAL_CHECKUP_HCP_VIEW, self );
+//        loggerUtil.log( TransactionType.GENERAL_CHECKUP_HCP_VIEW, self );
         if ( !officeVisitService.existsById( id ) ) {
             return new ResponseEntity( HttpStatus.NOT_FOUND );
         }
-
+        //12.02 logger 수정
+        OfficeVisit officeVisit = (OfficeVisit) officeVisitService.findById(id);
+        // 여기서 visitType을 기반으로 로그 타입 결정
+        TransactionType logType;
+        switch (officeVisit.getType()) { // getVisitType 메소드가 존재한다고 가정
+            case GENERAL_CHECKUP:
+                logType = TransactionType.GENERAL_CHECKUP_HCP_VIEW;
+                break;
+            case GENERAL_OPHTHALMOLOGY:
+                logType = TransactionType.GENERAL_OPHTHALMOLOGY_HCP_VIEW;
+                break;
+            case OPHTHALMOLOGY_SURGERY:
+                logType = TransactionType.OPHTHALMOLOGY_SURGERY_HCP_VIEW;
+                break;
+            default:
+                logType = TransactionType.GENERAL_CHECKUP_HCP_VIEW; // 기본값 설정
+        }        
+        loggerUtil.log(logType, self);
         return new ResponseEntity( officeVisitService.findById( id ), HttpStatus.OK );
     }
     
@@ -124,6 +141,23 @@ public class APIOfficeVisitController extends APIController {
     public ResponseEntity createOfficeVisit ( @RequestBody final OfficeVisitForm visitForm ) {
         try {
             final OfficeVisit visit = officeVisitService.build( visitForm );
+            
+
+            // 12.02 로그 타입 결정을 위한 로직
+            TransactionType logType;
+            switch (visit.getType()) {
+            	case GENERAL_CHECKUP:
+            		logType = TransactionType.GENERAL_CHECKUP_CREATE;
+            		break;
+            	case GENERAL_OPHTHALMOLOGY:
+            		logType = TransactionType.GENERAL_OPHTHALMOLOGY_CREATE;
+            		break;
+            	case OPHTHALMOLOGY_SURGERY:
+            		logType = TransactionType.OPHTHALMOLOGY_SURGERY_CREATE;
+            		break;
+            	default:
+            		logType = TransactionType.GENERAL_CHECKUP_CREATE; // 기본값 설정
+            }
 
             if ( null != visit.getId() && officeVisitService.existsById( visit.getId() ) ) {
                 return new ResponseEntity(
@@ -131,7 +165,7 @@ public class APIOfficeVisitController extends APIController {
                         HttpStatus.CONFLICT );
             }
             officeVisitService.save( visit );
-            loggerUtil.log( TransactionType.GENERAL_CHECKUP_CREATE, LoggerUtil.currentUser(),
+            loggerUtil.log( logType, LoggerUtil.currentUser(),
                     visit.getPatient().getUsername() );
             return new ResponseEntity( visit, HttpStatus.OK );
 
@@ -159,6 +193,22 @@ public class APIOfficeVisitController extends APIController {
             @RequestBody final OfficeVisitForm visitForm ) {
         try {
             final OfficeVisit visit = officeVisitService.build( visitForm );
+            
+            // 12.02 로그 타입 결정을 위한 로직
+            TransactionType logType;
+            switch (visit.getType()) {
+            	case GENERAL_CHECKUP:
+            		logType = TransactionType.GENERAL_CHECKUP_EDIT;
+            		break;
+            	case GENERAL_OPHTHALMOLOGY:
+            		logType = TransactionType.GENERAL_OPHTHALMOLOGY_EDIT;
+            		break;
+            	case OPHTHALMOLOGY_SURGERY:
+            		logType = TransactionType.OPHTHALMOLOGY_SURGERY_EDIT;
+            		break;
+            	default:
+            		logType = TransactionType.GENERAL_CHECKUP_EDIT; // 기본값 설정
+            }
 
             if ( null == visit.getId() || !officeVisitService.existsById( visit.getId() ) ) {
                 return new ResponseEntity(
@@ -166,7 +216,7 @@ public class APIOfficeVisitController extends APIController {
                         HttpStatus.NOT_FOUND );
             }
             officeVisitService.save( visit );
-            loggerUtil.log( TransactionType.GENERAL_CHECKUP_EDIT, LoggerUtil.currentUser(),
+            loggerUtil.log( logType, LoggerUtil.currentUser(),
                     visit.getPatient().getUsername() );
             return new ResponseEntity( visit, HttpStatus.OK );
 
