@@ -411,5 +411,10 @@ public class OfficeVisit extends DomainObject {
     public SurgeryType getSurgeryType(){
         return surgeryType;
     }
+    
+    // 12.02 patient가 볼 수 있는 surgery visit 정보 추가
+    public OphSurgeryVisit getSurgeryVisit() {
+    	return new OphSurgeryVisit(this.eyecheckup, this.surgeryType, this.notes);
+    }
 
 }
