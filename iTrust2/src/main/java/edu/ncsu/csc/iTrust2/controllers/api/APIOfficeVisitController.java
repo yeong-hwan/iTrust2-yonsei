@@ -92,6 +92,25 @@ public class APIOfficeVisitController extends APIController {
 
         return new ResponseEntity( officeVisitService.findById( id ), HttpStatus.OK );
     }
+    
+    /**12.02 
+     * get information of surgery visit of given id
+     *
+     * @param id
+     *            ID of the surgery visit to retrieve
+     * @return list of surgery visits
+     */
+    @GetMapping ( BASE_PATH + "/surgeryvisits/{id}" )
+    @PreAuthorize ( "hasRole('ROLE_PATIENT')" )
+    public ResponseEntity getSurgeryVisit ( @PathVariable final Long id ) {
+        final User self = userService.findByName( LoggerUtil.currentUser() );
+        loggerUtil.log( TransactionType.OPHTHALMOLOGY_SURGERY_PATIENT_VIEW, self );
+        if ( !officeVisitService.existsById( id ) ) {
+            return new ResponseEntity( HttpStatus.NOT_FOUND );
+        }
+        OfficeVisit officeVisit = (OfficeVisit) officeVisitService.findById(id);
+        return new ResponseEntity( officeVisit.getSurgeryVisit(), HttpStatus.OK );
+    }
 
     /**
      * Creates and saves a new OfficeVisit from the RequestBody provided.

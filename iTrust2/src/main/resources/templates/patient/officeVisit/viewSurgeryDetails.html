@@ -55,6 +55,11 @@
 		    $scope.genders = response.data;
 		});
 		
+		// 12.01 test for surgeryvisits api params로 들어온 visit id parsing 해서 완성부탁드립니다! -SH-
+		$http.get("/iTrust2/api/v1/surgeryvisits/35").then(function(response) {
+		    console.log(response.data);
+		});
+		
 		$http.get("/iTrust2/api/v1/patients").then(function(response) {
 		    var patients = response.data;
 		    var patientNames = [];
