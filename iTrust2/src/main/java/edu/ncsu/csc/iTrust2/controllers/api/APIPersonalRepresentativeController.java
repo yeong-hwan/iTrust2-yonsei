@@ -42,7 +42,7 @@ public class APIPersonalRepresentativeController extends APIController {
   private UserService userService;
 
   @PostMapping(BASE_PATH +
-      "/personal_representetives/assign_assignee/{assignee}")
+      "/personal_representatives/assign_assignee/{assignee}")
   public ResponseEntity assignAssignee(@PathVariable("assignee") String assignee) {
     try {
       final PersonalRepresentative personalRepresentative = new PersonalRepresentative();
@@ -62,7 +62,7 @@ public class APIPersonalRepresentativeController extends APIController {
   }
 
   @PostMapping(BASE_PATH +
-      "/personal_representetives/assign_assignor/{assignor}")
+      "/personal_representatives/assign_assignor/{assignor}")
   public ResponseEntity assignAssignor(@PathVariable("assignor") String assignor) {
     try {
       final PersonalRepresentative personalRepresentative = new PersonalRepresentative();
@@ -82,7 +82,7 @@ public class APIPersonalRepresentativeController extends APIController {
   }
 
   @GetMapping(BASE_PATH +
-      "/personal_representetives/view/assignee")
+      "/personal_representatives/view/assignee")
   public ResponseEntity viewAssignee() {
     final User self = userService.findByName(LoggerUtil.currentUser());
 
@@ -93,7 +93,7 @@ public class APIPersonalRepresentativeController extends APIController {
   }
 
   @GetMapping(BASE_PATH +
-      "/personal_representetives/view/assignor")
+      "/personal_representatives/view/assignor")
   public ResponseEntity viewAssignor() {
     final User self = userService.findByName(LoggerUtil.currentUser());
 
@@ -104,7 +104,7 @@ public class APIPersonalRepresentativeController extends APIController {
   }
 
   @DeleteMapping(BASE_PATH +
-      "/personal_representetives/release_assignor/{assignor}")
+      "/personal_representatives/release_assignor/{assignor}")
   public ResponseEntity releaseAssignor(@PathVariable("assignor") String assignor) {
     try {
       final User self = userService.findByName(LoggerUtil.currentUser());
@@ -125,7 +125,7 @@ public class APIPersonalRepresentativeController extends APIController {
   }
 
   @DeleteMapping(BASE_PATH +
-      "/personal_representetives/release_assignee/{assignee}")
+      "/personal_representatives/release_assignee/{assignee}")
   public ResponseEntity releaseAssignee(@PathVariable("assignee") String assignee) {
     try {
       final User self = userService.findByName(LoggerUtil.currentUser());
@@ -146,7 +146,7 @@ public class APIPersonalRepresentativeController extends APIController {
   }
 
   @GetMapping(BASE_PATH +
-      "/personal_representetives/view/relationship")
+      "/personal_representatives/view/relationship")
   public ResponseEntity viewRelationship(@RequestBody PersonalRepresentativeForm form) {
     try {
       PersonalRepresentative personalRepresentative = new PersonalRepresentative(form);
@@ -172,7 +172,7 @@ public class APIPersonalRepresentativeController extends APIController {
     }
   }
 
-  @PostMapping(BASE_PATH + "/personal_representetives/assgin_relationship/{assignee}/{assignor}")
+  @PostMapping(BASE_PATH + "/personal_representatives/assgin_relationship/{assignee}/{assignor}")
   public ResponseEntity assignRelationship(@PathVariable("assignee") String assignee,
       @PathVariable("assignor") String assignor) {
     try {
