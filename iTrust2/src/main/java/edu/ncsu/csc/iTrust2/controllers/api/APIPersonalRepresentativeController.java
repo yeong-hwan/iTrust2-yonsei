@@ -42,13 +42,14 @@ public class APIPersonalRepresentativeController extends APIController {
   private UserService userService;
 
   @PostMapping(BASE_PATH +
-      "/personal_representetives/assign/assignee")
-  public ResponseEntity assignAssignee(@RequestBody PersonalRepresentativeForm form) {
+      "/personal_representetives/assign_assignee/{assignee}")
+  public ResponseEntity assignAssignee(@PathVariable("assignee") String assignee) {
     try {
-      final PersonalRepresentative personalRepresentative = new PersonalRepresentative(form);
+      final PersonalRepresentative personalRepresentative = new PersonalRepresentative();
 
       final User self = userService.findByName(LoggerUtil.currentUser());
       personalRepresentative.setAssignor(self.getUsername());
+      personalRepresentative.setAssignee(assignee);
       personalRepresentativeService.save(personalRepresentative);
 
       return new ResponseEntity(personalRepresentative, HttpStatus.OK);
@@ -61,12 +62,13 @@ public class APIPersonalRepresentativeController extends APIController {
   }
 
   @PostMapping(BASE_PATH +
-      "/personal_representetives/assign/assignor")
-  public ResponseEntity assignAssignor(@RequestBody PersonalRepresentativeForm form) {
+      "/personal_representetives/assign_assignor/{assignor}")
+  public ResponseEntity assignAssignor(@PathVariable("assignor") String assignor) {
     try {
-      final PersonalRepresentative personalRepresentative = new PersonalRepresentative(form);
+      final PersonalRepresentative personalRepresentative = new PersonalRepresentative();
 
       final User self = userService.findByName(LoggerUtil.currentUser());
+      personalRepresentative.setAssignor(assignor);
       personalRepresentative.setAssignee(self.getUsername());
       personalRepresentativeService.save(personalRepresentative);
 

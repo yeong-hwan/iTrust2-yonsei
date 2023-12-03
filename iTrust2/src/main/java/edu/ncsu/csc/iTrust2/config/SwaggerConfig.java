@@ -1,6 +1,8 @@
+// package edu.ncsu.csc.iTrust2.config;
+
 // import org.springframework.context.annotation.Bean;
 // import org.springframework.context.annotation.Configuration;
-// import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+// import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 // import springfox.documentation.builders.ApiInfoBuilder;
 // import springfox.documentation.builders.PathSelectors;
@@ -12,27 +14,24 @@
 
 // @Configuration
 // @EnableSwagger2
-// @EnableWebMvc
-// public class SwaggerConfig {
+// public class SwaggerConfig implements WebMvcConfigurer {
+// private ApiInfo apiInfo() {
 
-// @Bean
-// public Docket api() {
-// return new Docket(DocumentationType.OAS_30) // open api spec 3.0
-// .groupName("groupName")
-// .select()
-// // .apis(RequestHandlerSelectors.basePackage("com.example.swagger"))
-// // .paths(PathSelectors.ant("/api/**"))
-// .apis(RequestHandlerSelectors.any())
-// .paths(PathSelectors.any())
-// .build()
-// .apiInfo(this.apiInfo());
+// return new ApiInfoBuilder()
+// .title("Demo")
+// .description("API EXAMPLE")
+// .build();
 // }
 
-// private ApiInfo apiInfo() {
-// return new ApiInfoBuilder()
-// .title("Hello Swagger")
-// .description("스웨거 기능 테스트")
-// .version("1.0")
+// @Bean
+// public Docket commonApi() {
+// return new Docket(DocumentationType.SWAGGER_2)
+// .groupName("example")
+// .apiInfo(this.apiInfo())
+// .select()
+// .apis(RequestHandlerSelectors
+// .basePackage("com.example.demo.controller"))
+// .paths(PathSelectors.ant("/**"))
 // .build();
 // }
 // }

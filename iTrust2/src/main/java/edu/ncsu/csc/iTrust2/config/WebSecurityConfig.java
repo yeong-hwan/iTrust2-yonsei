@@ -22,7 +22,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity ( prePostEnabled = true )
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
@@ -35,12 +35,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * Login configuration for iTrust2.
      *
      * @param auth
-     *            AuthenticationManagerBuilder to use to configure the
-     *            Authentication.
+     *             AuthenticationManagerBuilder to use to configure the
+     *             Authentication.
      * @throws Exception
      */
     @Autowired
-    public void configureGlobal ( final AuthenticationManagerBuilder auth ) throws Exception {
+    public void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
         final JdbcUserDetailsManagerConfigurer<AuthenticationManagerBuilder> dbManager = auth.jdbcAuthentication();
 
         // User query enabled flag also checks for locked or banned users. The
@@ -50,10 +50,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // POSSIBLE FUTURE CHANGE: Refactor the UserSource here along the lines
         // of this:
         // http://websystique.com/springmvc/spring-mvc-4-and-spring-security-4-integration-example/
-        dbManager.dataSource( dataSource ).passwordEncoder( passwordEncoder() )
-                .usersByUsernameQuery( "select username,password,enabled from user WHERE username = ?;" )
-                .authoritiesByUsernameQuery( "select user_username, roles from user_roles where user_username=?" );
-        auth.authenticationEventPublisher( defaultAuthenticationEventPublisher() );
+        dbManager.dataSource(dataSource).passwordEncoder(passwordEncoder())
+                .usersByUsernameQuery("select username,password,enabled from user WHERE username = ?;")
+                .authoritiesByUsernameQuery("select user_username, roles from user_roles where user_username=?");
+        auth.authenticationEventPublisher(defaultAuthenticationEventPublisher());
 
     }
 
@@ -62,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * override other automatic functionality as desired.
      */
     @Override
-    protected void configure ( final HttpSecurity http ) throws Exception {
+    protected void configure(final HttpSecurity http) throws Exception {
 
         final String[] patterns = new String[] { "/login*", "/DrJenkins" };
         // Add filter for banned/locked IP
@@ -74,10 +74,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          * first filter processed, so this means the IP block will be the
          * absolute first Filter.
          */
-        http.addFilterBefore( ipBlockFilter(), ChannelProcessingFilter.class );
+        http.addFilterBefore(ipBlockFilter(), ChannelProcessingFilter.class);
 
-        http.authorizeRequests().antMatchers( patterns ).anonymous().anyRequest().authenticated().and().formLogin()
-                .loginPage( "/login" ).failureHandler( failureHandler() ).defaultSuccessUrl( "/" ).and().csrf()
+        http.authorizeRequests().antMatchers(patterns).anonymous().anyRequest().authenticated().and().formLogin()
+                .loginPage("/login").failureHandler(failureHandler()).defaultSuccessUrl("/").and().csrf()
 
                 /*
                  * * Credit to https://medium.com/spektrakel
@@ -88,19 +88,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                  * to make Angular work properly with CSRF protection
                  */
 
-                .csrfTokenRepository( CookieCsrfTokenRepository.withHttpOnlyFalse() );
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
         http.csrf().disable();
-
-
 
     }
 
     @Override
-    public void configure ( final WebSecurity web ) throws Exception {
+    public void configure(final WebSecurity web) throws Exception {
         // Allow anonymous access to the 3 mappings related to resetting a
         // forgotten password
-        web.ignoring().antMatchers( "/api/v1/requestPasswordReset", "/api/v1/resetPassword/*", "/requestPasswordReset",
-                "/resetPassword", "/api/v1/generateUsers", "/viewEmails", "/signup", "/api/v1/emails" );
+        web.ignoring().antMatchers("/api/v1/requestPasswordReset", "/api/v1/resetPassword/*", "/requestPasswordReset",
+                "/resetPassword", "/api/v1/generateUsers", "/viewEmails", "/signup", "/api/v1/emails");
     }
 
     /**
@@ -110,7 +108,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * @return The password encoder.
      */
     @Bean
-    public PasswordEncoder passwordEncoder () {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -120,7 +118,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * @return The AuthenticationEventPublisher.
      */
     @Bean
-    public DefaultAuthenticationEventPublisher defaultAuthenticationEventPublisher () {
+    public DefaultAuthenticationEventPublisher defaultAuthenticationEventPublisher() {
         return new DefaultAuthenticationEventPublisher();
     }
 
@@ -131,7 +129,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * @return The AuthenticationFailureHandler
      */
     @Bean
-    public SimpleUrlAuthenticationFailureHandler failureHandler () {
+    public SimpleUrlAuthenticationFailureHandler failureHandler() {
         return new FailureHandler();
     }
 
@@ -142,7 +140,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * @return The IP FIlter
      */
     @Bean
-    public Filter ipBlockFilter () {
+    public Filter ipBlockFilter() {
         return new IPFilter();
     }
 }
