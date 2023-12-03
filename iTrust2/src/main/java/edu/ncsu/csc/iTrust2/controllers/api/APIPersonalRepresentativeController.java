@@ -104,15 +104,40 @@ public class APIPersonalRepresentativeController extends APIController {
   }
 
   @DeleteMapping(BASE_PATH +
-      "/personal_representetives/release/{id}")
-  public ResponseEntity releasePersonalRepresentative(@PathVariable final String id) {
+      "/personal_representetives/release_assignor/{assignor}")
+  public ResponseEntity releaseAssignor(@PathVariable("assignor") String assignor) {
     try {
-      final PersonalRepresentative personalRepresentative = (PersonalRepresentative) personalRepresentativeService
-          .findById(Long.parseLong(id));
+      final User self = userService.findByName(LoggerUtil.currentUser());
 
-      personalRepresentativeService.delete(personalRepresentative);
+      final String assignee = self.getUsername();
 
-      return new ResponseEntity(id, HttpStatus.OK);
+      final List<PersonalRepresentative> personalRepresentative = (List<PersonalRepresentative>) personalRepresentativeService
+          .findByAssginorAndAssigneeContains(assignor, assignee);
+
+      personalRepresentativeService.deleteLoop(personalRepresentative);
+
+      return new ResponseEntity(personalRepresentative, HttpStatus.OK);
+
+    } catch (final Exception e) {
+      return new ResponseEntity(errorResponse("Error: " + e.getMessage()),
+          HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @DeleteMapping(BASE_PATH +
+      "/personal_representetives/release_assignee/{assignee}")
+  public ResponseEntity releaseAssignee(@PathVariable("assignee") String assignee) {
+    try {
+      final User self = userService.findByName(LoggerUtil.currentUser());
+
+      final String assignor = self.getUsername();
+
+      final List<PersonalRepresentative> personalRepresentative = (List<PersonalRepresentative>) personalRepresentativeService
+          .findByAssginorAndAssigneeContains(assignor, assignee);
+
+      personalRepresentativeService.deleteLoop(personalRepresentative);
+
+      return new ResponseEntity(personalRepresentative, HttpStatus.OK);
 
     } catch (final Exception e) {
       return new ResponseEntity(errorResponse("Error: " + e.getMessage()),
