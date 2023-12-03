@@ -103,14 +103,57 @@ public class APIPersonalRepresentativeController extends APIController {
     return ResponseEntity.ok(assigneeAssignorPair);
   }
 
-  // @DeleteMapping(BASE_PATH +
-  // "/personal_representatives/release_assignor/{assignor}")
-  // public ResponseEntity releaseAssignor(@PathVariable("assignor") String
-  // assignor) {
-  // try {
-  // final User self = userService.findByName(LoggerUtil.currentUser());
+  @DeleteMapping(BASE_PATH +
+      "/personal_representatives/release_assignor/{assignor}")
+  public ResponseEntity releaseAssignor(@PathVariable("assignor") String assignor) {
+    try {
+      final User self = userService.findByName(LoggerUtil.currentUser());
 
-  // final String assignee = self.getUsername();
+      final String assignee = self.getUsername();
+
+      final List<PersonalRepresentative> personalRepresentative = (List<PersonalRepresentative>) personalRepresentativeService
+          .findByAssginorAndAssigneeContains(assignor, assignee);
+
+      personalRepresentativeService.deleteLoop(personalRepresentative);
+
+      return new ResponseEntity(personalRepresentative, HttpStatus.OK);
+
+    } catch (final Exception e) {
+      return new ResponseEntity(errorResponse("Error: " + e.getMessage()),
+          HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @DeleteMapping(BASE_PATH +
+      "/personal_representatives/release_assignee/{assignee}")
+  public ResponseEntity releaseAssignee(@PathVariable("assignee") String assignee) {
+    try {
+      final User self = userService.findByName(LoggerUtil.currentUser());
+
+      final String assignor = self.getUsername();
+
+      final List<PersonalRepresentative> personalRepresentative = (List<PersonalRepresentative>) personalRepresentativeService
+          .findByAssginorAndAssigneeContains(assignor, assignee);
+
+      personalRepresentativeService.deleteLoop(personalRepresentative);
+
+      return new ResponseEntity(personalRepresentative, HttpStatus.OK);
+
+    } catch (final Exception e) {
+      return new ResponseEntity(errorResponse("Error: " + e.getMessage()),
+          HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  // @DeleteMapping(BASE_PATH +
+  // "/personal_representatives/release_relationship/{assignee}/{assignor}")
+  // public ResponseEntity releaseRelationship(@PathVariable("assignee") String
+  // assignee,
+  // @PathVariable("assignor") String assignor) {
+  // try {
+  // // final User self = userService.findByName(LoggerUtil.currentUser());
+
+  // // final String assignor = self.getUsername();
 
   // final List<PersonalRepresentative> personalRepresentative =
   // (List<PersonalRepresentative>) personalRepresentativeService
@@ -125,28 +168,6 @@ public class APIPersonalRepresentativeController extends APIController {
   // HttpStatus.BAD_REQUEST);
   // }
   // }
-
-  @DeleteMapping(BASE_PATH +
-      "/personal_representatives/release_relationship/{assignee}/{assignor}")
-  public ResponseEntity releaseRelationship(@PathVariable("assignee") String assignee,
-      @PathVariable("assignor") String assignor) {
-    try {
-      // final User self = userService.findByName(LoggerUtil.currentUser());
-
-      // final String assignor = self.getUsername();
-
-      final List<PersonalRepresentative> personalRepresentative = (List<PersonalRepresentative>) personalRepresentativeService
-          .findByAssginorAndAssigneeContains(assignor, assignee);
-
-      personalRepresentativeService.deleteLoop(personalRepresentative);
-
-      return new ResponseEntity(personalRepresentative, HttpStatus.OK);
-
-    } catch (final Exception e) {
-      return new ResponseEntity(errorResponse("Error: " + e.getMessage()),
-          HttpStatus.BAD_REQUEST);
-    }
-  }
 
   @GetMapping(BASE_PATH +
       "/personal_representatives/view/assignor/{assignee}")
