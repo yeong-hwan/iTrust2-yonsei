@@ -74,7 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          * first filter processed, so this means the IP block will be the
          * absolute first Filter.
          */
-        http.addFilterBefore(ipBlockFilter(), ChannelProcessingFilter.class);
+        // http.addFilterBefore( ipBlockFilter(), ChannelProcessingFilter.class );
 
         http.authorizeRequests().antMatchers(patterns).anonymous().anyRequest().authenticated().and().formLogin()
                 .loginPage("/login").failureHandler(failureHandler()).defaultSuccessUrl("/").and().csrf()

@@ -133,4 +133,17 @@ public class PatientController {
         return "/patient/FoodDiary/addFoodDiary";
     }
 
+    /**
+     * Create a page for the patient to view assignor PR (자신을 지정한 pr list)
+     *
+     * @param model
+     *              data for front end
+     * @return The page for the patient to view assignor PR
+     */
+    @GetMapping(value = "patient/personalRepresentatives")
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    public String viewAssignorPR(final Model model) {
+        return "/patient/personalRepresentatives";
+    }
+
 }
