@@ -13,4 +13,7 @@ public interface PersonalRepresentativeRepository extends JpaRepository<Personal
 
   List<PersonalRepresentative> findAllByAssignorAndAssigneeContaining(String assignor, String assignee);
 
+  boolean existsByAssignor(String assignor);
+
+  boolean existsByAssignee(String assignee);
 }

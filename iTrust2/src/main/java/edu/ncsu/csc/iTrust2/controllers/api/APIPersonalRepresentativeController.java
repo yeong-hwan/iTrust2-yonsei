@@ -54,6 +54,14 @@ public class APIPersonalRepresentativeController extends APIController {
 
       return new ResponseEntity(personalRepresentative, HttpStatus.OK);
 
+      // if (!personalRepresentativeService.checkDuplicate(self.getUsername(),
+      // assignee)) {
+      // return new ResponseEntity(personalRepresentative, HttpStatus.OK);
+      // }
+
+      // // else case
+      // return new ResponseEntity("It Duplicated", HttpStatus.OK);
+
     } catch (final Exception e) {
       return new ResponseEntity(
           errorResponse("Error: " + e.getMessage()),
@@ -145,50 +153,10 @@ public class APIPersonalRepresentativeController extends APIController {
     }
   }
 
-  // @DeleteMapping(BASE_PATH +
-  // "/personal_representatives/release_relationship/{assignee}/{assignor}")
-  // public ResponseEntity releaseRelationship(@PathVariable("assignee") String
-  // assignee,
-  // @PathVariable("assignor") String assignor) {
-  // try {
-  // // final User self = userService.findByName(LoggerUtil.currentUser());
-
-  // // final String assignor = self.getUsername();
-
-  // final List<PersonalRepresentative> personalRepresentative =
-  // (List<PersonalRepresentative>) personalRepresentativeService
-  // .findByAssginorAndAssigneeContains(assignor, assignee);
-
-  // personalRepresentativeService.deleteLoop(personalRepresentative);
-
-  // return new ResponseEntity(personalRepresentative, HttpStatus.OK);
-
-  // } catch (final Exception e) {
-  // return new ResponseEntity(errorResponse("Error: " + e.getMessage()),
-  // HttpStatus.BAD_REQUEST);
-  // }
-  // }
-
   @GetMapping(BASE_PATH +
       "/personal_representatives/view/assignor/{assignee}")
   public ResponseEntity viewPatientAssignor(@PathVariable("assignee") String assignee) {
     try {
-      // PersonalRepresentative personalRepresentative = new PersonalRepresentative();
-
-      // String patient_1 = personalRepresentative.getAssignee();
-      // String patient_2 = personalRepresentative.getAssignor();
-
-      // final List<PersonalRepresentative> relationship1 =
-      // personalRepresentativeService
-      // .findByAssginorAndAssigneeContains(patient_1, patient_2);
-
-      // final List<PersonalRepresentative> relationship2 =
-      // personalRepresentativeService
-      // .findByAssginorAndAssigneeContains(patient_2, patient_1);
-
-      // final List<PersonalRepresentative> joinedRelationship = new ArrayList<>();
-      // joinedRelationship.addAll(relationship1);
-      // joinedRelationship.addAll(relationship2);
 
       final List<PersonalRepresentative> personalRepresentative = personalRepresentativeService
           .findByAssgineeContains(assignee);
@@ -205,22 +173,6 @@ public class APIPersonalRepresentativeController extends APIController {
       "/personal_representatives/view/assignee/{assignor}")
   public ResponseEntity viewPatientAssignee(@PathVariable("assignor") String assignor) {
     try {
-      // PersonalRepresentative personalRepresentative = new PersonalRepresentative();
-
-      // String patient_1 = personalRepresentative.getAssignee();
-      // String patient_2 = personalRepresentative.getAssignor();
-
-      // final List<PersonalRepresentative> relationship1 =
-      // personalRepresentativeService
-      // .findByAssginorAndAssigneeContains(patient_1, patient_2);
-
-      // final List<PersonalRepresentative> relationship2 =
-      // personalRepresentativeService
-      // .findByAssginorAndAssigneeContains(patient_2, patient_1);
-
-      // final List<PersonalRepresentative> joinedRelationship = new ArrayList<>();
-      // joinedRelationship.addAll(relationship1);
-      // joinedRelationship.addAll(relationship2);
 
       final List<PersonalRepresentative> personalRepresentative = personalRepresentativeService
           .findByAssginorContains(assignor);
@@ -233,7 +185,7 @@ public class APIPersonalRepresentativeController extends APIController {
     }
   }
 
-  @PostMapping(BASE_PATH + "/personal_representatives/assgin_relationship/{assignee}/{assignor}")
+  @PostMapping(BASE_PATH + "/personal_representatives/assign_relationship/{assignee}/{assignor}")
   public ResponseEntity assignRelationship(@PathVariable("assignee") String assignee,
       @PathVariable("assignor") String assignor) {
     try {
