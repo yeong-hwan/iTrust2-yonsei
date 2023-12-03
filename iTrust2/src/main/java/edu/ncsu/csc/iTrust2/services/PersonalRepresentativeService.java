@@ -42,4 +42,20 @@ public class PersonalRepresentativeService extends Service {
       delete(personalRepresentative);
     }
   }
+
+  // public boolean checkUsernameDuplicate(String username) {
+  // return repository.existsByUsername(username);
+  // }
+
+  public boolean checkDuplicate(String assignor, String assignee) {
+    boolean result = false;
+
+    boolean assignorCheck = repository.existsByAssignor(assignor);
+    boolean assigneeCheck = repository.existsByAssignee(assignee);
+
+    result = assignorCheck && assigneeCheck;
+
+    return result;
+  }
+
 }
