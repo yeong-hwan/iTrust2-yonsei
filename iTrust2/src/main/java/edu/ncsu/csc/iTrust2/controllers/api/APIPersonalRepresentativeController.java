@@ -172,10 +172,14 @@ public class APIPersonalRepresentativeController extends APIController {
     }
   }
 
-  @PostMapping(BASE_PATH + "/personal_representetives/assgin/relationship")
-  public ResponseEntity assignRelationship(@RequestBody PersonalRepresentativeForm form) {
+  @PostMapping(BASE_PATH + "/personal_representetives/assgin_relationship/{assignee}/{assignor}")
+  public ResponseEntity assignRelationship(@PathVariable("assignee") String assignee,
+      @PathVariable("assignor") String assignor) {
     try {
-      final PersonalRepresentative personalRepresentative = new PersonalRepresentative(form);
+      final PersonalRepresentative personalRepresentative = new PersonalRepresentative();
+
+      personalRepresentative.setAssignee(assignee);
+      personalRepresentative.setAssignor(assignor);
 
       personalRepresentativeService.save(personalRepresentative);
 
