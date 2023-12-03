@@ -142,7 +142,7 @@ public class PatientController {
      */
     @GetMapping(value = "patient/personalRepresentatives")
     @PreAuthorize("hasRole('ROLE_PATIENT')")
-    public String viewAssignorPR(final Model model) {
+    public String personalRepresentatives(final Model model) {
         return "/patient/personalRepresentatives";
     }
 

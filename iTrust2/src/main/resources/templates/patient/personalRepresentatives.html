@@ -36,17 +36,17 @@
 
 								$scope.selectPatient = function(patient){
 									$scope.selectedPatient = patient;
-									console.log("selected Patient", patient.username);
+									// console.log("selected Patient", patient.username);
 								}								
 								
 								$scope.selectAssignee = function(patient){
 									$scope.selectedAssignee = patient;
-									console.log("selected Assignee", patient.username);
+									// console.log("selected Assignee", patient.username);
 								}
 
 								$scope.selectAssignor = function(patient){
 									$scope.selectedAssignor = patient;
-									console.log("selected Assignor", patient.username);
+									// console.log("selected Assignor", patient.username);
 								}
 
 								// $scope.selectPatient = function(patient){
@@ -84,7 +84,7 @@
 										$scope.errMsg2 = "";
 										$http({
 										method: 'DELETE',
-										url: '/iTrust2/api/v1/personal_representatives/release_assignee/' + $scope.selectedAssignee.username
+										url: '/iTrust2/api/v1/personal_representatives/release_assignee/' + $scope.selectedAssignee
 										
 									}).then(function(response){
 										console.log($scope.selectedAssignee, "Success Release PR");
@@ -105,7 +105,7 @@
 										$scope.errMsg3 = "";
 										$http({
 										method: 'DELETE',
-										url: '/iTrust2/api/v1/personal_representatives/release_assignor/' + $scope.selectedAssignor.username
+										url: '/iTrust2/api/v1/personal_representatives/release_assignor/' + $scope.selectedAssignor
 										
 									}).then(function(response){
 										console.log($scope.selectedAssignor, "Success Release PR");
@@ -184,6 +184,7 @@
 											</ul>
 											<button class="btn btn-primary btn-lg" ng-click="releasePR()"
 											name="releasePR">Release PR</button>
+											<br>
 											<div name="success" style="color: green;">{{message2}}</div>
 											<div name="error" style="color: red;">{{errMsg2}}</div>
 										</div>
@@ -205,6 +206,7 @@
 											</ul>
 											<button class="btn btn-primary btn-lg" ng-click="unAssign()"
 											name="unAssign">Release myself from his/her PR</button>
+											<br>
 											<div name="success" style="color: green;">{{message3}}</div>
 											<div name="error" style="color: red;">{{errMsg3}}</div>
 										</div>
@@ -239,6 +241,7 @@
 												</ul>
 												<button class="btn btn-primary btn-lg" ng-click="assignPR()"
 												name="assignPR">Assign PR</button>
+												<br>
 												<div name="success" style="color: green;">{{message1}}</div>
 												<div name="error" style="color: red;">{{errMsg1}}</div>
 

@@ -153,4 +153,15 @@ public class HCPController {
         return "/hcp/FoodDiary/viewPatientFoodDiary";
     }
 
+    /*
+     * @param model
+     * Data for the front end
+     * 
+     * @return The page to display to the user
+     */
+    @GetMapping("hcp/patientPersonalRepresentatives")
+    @PreAuthorize("hasAnyRole('ROLE_HCP','ROLE_OPH','ROLE_OD')")
+    public String patientPersonalRepresentatives(final Model model) {
+        return "/hcp/patientPersonalRepresentatives";
+    }
 }
