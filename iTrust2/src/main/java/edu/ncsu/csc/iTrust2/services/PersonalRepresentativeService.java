@@ -35,4 +35,11 @@ public class PersonalRepresentativeService extends Service {
     return repository.findAllByAssignorAndAssigneeContaining(assignor, assignee);
   }
 
+  public void deleteLoop(List<PersonalRepresentative> personalRepresentatives) {
+    for (PersonalRepresentative personalRepresentative : personalRepresentatives) {
+      // Assuming delete method takes a single PersonalRepresentative object as an
+      // argument
+      delete(personalRepresentative);
+    }
+  }
 }

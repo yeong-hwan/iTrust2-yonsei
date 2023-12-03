@@ -42,13 +42,14 @@ public class APIPersonalRepresentativeController extends APIController {
   private UserService userService;
 
   @PostMapping(BASE_PATH +
-      "/personal_representetives/assign/assignee")
-  public ResponseEntity assignAssignee(@RequestBody PersonalRepresentativeForm form) {
+      "/personal_representetives/assign_assignee/{assignee}")
+  public ResponseEntity assignAssignee(@PathVariable("assignee") String assignee) {
     try {
-      final PersonalRepresentative personalRepresentative = new PersonalRepresentative(form);
+      final PersonalRepresentative personalRepresentative = new PersonalRepresentative();
 
       final User self = userService.findByName(LoggerUtil.currentUser());
       personalRepresentative.setAssignor(self.getUsername());
+      personalRepresentative.setAssignee(assignee);
       personalRepresentativeService.save(personalRepresentative);
 
       return new ResponseEntity(personalRepresentative, HttpStatus.OK);
@@ -61,12 +62,13 @@ public class APIPersonalRepresentativeController extends APIController {
   }
 
   @PostMapping(BASE_PATH +
-      "/personal_representetives/assign/assignor")
-  public ResponseEntity assignAssignor(@RequestBody PersonalRepresentativeForm form) {
+      "/personal_representetives/assign_assignor/{assignor}")
+  public ResponseEntity assignAssignor(@PathVariable("assignor") String assignor) {
     try {
-      final PersonalRepresentative personalRepresentative = new PersonalRepresentative(form);
+      final PersonalRepresentative personalRepresentative = new PersonalRepresentative();
 
       final User self = userService.findByName(LoggerUtil.currentUser());
+      personalRepresentative.setAssignor(assignor);
       personalRepresentative.setAssignee(self.getUsername());
       personalRepresentativeService.save(personalRepresentative);
 
@@ -102,15 +104,40 @@ public class APIPersonalRepresentativeController extends APIController {
   }
 
   @DeleteMapping(BASE_PATH +
-      "/personal_representetives/release/{id}")
-  public ResponseEntity releasePersonalRepresentative(@PathVariable final String id) {
+      "/personal_representetives/release_assignor/{assignor}")
+  public ResponseEntity releaseAssignor(@PathVariable("assignor") String assignor) {
     try {
-      final PersonalRepresentative personalRepresentative = (PersonalRepresentative) personalRepresentativeService
-          .findById(Long.parseLong(id));
+      final User self = userService.findByName(LoggerUtil.currentUser());
 
-      personalRepresentativeService.delete(personalRepresentative);
+      final String assignee = self.getUsername();
 
-      return new ResponseEntity(id, HttpStatus.OK);
+      final List<PersonalRepresentative> personalRepresentative = (List<PersonalRepresentative>) personalRepresentativeService
+          .findByAssginorAndAssigneeContains(assignor, assignee);
+
+      personalRepresentativeService.deleteLoop(personalRepresentative);
+
+      return new ResponseEntity(personalRepresentative, HttpStatus.OK);
+
+    } catch (final Exception e) {
+      return new ResponseEntity(errorResponse("Error: " + e.getMessage()),
+          HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @DeleteMapping(BASE_PATH +
+      "/personal_representetives/release_assignee/{assignee}")
+  public ResponseEntity releaseAssignee(@PathVariable("assignee") String assignee) {
+    try {
+      final User self = userService.findByName(LoggerUtil.currentUser());
+
+      final String assignor = self.getUsername();
+
+      final List<PersonalRepresentative> personalRepresentative = (List<PersonalRepresentative>) personalRepresentativeService
+          .findByAssginorAndAssigneeContains(assignor, assignee);
+
+      personalRepresentativeService.deleteLoop(personalRepresentative);
+
+      return new ResponseEntity(personalRepresentative, HttpStatus.OK);
 
     } catch (final Exception e) {
       return new ResponseEntity(errorResponse("Error: " + e.getMessage()),
@@ -145,10 +172,14 @@ public class APIPersonalRepresentativeController extends APIController {
     }
   }
 
-  @PostMapping(BASE_PATH + "/personal_representetives/assgin/relationship")
-  public ResponseEntity assignRelationship(@RequestBody PersonalRepresentativeForm form) {
+  @PostMapping(BASE_PATH + "/personal_representetives/assgin_relationship/{assignee}/{assignor}")
+  public ResponseEntity assignRelationship(@PathVariable("assignee") String assignee,
+      @PathVariable("assignor") String assignor) {
     try {
-      final PersonalRepresentative personalRepresentative = new PersonalRepresentative(form);
+      final PersonalRepresentative personalRepresentative = new PersonalRepresentative();
+
+      personalRepresentative.setAssignee(assignee);
+      personalRepresentative.setAssignor(assignor);
 
       personalRepresentativeService.save(personalRepresentative);
 
