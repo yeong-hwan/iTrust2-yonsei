@@ -343,18 +343,18 @@
                             $scope.errorMsg += "Visual Acuity OD must be an integer value between 20 and 200 inclusive\n"
                         }
 
-                        if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.sphereOS)) == false) {
+                        if (/^[\-\+]?(?=.*\d)\d{1, 2}(?:\.\d\d?)?$/.test(String($scope.sphereOS)) == false) {
                             $scope.errorMsg += "Sphere OS must be a floating point number up to two digits\n"
                         }
-                        if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.sphereOD)) == false) {
+                        if (/^[\-\+]?(?=.*\d)\d{1, 2}(?:\.\d\d?)?$/.test(String($scope.sphereOD)) == false) {
                             $scope.errorMsg += "Sphere OD must be a floating point number up to two digits\n"
                         }
 
                         if ($scope.visit.cylinderOS != undefined || $scope.cylinderOD != undefined) {
-                            if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.visit.cylinderOS)) == false) {
+                            if (/^[\-\+]?(?=.*\d)\d{1, 2}(?:\.\d\d?)?$/.test(String($scope.visit.cylinderOS)) == false) {
                                 $scope.errorMsg += "Cylinder OS must be a floating point number up to two digits\n"
                             }
-                            if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.cylinderOD)) == false) {
+                            if (/^[\-\+]?(?=.*\d)\d{1, 2}(?:\.\d\d?)?$/.test(String($scope.cylinderOD)) == false) {
                                 $scope.errorMsg += "Cylinder OD must be a floating point number up to two digits\n"
                             }
                             
