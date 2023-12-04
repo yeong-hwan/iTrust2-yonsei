@@ -1,10 +1,12 @@
 package edu.ncsu.csc.iTrust2.models;
+
+
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-
+import edu.ncsu.csc.iTrust2.models.User;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Convert;
@@ -62,6 +64,22 @@ public class LabTest extends DomainObject{
 
     @Basic (optional = true)
     private String    notes;
+
+    @NotNull
+    @ManyToOne ( cascade = CascadeType.ALL )
+    @JoinColumn ( name = "patient_id", columnDefinition = "varchar(100)" )
+    private User      patient;
+
+    @NotNull
+    @ManyToOne ( cascade = CascadeType.ALL )
+    @JoinColumn ( name = "hcp_id", columnDefinition = "varchar(100)" )
+    private User      hcp;
+
+    @NotNull
+    @ManyToOne ( cascade = CascadeType.ALL )
+    @JoinColumn ( name = "labtech_id", columnDefinition = "varchar(100)" )
+    private User      labtech;
+
 
     /**
      * Empty constructor for Hibernate.
@@ -184,5 +202,55 @@ public class LabTest extends DomainObject{
     }
 
     
-    
+    public User getPatient () {
+        return patient;
+    }
+
+    /**
+     * Sets the LabTest's patient to the given user
+     *
+     * @param user
+     *            
+     */ 
+    public void setPatient ( final User user ) {
+        this.patient = user;
+    }
+
+    /**
+     * Returns the LabTest's hcp
+     *
+     * @return the LabTest's hcp
+     */
+    public User getHcp () {
+        return hcp;
+    }
+
+    /**
+     * Sets the LabTest's hcp to the given user
+     *
+     * @param user
+     *            
+     */
+    public void setHcp ( final User user ) {
+        this.hcp = user;
+    }
+
+    /**
+     * Returns the LabTest's labtech
+     *
+     * @return the LabTest's labtech
+     */
+    public User getLabtech () {
+        return labtech;
+    }
+
+    /**
+     * Sets the LabTest's labtech to the given user
+     *
+     * @param user
+     *            
+     */
+    public void setLabtech ( final User user ) {
+        this.labtech = user;
+    }
 }
