@@ -34,12 +34,12 @@ Link: https://meet.google.com/ocp-naww-bnv
 
 | User Case      | Cell | Task Assignment | API Documentation | Backend API Completion | Frontend UI Completion | Integration & Testing |
 | --------------- |--------------- | --------------- | ----------------- | ---------------------- | ---------------------- | --------------------- |
-| UC 21      | Cell 1 | `:white_check_mark:` | `:white_check_mark:` | `:white_check_mark:` | `:white_check_mark:` | `:white_check_mark:` |
-| UC 22      | Cell 1 | `:white_check_mark:` | `:white_check_mark:` | `:construction:` | `:construction:` | `:x:` |
-| UC 16      | Cell 2 | `:white_check_mark:` | `:white_check_mark:` | `:white_check_mark:` | `:white_check_mark:` | `:white_check_mark:` |
-| UC 19      | Cell 2 | `:white_check_mark:` | `:white_check_mark:` | `:construction:` | `:construction:` | `:x:` |
-| UC 15      | Cell 3 | `:white_check_mark:` | `:white_check_mark:` | `:white_check_mark:` | `:white_check_mark:` | `:white_check_mark:` |
-| UC 23      | Cell 3 | `:white_check_mark:` | `:white_check_mark:` | `:construction:` | `:construction:` | `:x:` |
+| UC 21      | Cell 1 | ✅ | ✅ | ✅ | ✅ | ✅ |
+| UC 22      | Cell 1 | ✅ | ✅ | 🚧 | 🚧 | ❌ |
+| UC 16      | Cell 2 | ✅ | ✅ | ✅ | ✅ | ✅ |
+| UC 19      | Cell 2 | ✅ | ✅ | 🚧 | 🚧 | ❌ |
+| UC 15      | Cell 3 | ✅ | ✅ | ✅ | ✅ | ✅ |
+| UC 23      | Cell 3 | ✅ | ✅ | 🚧 | 🚧 | ❌ |
 
 
 
@@ -49,6 +49,11 @@ Link: https://meet.google.com/ocp-naww-bnv
 2. **Task Assignment**: Use project management tools (e.g., Trello, Asana) to assign tasks clearly and keep track of progress.
 3. **Code Review & Merge**: All code must go through a review process before merging into the main branch.
 4. **Documentation**: Keep documentation up-to-date to ensure smooth onboarding and knowledge transfer.
+5. **Coding Standards**: Adhere to agreed-upon coding standards and naming conventions for consistency across the codebase.
+6. **Branch Protection**: Protect important branches (`main`, `develop`) to prevent direct pushes and require code reviews for merging.
+7. **Testing Protocol**: Ensure comprehensive test coverage for new features and bug fixes; automate where possible.
+8. **Meeting Etiquette**: Start meetings on time, prepare an agenda, and ensure active participation from all team members.
+9. **Version Control**: Use descriptive commit messages and avoid committing large, unrelated changes in a single commit.
 
 ## Git Flow
 
@@ -67,24 +72,17 @@ We follow a simplified Git flow process:
 5. **Merge to `develop`**: After approval, merge into the `develop` branch.
 6. **Release**: Periodically merge `develop` into `main` for stable releases.
 
-Refer to our [Git Flow Guide](URL) for more detailed instructions.
-
 ![git-flow](img/git-flow.png)
 
-**Git flow 방식 제안**
+**Git flow**
 - [Git flow 참고 영상](https://youtu.be/EV3FZ3cWBp8)
 
-**Commit Convention 제안**
+**Commit Convention**
 - [Commit Convention 참고 자료](https://velog.io/@shin6403/Git-git-%EC%BB%A4%EB%B0%8B-%EC%BB%A8%EB%B2%A4%EC%85%98-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0)
 ```
 # 제목은 최대 50글자까지 아래에 작성: ex) Feat: Add Key mapping  
-
-
 # 본문은 아래에 작성  
-
-
 # 꼬릿말은 아래에 작성: ex) Github issue #23  
-
 
 # --- COMMIT END ---  
 #   <타입> 리스트  
