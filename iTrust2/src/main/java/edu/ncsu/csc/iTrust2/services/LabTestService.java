@@ -30,7 +30,7 @@ public class LabTestService extends Service{
         return repository.findAll();
     }
 
-    public List<LabTest> findByPatient ( final String patient ) {
-        return repository.findByPatient( userService.findByName( patient ) );
+    public List<LabTest> findByPatient ( final String patientName ) {
+        return repository.findByPatient( userService.findByName( patientName ) );
     }
 }

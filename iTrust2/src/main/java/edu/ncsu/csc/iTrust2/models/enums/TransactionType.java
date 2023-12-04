@@ -476,6 +476,25 @@ public enum TransactionType {
      * HCP views blood sugar limits for a specified patient
      */
     VIEW_BLOOD_SUGAR_LIMITS_HCP ( 2507, "HCP views the blood sugar limits for a patient.", false ),
+    
+    // @yewon added 2023/12/04
+    // For UC23
+
+    /**
+     * HCP orders laboratory tests
+     */
+    ORDER_LAB_TESTS ( 2301, "HCP orders laboratory tests", true ),
+
+    /**
+     * LabTech records lab test results
+     */
+    RECORD_LAB_TEST_RESULTS ( 2302, "LabTech records lab test results", true ),
+    /**
+     * HCP/PR/HCP/LT views lab test results for a patient
+     */
+    VIEW_LAB_TEST_RESULTS ( 2303, "Patient, Personal Representative, or HCP views lab test results", true ),
+    
+
     /**
      * HCP adds blood sugar limits for a patient
      */

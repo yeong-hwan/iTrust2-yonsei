@@ -2,6 +2,7 @@ package edu.ncsu.csc.iTrust2.controllers.api;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.ncsu.csc.iTrust2.models.LabTest;
 import edu.ncsu.csc.iTrust2.models.LabOrder;
 import edu.ncsu.csc.iTrust2.models.User;
+import edu.ncsu.csc.iTrust2.models.enums.TransactionType;
 import edu.ncsu.csc.iTrust2.models.Patient;
 
 import edu.ncsu.csc.iTrust2.services.PatientService;
@@ -56,6 +58,9 @@ public class APILabTestController extends APIController {
 
     @Autowired
     private UserService    userService;
+
+    @Autowired
+    private LoggerUtil     loggerUtil;
 
     @Autowired
     private LabOrderService    labOrderService;
@@ -95,6 +100,8 @@ public class APILabTestController extends APIController {
                 return new ResponseEntity( errorResponse( "No results found" ),
                         HttpStatus.NOT_FOUND );
             }
+            loggerUtil.log( TransactionType.VIEW_LAB_TEST_RESULTS, LoggerUtil.currentUser(), "Patient, Lab Tech, or HCP views lab test results");
+
             return new ResponseEntity( labTests, HttpStatus.OK );
         }
         catch ( final Exception e ) {
