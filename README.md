@@ -3,36 +3,73 @@
 
 
 ## Team2 iTrust2 Project
-| GitLab ID | Name |Student ID|    Contact    | etc. |
-|:---:|:---:|:---:|:-------------:|:---:|
-| 2019145010 | Lim, Yewon | 2019145010 | 010-5446-2109 | Experienced in Java |
-| KangMinYong | Kang, Minyong | 2017147513 | 010-3041-1621 | Experienced in Java |
-| 2021147561 | Kim, Yeong Seo | 2021147561 | 010-9494-7646 | Experienced in Java |
-| 2021147598 | Park, Seungho  | 2021147598 | 010-4076-6939 | Experienced in Java |
-| claire | Kim, Jueun | 2021147510 | 010-7213-7394 | Experienced in Java |
-| Yoon | Yoon, Jongyoon | 2021147599 | 010-8300-1365 | Experienced in Java |
-| Soeun | Uhm, Soeun | 2019143073 | 010-9887-7683 | Experienced in Java |
-| 2019145019| Jang, Yeonghwan | 2019145019 | 010-3103-3840 | Experienced in Java |
-| 2021147593 | Noh, GyuMin | 2021147593 | 010-7141-2273 | Experienced in Java |
+| GitLab ID | Name |Student ID|    Contact  | Cell No.  | etc. |
+|:---:|:---:|:---:|:-------------:|:-----:|:---:|
+| 2021147561 | Kim, Yeong Seo | 2021147561 | 010-9494-7646 | Cell 1 | Experienced in Java |
+| 2021147598 | Park, Seungho  | 2021147598 | 010-4076-6939 | Cell 1 | Experienced in Java |
+| Soeun | Uhm, Soeun | 2019143073 | 010-9887-7683 | Cell 1 | Experienced in Java |
+| claire | Kim, Jueun | 2021147510 | 010-7213-7394 | Cell 2 | Experienced in Java |
+| Yoon | Yoon, Jongyoon | 2021147599 | 010-8300-1365 | Cell 2 | Experienced in Java |
+| 2019145019| Jang, Yeonghwan | 2019145019 | 010-3103-3840 | Cell 2 | Experienced in Java |
+| KangMinYong | Kang, Minyong | 2017147513 | 010-3041-1621 | Cell 3 | Experienced in Java |
+| 2019145010 | Lim, Yewon | 2019145010 | 010-5446-2109 | Cell 3 | Experienced in Java |
+| 2021147593 | Noh, GyuMin | 2021147593 | 010-7141-2273 | Cell 3 | Experienced in Java |
 
 ## Regular Meeting
 
 11 PM, Tue, 1hour.  
 Link: https://meet.google.com/ocp-naww-bnv
 
-### 10/17 Team meeting
-- Iteration 별 Leader 정하기
-- Branch 관리 전략 
-- 구현할 UC 정하기
-- - -
+### Meetings
+| Meeting Date | Meeting Purpose | Participants | Document Link |
+| ------------ | ------------ | --------------- | ------------- |
+| 2023-10-17   | 목적 | Team2 전체  | [Meeting Document](URL) |
+| 2023-10-24   | 목적 | Team2 전체  | [Meeting Document](URL) |
+| 2023-11-04   | 목적 | Cell 3 (강민용, 임예원, 노규민)  | [Meeting Document](URL) |
+| 2023-11-05   | 목적 | Cell 2 (김주은, 윤종윤, 장영환)  | [Meeting Document](URL) |
+| 2023-11-05   | 목적 | Cell 1 (김영서, 박승호, 엄소은)  | [Meeting Document](URL) |
 
-### 10/24 Team meeting
-- User Story 는 무엇인가 정의
-- Team 별 UC 명세서 작성 
-- - -
 
-### 11/05 Cell2 meeting
-![git-flow](img/git-flow.png){: width="900" height="800"}
+## User Case Progress
+
+| User Case      | Cell | Task Assignment | API Documentation | Backend API Completion | Frontend UI Completion | Integration & Testing |
+| --------------- |--------------- | --------------- | ----------------- | ---------------------- | ---------------------- | --------------------- |
+| UC 21      | Cell 1 | `:white_check_mark:` | `:white_check_mark:` | `:white_check_mark:` | `:white_check_mark:` | `:white_check_mark:` |
+| UC 22      | Cell 1 | `:white_check_mark:` | `:white_check_mark:` | `:construction:` | `:construction:` | `:x:` |
+| UC 16      | Cell 2 | `:white_check_mark:` | `:white_check_mark:` | `:white_check_mark:` | `:white_check_mark:` | `:white_check_mark:` |
+| UC 19      | Cell 2 | `:white_check_mark:` | `:white_check_mark:` | `:construction:` | `:construction:` | `:x:` |
+| UC 15      | Cell 3 | `:white_check_mark:` | `:white_check_mark:` | `:white_check_mark:` | `:white_check_mark:` | `:white_check_mark:` |
+| UC 23      | Cell 3 | `:white_check_mark:` | `:white_check_mark:` | `:construction:` | `:construction:` | `:x:` |
+
+
+
+## Project Rules
+
+1. **Communication is Key**: Maintain open communication channels through Slack, emails, or regular standup meetings.
+2. **Task Assignment**: Use project management tools (e.g., Trello, Asana) to assign tasks clearly and keep track of progress.
+3. **Code Review & Merge**: All code must go through a review process before merging into the main branch.
+4. **Documentation**: Keep documentation up-to-date to ensure smooth onboarding and knowledge transfer.
+
+## Git Flow
+
+We follow a simplified Git flow process:
+
+### Branching Strategy
+- `main`: Production-ready code
+- `develop`: Integration branch for ongoing development
+- Feature branches: Begin with `feature/` prefix (e.g., `feature/team1-UC21-FE`)
+
+### Workflow
+1. **Start with `develop`**: Create feature branches from the `develop` branch.
+2. **Work on Features**: Develop new features or fix issues in feature branches.
+3. **Pull Requests**: Submit pull requests to merge feature branches into `develop`.
+4. **Code Review**: Team members review code, suggest changes if necessary.
+5. **Merge to `develop`**: After approval, merge into the `develop` branch.
+6. **Release**: Periodically merge `develop` into `main` for stable releases.
+
+Refer to our [Git Flow Guide](URL) for more detailed instructions.
+
+![git-flow](img/git-flow.png)
 
 **Git flow 방식 제안**
 - [Git flow 참고 영상](https://youtu.be/EV3FZ3cWBp8)
@@ -79,32 +116,3 @@ Link: https://meet.google.com/ocp-naww-bnv
 #   Related to   : 해당 커밋에 관련된 이슈번호 (아직 해결되지 않은 경우)  
 #   ex) Fixes: #47 Related to: #32, #21 
 ```
-**FE / BE 역할 분담 필요**
-- FE: 3명
-- BE & TestQA: 6명
-
-**UC 19 관련 논의**
-UC19는 식단일지 입출력이 필요함.
-`데이터 주고받는 방법`에 대한 고민 필요
-1. 환자 객체가 식단일지 저장
-2. 환자 ID를 key로 DB에서 식단일지 저장
-(2번이 효율적으로 판단됨)
-- - -
-
-### 11/05 Cell1 meeting
-- 팀원 빌드 에러 해결 시도
-- UC에 따른 구체적 필요 API, DB 수정 제안 정리 (사진 참고)
-- dependency 판단
-![cell1_api-table](img/cell1_api-table.png){: width="1200" height="800"}
-![cell1_api-flow](img/cell1_api-flow.jpg){: width="900" height="800"}
-- - - 
-
-### 11/06 Cell3 meeting
-- 초기 환경 세팅 설정 완료
-- 전체 structure가 어떻게 구성되어 있는지 확인
-- 각 UC (15, 23) 별 front와 backend로 나누어서 필요한 requirement 확인
-
-- - -
-### 11/09 Cell2 meeting
-- UC 19에 대한 API, DB 제안  
-![cell2_api-table](img/cell2_api-table.png){: width="800" height="1000"}
