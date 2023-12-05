@@ -15,7 +15,8 @@ import edu.ncsu.csc.iTrust2.models.Patient;
  */
  
 public interface PatientRepository extends JpaRepository<Patient, String> {
-    
+        
+        Patient findByUsername(String username);
         List<Patient> findAllByFirstNameContaining(String firstName);
         List<Patient> findAllByLastNameContaining(String lastName);
         List<Patient> findAllByUsernameContaining(String username);

@@ -21,6 +21,11 @@ public class PatientService extends UserService {
     protected JpaRepository getRepository () {
         return repository;
     }
+
+
+    public Patient findByName ( final String name ) {
+        return repository.findByUsername( name );
+    }
     /*
      * @yewon added 2023.11.19
      * This is the service for interacting with the Patient table

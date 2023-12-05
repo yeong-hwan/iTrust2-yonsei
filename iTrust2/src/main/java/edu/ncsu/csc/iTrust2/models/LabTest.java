@@ -68,7 +68,7 @@ public class LabTest extends DomainObject{
     @NotNull
     @ManyToOne ( cascade = CascadeType.ALL )
     @JoinColumn ( name = "patient_id", columnDefinition = "varchar(100)" )
-    private User      patient;
+    private Patient      patient;
 
     @NotNull
     @ManyToOne ( cascade = CascadeType.ALL )
@@ -202,7 +202,7 @@ public class LabTest extends DomainObject{
     }
 
     
-    public User getPatient () {
+    public Patient getPatient () {
         return patient;
     }
 
@@ -212,7 +212,7 @@ public class LabTest extends DomainObject{
      * @param user
      *            
      */ 
-    public void setPatient ( final User user ) {
+    public void setPatient ( final Patient user ) {
         this.patient = user;
     }
 
