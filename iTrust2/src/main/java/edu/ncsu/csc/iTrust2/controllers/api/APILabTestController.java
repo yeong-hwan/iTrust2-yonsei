@@ -72,7 +72,6 @@ public class APILabTestController extends APIController {
      * Retrieves LabTest results for a given patient
      */
     @GetMapping ( BASE_PATH + "/lab_tests/view_results/{patiendMID}")
-    @PreAuthorize ( "hasAnyRole('ROLE_HCP', 'ROLE_PATIENT', 'ROLE_LABTECH')")
     public ResponseEntity getLabTestResults ( @PathVariable ( "patiendMID" ) final String patiendMID ) {
         final Patient obj_patient = patientService.findByName( patiendMID );
         if (obj_patient == null){
@@ -84,32 +83,22 @@ public class APILabTestController extends APIController {
         final SimpleGrantedAuthority hcp = new SimpleGrantedAuthority( "ROLE_HCP" );
         final SimpleGrantedAuthority patient = new SimpleGrantedAuthority( "ROLE_PATIENT" );
         final SimpleGrantedAuthority labtech = new SimpleGrantedAuthority( "ROLE_LABTECH" );
-        try {
-            isAuthorized = auth.getAuthorities().contains( hcp ) || auth.getAuthorities().contains( patient ) ||
-                            auth.getAuthorities().contains( labtech );
-            if ( !isAuthorized ) {
-                return new ResponseEntity( errorResponse( "User not authenticated" ),
-                        HttpStatus.UNAUTHORIZED );
-            }
-        }
-        catch ( final Exception e ) {
-            return new ResponseEntity(errorResponse("User not authenticated"), HttpStatus.UNAUTHORIZED );
+        
+        isAuthorized = auth.getAuthorities().contains( hcp ) || auth.getAuthorities().contains( patient ) ||
+                        auth.getAuthorities().contains( labtech );
+        if ( !isAuthorized ) {
+            return new ResponseEntity( errorResponse( "User not authenticated" ),
+                    HttpStatus.UNAUTHORIZED );
         }
 
-        try{
-            final List<LabTest> labTests = labTestService.findByPatient( patiendMID );
-            if ( labTests.isEmpty() ) {
-                return new ResponseEntity( errorResponse( "No results found" ),
-                        HttpStatus.NOT_FOUND );
-            }
-            loggerUtil.log( TransactionType.VIEW_LAB_TEST_RESULTS, LoggerUtil.currentUser(), "Patient, Lab Tech, or HCP views lab test results");
-
-            return new ResponseEntity( labTests, HttpStatus.OK );
-        }
-        catch ( final Exception e ) {
-            return new ResponseEntity( errorResponse( "No results found " + e ),
+        final List<LabTest> labTests = labTestService.findByPatient( patiendMID );
+        if ( labTests.isEmpty() ) {
+            return new ResponseEntity( errorResponse( "No results found" ),
                     HttpStatus.NOT_FOUND );
         }
+        loggerUtil.log( TransactionType.VIEW_LAB_TEST_RESULTS, LoggerUtil.currentUser(), "Patient, Lab Tech, or HCP views lab test results");
+
+        return new ResponseEntity( labTests, HttpStatus.OK );
     }
 
     /*
