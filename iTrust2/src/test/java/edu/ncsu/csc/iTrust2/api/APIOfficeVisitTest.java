@@ -1,5 +1,6 @@
 package edu.ncsu.csc.iTrust2.api;
 
+import static edu.ncsu.csc.iTrust2.models.enums.SurgeryType.CATARACT_SURGERY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -481,6 +482,56 @@ public class APIOfficeVisitTest {
         assertTrue(v.getEyecheckup().getAxisOS().equals(100));
 
 
+    }
+
+    /**
+     * Tests eyecheckup API surgeryType
+     *
+     * @throws Exception
+     */
+    @Test
+    @Transactional
+    @WithMockUser(username = "oph", roles = {"OPH"})
+    public void testOPHOfficeVisitAPIEyeSurgery() throws Exception {
+
+        final OfficeVisitForm visit = new OfficeVisitForm();
+        visit.setDate("2030-12-05T04:50:00.000-05:00");
+        visit.setHcp("oph");
+        visit.setNotes("Test office visit");
+        visit.setType(AppointmentType.GENERAL_OPHTHALMOLOGY.toString());
+        visit.setHospital("iTrust Test Hospital 2");
+
+        visit.setPatient("antti");
+        visit.setDiastolic(83);
+        visit.setHdl(70);
+        visit.setHeight(69.1f);
+        visit.setHouseSmokingStatus(HouseholdSmokingStatus.INDOOR);
+        visit.setLdl(30);
+        visit.setPatientSmokingStatus(PatientSmokingStatus.FORMER);
+        visit.setSystolic(102);
+        visit.setTri(150);
+        visit.setWeight(175.2f);
+        visit.setSurgeryType(CATARACT_SURGERY);
+
+        EyecheckupForm eyecheckupForm = new EyecheckupForm();
+        eyecheckupForm.setVisualAcuityOD(20);
+        eyecheckupForm.setVisualAcuityOS(20);
+        eyecheckupForm.setSphereOD((float) -1.25);
+        eyecheckupForm.setSphereOS((float) -1.5);
+        eyecheckupForm.setCylinderOD((float) 0.5);
+        eyecheckupForm.setCylinderOS((float) 0.75);
+        eyecheckupForm.setAxisOD(90);
+        eyecheckupForm.setAxisOS(100);
+
+        visit.setEyecheckup(eyecheckupForm);
+
+        OfficeVisit v = officeVisitService.build(visit);
+
+        mvc.perform(post("/api/v1/officevisits").contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtils.asJsonString(visit))).andExpect(status().isOk());
+
+
+        assertTrue(v.getSurgeryType().equals(CATARACT_SURGERY));
     }
 
 }
