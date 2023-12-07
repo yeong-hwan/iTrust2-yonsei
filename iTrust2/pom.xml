@@ -151,6 +151,11 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>edu.yonsei.csi3106</groupId>
+			<artifactId>homework2</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 
 	<repositories>

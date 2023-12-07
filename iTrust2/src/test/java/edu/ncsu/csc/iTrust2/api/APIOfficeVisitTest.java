@@ -138,6 +138,8 @@ public class APIOfficeVisitTest {
 
         return antti;
     }
+    
+    public Long officeVisitID;
 
     /**
      * Tests getting a non existent office visit and ensures that the correct status is returned.
@@ -498,7 +500,7 @@ public class APIOfficeVisitTest {
         visit.setDate("2030-12-05T04:50:00.000-05:00");
         visit.setHcp("oph");
         visit.setNotes("Test office visit");
-        visit.setType(AppointmentType.GENERAL_OPHTHALMOLOGY.toString());
+        visit.setType(AppointmentType.OPHTHALMOLOGY_SURGERY.toString());
         visit.setHospital("iTrust Test Hospital 2");
 
         visit.setPatient("antti");
@@ -533,5 +535,130 @@ public class APIOfficeVisitTest {
 
         assertTrue(v.getSurgeryType().equals(CATARACT_SURGERY));
     }
+    
+    /**
+     * Tests get officevisits for HCP
+     *
+     * @throws Exception
+     */
+    @Test
+    @Transactional
+    @WithMockUser(username = "oph", roles = {"OPH"})
+    public void testGetOfficeVisitForOPH () throws Exception {
 
+        final OfficeVisitForm visit = new OfficeVisitForm();
+        visit.setDate("2030-12-05T04:50:00.000-05:00");
+        visit.setHcp("oph");
+        visit.setNotes("Test office visit");
+        visit.setType(AppointmentType.GENERAL_OPHTHALMOLOGY.toString());
+        visit.setHospital("iTrust Test Hospital 2");
+
+        visit.setPatient("antti");
+        visit.setDiastolic(83);
+        visit.setHdl(70);
+        visit.setHeight(69.1f);
+        visit.setHouseSmokingStatus(HouseholdSmokingStatus.INDOOR);
+        visit.setLdl(30);
+        visit.setPatientSmokingStatus(PatientSmokingStatus.FORMER);
+        visit.setSystolic(102);
+        visit.setTri(150);
+        visit.setWeight(175.2f);
+        visit.setSurgeryType(CATARACT_SURGERY);
+
+        EyecheckupForm eyecheckupForm = new EyecheckupForm();
+        eyecheckupForm.setVisualAcuityOD(20);
+        eyecheckupForm.setVisualAcuityOS(20);
+        eyecheckupForm.setSphereOD((float) -1.25);
+        eyecheckupForm.setSphereOS((float) -1.5);
+        eyecheckupForm.setCylinderOD((float) 0.5);
+        eyecheckupForm.setCylinderOS((float) 0.75);
+        eyecheckupForm.setAxisOD(90);
+        eyecheckupForm.setAxisOS(100);
+
+        visit.setEyecheckup(eyecheckupForm);
+
+        OfficeVisit v = officeVisitService.build(visit);
+
+        mvc.perform(post("/api/v1/officevisits").contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtils.asJsonString(visit))).andExpect(status().isOk());
+        
+        Assert.assertEquals(1, officeVisitService.count());
+
+        mvc.perform(get("/api/v1/officevisits/HCP")).andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
+    }
+    /**
+     * Tests get officevisits for patient
+     *
+     * @throws Exception
+     */
+    @Test
+    @Transactional
+    @WithMockUser(username = "patient", roles = {"PATIENT"})
+    public void testGetOfficeVisitForPatient () throws Exception {
+        mvc.perform(get("/api/v1/officevisits/myofficevisits")).andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
+    }
+    
+    /**
+     * Tests get surgeryvisits for patient(error)
+     *
+     * @throws Exception
+     */
+    @Test
+    @Transactional
+    @WithMockUser(username = "patient", roles = {"PATIENT"})
+    public void testGetSurgeryVisitForPatientError () throws Exception {
+        mvc.perform(get("/api/v1/surgeryvisits/-1")).andExpect(status().isNotFound());
+    }
+    
+    /**
+     * Tests get surgeryvisits for patient
+     *
+     * @throws Exception
+     */
+    @Test
+    @Transactional
+    @WithMockUser(username = "patient", roles = {"PATIENT"})
+    public void testGetSurgeryVisitForPatient () throws Exception {
+    	final OfficeVisitForm visit = new OfficeVisitForm();
+        visit.setDate("2030-12-05T04:50:00.000-05:00");
+        visit.setHcp("oph");
+        visit.setNotes("Test office visit");
+        visit.setType(AppointmentType.GENERAL_OPHTHALMOLOGY.toString());
+        visit.setHospital("iTrust Test Hospital 2");
+
+        visit.setPatient("patient");
+        visit.setDiastolic(83);
+        visit.setHdl(70);
+        visit.setHeight(69.1f);
+        visit.setHouseSmokingStatus(HouseholdSmokingStatus.INDOOR);
+        visit.setLdl(30);
+        visit.setPatientSmokingStatus(PatientSmokingStatus.FORMER);
+        visit.setSystolic(102);
+        visit.setTri(150);
+        visit.setWeight(175.2f);
+        visit.setSurgeryType(CATARACT_SURGERY);
+
+        EyecheckupForm eyecheckupForm = new EyecheckupForm();
+        eyecheckupForm.setVisualAcuityOD(20);
+        eyecheckupForm.setVisualAcuityOS(20);
+        eyecheckupForm.setSphereOD((float) -1.25);
+        eyecheckupForm.setSphereOS((float) -1.5);
+        eyecheckupForm.setCylinderOD((float) 0.5);
+        eyecheckupForm.setCylinderOS((float) 0.75);
+        eyecheckupForm.setAxisOD(90);
+        eyecheckupForm.setAxisOS(100);
+
+        visit.setEyecheckup(eyecheckupForm);
+        
+        officeVisitService.save(officeVisitService.build(visit));
+        
+        final Long id = officeVisitService.findByPatient(userService.findByName("patient")).get(0).getId();
+
+    	
+        mvc.perform(get("/api/v1/surgeryvisits/" + id)).andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
+    }
+    
 }
