@@ -76,9 +76,19 @@
 																code: response.data.diagnoses[diagnose].code.code
 															};
 															$scope.diagnoses.push(d);
-                        		}
-
-														$scope.visit.prescriptions = response.data.prescriptions;
+                        								}
+														$scope.prescriptions = [];
+														for (prescription in response.data.prescriptions) {
+															console.log('a', prescription)
+															var d = {
+																drug: response.data.prescriptions[prescription].drug.name,
+																dosage: response.data.prescriptions[prescription].dosage,
+																startDate: response.data.prescriptions[prescription].startDate,
+																endDate: response.data.prescriptions[prescription].endDate,
+																renewals: response.data.prescriptions[prescription].renewals
+															};
+															$scope.prescriptions.push(d);
+                        								}
 														
 														$scope.visit.notes = response.data.notes;
 
@@ -333,18 +343,18 @@
                             $scope.errorMsg += "Visual Acuity OD must be an integer value between 20 and 200 inclusive\n"
                         }
 
-                        if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.sphereOS)) == false) {
+                        if (/^[\-\+]?(?=.*\d)\d{1, 2}(?:\.\d\d?)?$/.test(String($scope.sphereOS)) == false) {
                             $scope.errorMsg += "Sphere OS must be a floating point number up to two digits\n"
                         }
-                        if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.sphereOD)) == false) {
+                        if (/^[\-\+]?(?=.*\d)\d{1, 2}(?:\.\d\d?)?$/.test(String($scope.sphereOD)) == false) {
                             $scope.errorMsg += "Sphere OD must be a floating point number up to two digits\n"
                         }
 
                         if ($scope.visit.cylinderOS != undefined || $scope.cylinderOD != undefined) {
-                            if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.visit.cylinderOS)) == false) {
+                            if (/^[\-\+]?(?=.*\d)\d{1, 2}(?:\.\d\d?)?$/.test(String($scope.visit.cylinderOS)) == false) {
                                 $scope.errorMsg += "Cylinder OS must be a floating point number up to two digits\n"
                             }
-                            if (/^[\-\+]?(?=.*\d)\d*(?:\.\d\d?)?$/.test(String($scope.cylinderOD)) == false) {
+                            if (/^[\-\+]?(?=.*\d)\d{1, 2}(?:\.\d\d?)?$/.test(String($scope.cylinderOD)) == false) {
                                 $scope.errorMsg += "Cylinder OD must be a floating point number up to two digits\n"
                             }
                             
@@ -493,7 +503,35 @@
                                     data: $scope.visit
                                 }).then(function (response) {
                                     $scope.errorMsg = "";
-                                    $scope.message = "Office visit created successfully";
+                                    $scope.message = "Office visit edited successfully";
+                                }, function (rejection) {
+                                    $scope.message = "";
+                                    $scope.errorMsg = "Error occurred editing office visit";
+                                })
+                            }
+                        }
+												else if ($scope.visit.type == 'GENERAL_OPHTHALMOLOGY') {
+                        	// check 함수
+                        	checkBasicHealthMetrics();
+                        	if ($scope.errorMsg == "") {
+                        		/* 체크해야 할 것: eyecheckup 여부 */
+                        		/* surgery인 경우 surgery type 넣고...eyecheckup 넣고... */
+                                $scope.visit.diagnoses = $scope.diagnoses;
+                                $scope.visit.prescriptions = $scope.prescriptions;
+                                $scope.visit.prescriptions.forEach(function (p) {
+                                    p.patient = $scope.visit.patient;
+                                });
+
+                                $scope.visit.labProcedures = $scope.procedures;
+
+                                console.log($scope.visit)
+                                $http({
+                                    method: 'POST',
+                                    url: '/iTrust2/api/v1/officevisits',
+                                    data: $scope.visit
+                                }).then(function (response) {
+                                    $scope.errorMsg = "";
+                                    $scope.message = "Office visit edited successfully";
                                 }, function (rejection) {
                                     $scope.message = "";
                                     $scope.errorMsg = "Error occurred creating office visit";

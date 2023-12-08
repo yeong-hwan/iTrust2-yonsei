@@ -1,5 +1,6 @@
 package edu.ncsu.csc.iTrust2.forms;
 
+import edu.ncsu.csc.iTrust2.models.enums.SurgeryType;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -141,6 +142,8 @@ public class OfficeVisitForm implements Serializable {
     private List<PrescriptionForm> prescriptions;
     private EyecheckupForm eyecheckupForm;
 
+    private SurgeryType surgeryType;
+
     /**
      * Creates an OfficeVisitForm from the OfficeVisit provided
      *
@@ -157,6 +160,7 @@ public class OfficeVisitForm implements Serializable {
         setDiagnoses( new ArrayList<DiagnosisForm>() );
         setPrescriptions( ov.getPrescriptions().stream().map( PrescriptionForm::new ).collect( Collectors.toList() ) );
         setEyecheckup(new EyecheckupForm(ov.getEyecheckup()));
+        setSurgeryType(ov.getSurgeryType());
     }
 
     /**
@@ -546,5 +550,13 @@ public class OfficeVisitForm implements Serializable {
 
     public void setEyecheckup(EyecheckupForm eyecheckupForm) {
         this.eyecheckupForm = eyecheckupForm;
+    }
+
+    public void setSurgeryType(SurgeryType surgeryType){
+        this.surgeryType = surgeryType;
+    }
+
+    public SurgeryType getSurgeryType(){
+        return surgeryType;
     }
 }
