@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.ncsu.csc.iTrust2.forms.PersonalRepresentativeForm;
 import edu.ncsu.csc.iTrust2.models.Drug;
+import edu.ncsu.csc.iTrust2.models.Patient;
 import edu.ncsu.csc.iTrust2.models.PersonalRepresentative;
 import edu.ncsu.csc.iTrust2.models.User;
 import edu.ncsu.csc.iTrust2.services.PatientService;
@@ -40,6 +41,29 @@ public class APIPersonalRepresentativeController extends APIController {
 
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private PatientService patientService;
+
+  @GetMapping(BASE_PATH + "/personal_representatives/patients")
+  public List<Patient> getPatient() {
+
+    // Except for myself
+    final User self = userService.findByName(LoggerUtil.currentUser());
+
+    final List<Patient> allPatients = (List<Patient>) patientService.findAll();
+
+    allPatients.removeIf(patient -> patient.getUsername().equals(self.getUsername()));
+
+    // Except for already assigned patients
+    final List<PersonalRepresentative> alreadyPersonalRepresentative = personalRepresentativeService
+        .findByAssginorContains(self.getUsername());
+
+    allPatients.removeIf(patient -> alreadyPersonalRepresentative.stream()
+        .anyMatch(rep -> rep.getAssignee().equals(patient.getUsername())));
+
+    return allPatients;
+  }
 
   @PostMapping(BASE_PATH +
       "/personal_representatives/assign_assignee/{assignee}")
