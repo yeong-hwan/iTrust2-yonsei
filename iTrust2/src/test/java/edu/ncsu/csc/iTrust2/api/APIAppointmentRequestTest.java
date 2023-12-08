@@ -183,5 +183,75 @@ public class APIAppointmentRequestTest {
         mvc.perform( delete( "/api/v1/appointmentrequests/" + id ) ).andExpect( status().isOk() );
 
     }
-
+    
+    /**
+     * Tests /api/v1/viewAppointments
+     * 
+     */
+    @Test
+    @WithMockUser ( username = "hcp", roles = { "HCP" } )
+    @Transactional
+    public void testViewAppointment () throws Exception {
+    	
+    	final AppointmentRequestForm appointmentForm = new AppointmentRequestForm();
+        appointmentForm.setDate( "2030-11-19T04:50:00.000-05:00" ); // 2030-11-19
+                                                                     // 4:50 AM
+                                                                     // EST
+        appointmentForm.setType( AppointmentType.GENERAL_CHECKUP.toString() );
+        appointmentForm.setStatus( Status.PENDING.toString() );
+        appointmentForm.setHcp( "hcp" );
+        appointmentForm.setPatient( "patient" );
+        appointmentForm.setComments( "Test appointment please ignore" );
+        arService.save(arService.build(appointmentForm));
+        
+        mvc.perform( get( "/api/v1/viewAppointments" ) ).andExpect( status().isOk() )
+        .andExpect( content().contentType( MediaType.APPLICATION_JSON_VALUE ) );
+    }
+    
+    /**
+     * Tests /api/v1/appointmentrequests
+     * 
+     */
+    @Test
+    @WithMockUser ( username = "hcp", roles = { "HCP" } )
+    @Transactional
+    public void testAppointmentRequests () throws Exception {
+    	final AppointmentRequestForm appointmentForm = new AppointmentRequestForm();
+        appointmentForm.setDate( "2030-11-19T04:50:00.000-05:00" ); // 2030-11-19
+                                                                     // 4:50 AM
+                                                                     // EST
+        appointmentForm.setType( AppointmentType.GENERAL_CHECKUP.toString() );
+        appointmentForm.setStatus( Status.PENDING.toString() );
+        appointmentForm.setHcp( "hcp" );
+        appointmentForm.setPatient( "patient" );
+        appointmentForm.setComments( "Test appointment please ignore" );
+        arService.save(arService.build(appointmentForm));
+    	
+        mvc.perform( get( "/api/v1/appointmentrequests" ) ).andExpect( status().isOk() )
+        .andExpect( content().contentType( MediaType.APPLICATION_JSON_VALUE ) );
+    }
+    
+    /**
+     * Tests /api/v1/appointmentrequestsForHCP
+     * 
+     */
+    @Test
+    @WithMockUser ( username = "hcp", roles = { "HCP" } )
+    @Transactional
+    public void testAppointmentRequestForHCP () throws Exception {
+    	final AppointmentRequestForm appointmentForm = new AppointmentRequestForm();
+        appointmentForm.setDate( "2030-11-19T04:50:00.000-05:00" ); // 2030-11-19
+                                                                     // 4:50 AM
+                                                                     // EST
+        appointmentForm.setType( AppointmentType.GENERAL_CHECKUP.toString() );
+        appointmentForm.setStatus( Status.PENDING.toString() );
+        appointmentForm.setHcp( "hcp" );
+        appointmentForm.setPatient( "patient" );
+        appointmentForm.setComments( "Test appointment please ignore" );
+        arService.save(arService.build(appointmentForm));
+        
+        mvc.perform( get( "/api/v1/appointmentrequestForHCP" ) ).andExpect( status().isOk() )
+        .andExpect( content().contentType( MediaType.APPLICATION_JSON_VALUE ) );
+    }
+    
 }
