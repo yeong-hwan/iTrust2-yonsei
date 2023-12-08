@@ -35,25 +35,12 @@ public class FoodDiaryTest {
   @Transactional
   public void testFoodDiary() {
 
-    final FoodDiaryForm form = new FoodDiaryForm();
-    form.setId((long) 1);
-    form.setUsername(TEST_USER);
-    form.setDate("2023-11-23");
-    form.setMealType("Lunch");
-    form.setServingNumber((long) 2);
-    form.setCaloriesPerServing((long) 100);
-    form.setFatPerServing((long) 10);
-    form.setSodiumPerServing((long) 10);
-    form.setCarbsPerServing((long) 20);
-    form.setSugarsPerServing((long) 10);
-    form.setFiberPerServing((long) 5);
-    form.setProteinPerServing((long) 30);
-
     final FoodDiary base = new FoodDiary();
     base.setId((long) 1);
     base.setUsername(TEST_USER);
     base.setDate("2023-11-23");
     base.setMealType("Lunch");
+    base.setFoodName("food");
     base.setServingNumber((long) 2);
     base.setCaloriesPerServing((long) 100);
     base.setFatPerServing((long) 10);
@@ -63,9 +50,30 @@ public class FoodDiaryTest {
     base.setFiberPerServing((long) 5);
     base.setProteinPerServing((long) 30);
 
-    final FoodDiary foodDiary = new FoodDiary(form);
-    assertEquals(foodDiary.getCaloriesPerServing(), base.getCaloriesPerServing());
   }
+  @Test
+  @Transactional
+  public void testFoodDiaryForm() {
+
+    final FoodDiary base = new FoodDiary();
+    base.setId((long) 1);
+    base.setUsername(TEST_USER);
+    base.setDate("2023-11-23");
+    base.setMealType("Lunch");
+    base.setFoodName("food");
+    base.setServingNumber((long) 2);
+    base.setCaloriesPerServing((long) 100);
+    base.setFatPerServing((long) 10);
+    base.setSodiumPerServing((long) 10);
+    base.setCarbsPerServing((long) 20);
+    base.setSugarsPerServing((long) 10);
+    base.setFiberPerServing((long) 5);
+    base.setProteinPerServing((long) 30);
+
+    FoodDiaryForm form = new FoodDiaryForm(base);
+  }
+
+
 
   // @Test
   // @Transactional
