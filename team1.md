@@ -7,6 +7,10 @@
 2. [11/5](#115)
 3. [11/11](#1111)
 4. [11/13](#1113)
+5. [11/16](#1116)
+6. [11/18](#1118)
+7. [11/20](#1120)
+8. [11/22](#1122)
 
 ---
 ## 회의록
@@ -84,7 +88,7 @@
     - [X] (BE) eyecheckup 관련 테이블 추가
     - [X] (BE) eyecheckup id 을 OfficeVisit 테이블에서 FK 로 참조하도록 추가 
 
-### 11/20
+### 11/18
 - During Meeting 
     - FE, BE eyecheckup 관련 형식 맞추기 
 
@@ -101,3 +105,82 @@
     - 전체 회의를 통해 폴더명 통일
 
     <img width="600" alt="KakaoTalk_Photo_2023-12-08-12-56-15" src="https://github.com/ddoddii/ddoddii.github.io/assets/95014836/db8c17bd-528f-4f39-9f08-31845e058339">
+
+### 11/20
+- Before Meeting
+    - UC 21 정상 작동하는지 확인 
+    - API 테스트 시 오는 형식 확인 
+
+    <img width="369" alt="KakaoTalk_Snapshot_20231208_130732" src="https://github.com/ddoddii/ddoddii.github.io/assets/95014836/1f67d43a-df02-4a3b-bb94-fa374d3a20b5">
+
+- During Meeting 
+    - API 테스트 시 오는 형식 확인 
+
+- 개발 상황
+    - [X] UC 21 FE, BE 구현 완료
+
+- 개발 이슈
+    - Postman 에서 권한 때문에 계속 401 Unauthorized 오류가 나서 API 테스트를 할 수 없는 문제 발생
+    - 팀 톡방 공유 후 전체 톡방에서 문제 공유해서 해결
+
+    <img width="336" alt="image" src="https://github.com/ddoddii/ddoddii.github.io/assets/95014836/ee669faa-7abb-448c-b4b3-c17434c05ba2">
+
+    <img width="365" alt="KakaoTalk_Snapshot_20231208_130249" src="https://github.com/ddoddii/ddoddii.github.io/assets/95014836/0417d0d7-e8bd-4bc8-9d48-2502fbff3bf0">
+
+### 11/22 
+- During Meeting
+    - 구현 계획 (프론트엔드)
+        - past office visit 페이지 구현 : 환자_office visits 명단 확인 (get_api/v1/officevisits/myofficevisits)
+        - view an ophthalmology surgery visit 페이지 구현 : 환자_수술 정보 확인 (api 구현 필요)
+
+    - 구현 계획 (백엔드)
+        - surgeryType 저장할 디비 자동 생성
+        - surgeryType도 같이 저장하도록 수정 (post_officevisit/hcp)
+        - eyecheckup 여부 및 type이 수술일 시 surgeryType도 같이 가져오게 수정 (get_officevisits/hcp)
+        - eyecheckup 여부 및 정보, type이 수술일 시 surgeryType도 같이 가져오게 수정 (get_officevisits/{id})
+        - eyecheckup 정보 및 type이 수술일 시 surgeryType도 같이 수정할 수 있게 수정 (put_officevisits/{id})
+
+    - 백엔드 역할 분담
+        - 엄소은
+            - eyecheckup, surgerytype 관련 기존 테스트 코드 수정
+            - surgeryType 관련 기존 api 수정
+            - editOfficeVisit(put_officevisits/{id}) 테스트 코드 제작
+            - api document
+        - 박승호
+            - 수술 세부 정보 api 제작
+            - 제작한 api 테스트 코드 제작
+            - 프론트 도움 
+
+- 개발 이슈
+    - feature/team1 에서는 기능이 정상 작동하지만, develop 브랜치에서 정상 작동 되지 않는 문제 발생
+    - 다른 팀의 머지 시 team1 의 코드가 날라가는 문제가 발생했음을 확인했고, 수정 완료함
+
+### 11/24
+- Before Meeting
+    - FE 관련 문제 상황 인식 
+- During Meeting
+    - 프런트 페이지에서 General Opthalamology 체크 시 아무것도 안나타는 문제 수정 
+
+
+### 12/1 
+- During Meeting
+    - FE , BE 개발 상황 공유
+
+- 개발 상황
+    - [X] (FE)  past office visit 라우팅 연결하고 내용 넣기 
+    - [X] (FE) document office visit에서 diagnoses 뜨는 디버깅도 완료했고 viewSurgeryDetail page도 만듦
+    - [X] (BE) SurgeryType Enum 만들고 officeVisit 에 코드 형식으로 저장 
+    - [X] (BE) patient가 surgeryvisit 볼 수 있는 api 만들고 logger 부분 visit type에 따라 다르게 찍히도록 수정
+    - [X] (BE) prescriptions 정보도 editOfficeVisit page에서 나오도록 수정했고 patient surgeryVisit 잘 가져오는 것도 확인
+
+### 12/7
+- During Meeting
+    - 테스트 코드 관련 문제 상황 공유
+
+- 개발 상황
+    - [X] OfficeVisit API 테스트 커버리지 88% 확인 
+
+- 개발 이슈
+    - 무결성 조건으로 인해 삭제시 오류가 발생하는 것 확인, DB 내용 초기화 후 다시 작업
+    
+    <img width="369" alt="KakaoTalk_Snapshot_20231208_131905" src="https://github.com/ddoddii/ddoddii.github.io/assets/95014836/317e2f23-8c0f-4fd5-a3e9-5556fd279704">
