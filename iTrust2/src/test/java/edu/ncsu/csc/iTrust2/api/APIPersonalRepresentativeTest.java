@@ -2,7 +2,9 @@ package edu.ncsu.csc.iTrust2.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,12 +18,14 @@ import edu.ncsu.csc.iTrust2.models.Patient;
 import edu.ncsu.csc.iTrust2.models.PersonalRepresentative;
 import edu.ncsu.csc.iTrust2.models.Personnel;
 import edu.ncsu.csc.iTrust2.models.User;
+import edu.ncsu.csc.iTrust2.services.PatientService;
 import edu.ncsu.csc.iTrust2.services.PersonalRepresentativeService;
 import edu.ncsu.csc.iTrust2.services.UserService;
 import edu.ncsu.csc.iTrust2.models.enums.Role;
 import edu.ncsu.csc.iTrust2.models.Personnel;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 
@@ -51,6 +55,7 @@ import java.time.LocalDate;
 
 import edu.ncsu.csc.iTrust2.common.TestUtils;
 import edu.ncsu.csc.iTrust2.controllers.api.APIPersonalRepresentativeController;
+import edu.ncsu.csc.iTrust2.forms.PatientForm;
 import edu.ncsu.csc.iTrust2.forms.PersonalRepresentativeForm;
 import edu.ncsu.csc.iTrust2.forms.UserForm;
 
@@ -75,6 +80,9 @@ public class APIPersonalRepresentativeTest {
 
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private PatientService patientService;
 
   @Before
   public void setup() {
@@ -123,53 +131,231 @@ public class APIPersonalRepresentativeTest {
 
   private final APIPersonalRepresentativeController controller = new APIPersonalRepresentativeController();
 
-  @Test
-  @Transactional
-  public void basicTest() {
-    assertEquals(1, 1);
-  }
+  // @Test
+  // @Transactional
+  // public void basicTest() {
+  // assertEquals(1, 1);
+  // }
   // -----------------------------------------------
 
   @Test
   @Transactional
   @WithMockUser(username = "hcp", roles = { "HCP" })
-  public void testViewAssignor() throws Exception {
+  public void testHCPViewAssignor() throws Exception {
     mvc.perform(get("/api/v1/personal_representatives/view/assignor/test")).andExpect(status().isOk());
   }
 
   @Test
   @Transactional
   @WithMockUser(username = "hcp", roles = { "HCP" })
-  public void testViewAssignee() throws Exception {
+  public void testHCPViewAssignee() throws Exception {
     mvc.perform(get("/api/v1/personal_representatives/view/assignee/test")).andExpect(status().isOk());
+  }
+
+  @Test
+  @Transactional
+  @WithMockUser(username = "antti", roles = { "PATIENT" })
+  public void testAssignAssignor() throws Exception {
+    final User antti = new Patient(new UserForm("antti", "123456", Role.ROLE_PATIENT, 1));
+
+    patientService.save(antti);
+
+    final PatientForm patient = new PatientForm();
+    patient.setAddress1("1 Test Street");
+    patient.setAddress2("Some Location");
+    patient.setBloodType(BloodType.APos.toString());
+    patient.setCity("Viipuri");
+    patient.setDateOfBirth("1977-06-15");
+    patient.setEmail("antti@itrust.fi");
+    patient.setEthnicity(Ethnicity.Caucasian.toString());
+    patient.setFirstName("Antti");
+    patient.setGender(Gender.Male.toString());
+    patient.setLastName("Walhelm");
+    patient.setPhone("123-456-7890");
+    patient.setUsername("antti");
+    patient.setState(State.NC.toString());
+    patient.setZip("27514");
+
+    mvc.perform(put("/api/v1/patients/antti").contentType(MediaType.APPLICATION_JSON)
+        .content(TestUtils.asJsonString(patient))).andExpect(status().isOk());
+
+    mvc.perform(post("/api/v1/personal_representatives/assign_assignor/test")).andExpect(status().isOk());
+  }
+
+  @Test
+  @Transactional
+  @WithMockUser(username = "antti", roles = { "PATIENT" })
+  public void testAssignAssignee() throws Exception {
+    final User antti = new Patient(new UserForm("antti", "123456", Role.ROLE_PATIENT, 1));
+
+    patientService.save(antti);
+
+    final PatientForm patient = new PatientForm();
+    patient.setAddress1("1 Test Street");
+    patient.setAddress2("Some Location");
+    patient.setBloodType(BloodType.APos.toString());
+    patient.setCity("Viipuri");
+    patient.setDateOfBirth("1977-06-15");
+    patient.setEmail("antti@itrust.fi");
+    patient.setEthnicity(Ethnicity.Caucasian.toString());
+    patient.setFirstName("Antti");
+    patient.setGender(Gender.Male.toString());
+    patient.setLastName("Walhelm");
+    patient.setPhone("123-456-7890");
+    patient.setUsername("antti");
+    patient.setState(State.NC.toString());
+    patient.setZip("27514");
+
+    mvc.perform(put("/api/v1/patients/antti").contentType(MediaType.APPLICATION_JSON)
+        .content(TestUtils.asJsonString(patient))).andExpect(status().isOk());
+
+    mvc.perform(post("/api/v1/personal_representatives/assign_assignee/test")).andExpect(status().isOk());
+  }
+
+  @Test
+  @Transactional
+  @WithMockUser(username = "antti", roles = { "PATIENT" })
+  public void testViewAssignee() throws Exception {
+    final User antti = new Patient(new UserForm("antti", "123456", Role.ROLE_PATIENT, 1));
+
+    patientService.save(antti);
+
+    final PatientForm patient = new PatientForm();
+    patient.setAddress1("1 Test Street");
+    patient.setAddress2("Some Location");
+    patient.setBloodType(BloodType.APos.toString());
+    patient.setCity("Viipuri");
+    patient.setDateOfBirth("1977-06-15");
+    patient.setEmail("antti@itrust.fi");
+    patient.setEthnicity(Ethnicity.Caucasian.toString());
+    patient.setFirstName("Antti");
+    patient.setGender(Gender.Male.toString());
+    patient.setLastName("Walhelm");
+    patient.setPhone("123-456-7890");
+    patient.setUsername("antti");
+    patient.setState(State.NC.toString());
+    patient.setZip("27514");
+
+    mvc.perform(put("/api/v1/patients/antti").contentType(MediaType.APPLICATION_JSON)
+        .content(TestUtils.asJsonString(patient))).andExpect(status().isOk());
+
+    mvc.perform(get("/api/v1/personal_representatives/view/assignee")).andExpect(status().isOk());
+  }
+
+  @Test
+  @Transactional
+  @WithMockUser(username = "antti", roles = { "PATIENT" })
+  public void testViewAssignor() throws Exception {
+    final User antti = new Patient(new UserForm("antti", "123456", Role.ROLE_PATIENT, 1));
+
+    patientService.save(antti);
+
+    final PatientForm patient = new PatientForm();
+    patient.setAddress1("1 Test Street");
+    patient.setAddress2("Some Location");
+    patient.setBloodType(BloodType.APos.toString());
+    patient.setCity("Viipuri");
+    patient.setDateOfBirth("1977-06-15");
+    patient.setEmail("antti@itrust.fi");
+    patient.setEthnicity(Ethnicity.Caucasian.toString());
+    patient.setFirstName("Antti");
+    patient.setGender(Gender.Male.toString());
+    patient.setLastName("Walhelm");
+    patient.setPhone("123-456-7890");
+    patient.setUsername("antti");
+    patient.setState(State.NC.toString());
+    patient.setZip("27514");
+
+    mvc.perform(put("/api/v1/patients/antti").contentType(MediaType.APPLICATION_JSON)
+        .content(TestUtils.asJsonString(patient))).andExpect(status().isOk());
+
+    mvc.perform(get("/api/v1/personal_representatives/view/assignor")).andExpect(status().isOk());
+  }
+
+  @Test
+  @Transactional
+  @WithMockUser(username = "antti", roles = { "PATIENT" })
+  public void testReleaseAssignor() throws Exception {
+    final User antti = new Patient(new UserForm("antti", "123456", Role.ROLE_PATIENT, 1));
+
+    patientService.save(antti);
+
+    final PatientForm patient = new PatientForm();
+    patient.setAddress1("1 Test Street");
+    patient.setAddress2("Some Location");
+    patient.setBloodType(BloodType.APos.toString());
+    patient.setCity("Viipuri");
+    patient.setDateOfBirth("1977-06-15");
+    patient.setEmail("antti@itrust.fi");
+    patient.setEthnicity(Ethnicity.Caucasian.toString());
+    patient.setFirstName("Antti");
+    patient.setGender(Gender.Male.toString());
+    patient.setLastName("Walhelm");
+    patient.setPhone("123-456-7890");
+    patient.setUsername("antti");
+    patient.setState(State.NC.toString());
+    patient.setZip("27514");
+
+    mvc.perform(put("/api/v1/patients/antti").contentType(MediaType.APPLICATION_JSON)
+        .content(TestUtils.asJsonString(patient))).andExpect(status().isOk());
+
+    mvc.perform(post("/api/v1/personal_representatives/assign_assignor/test")).andExpect(status().isOk());
+    mvc.perform(delete("/api/v1/personal_representatives/release_assignor/test")).andExpect(status().isOk());
+  }
+
+  @Test
+  @Transactional
+  @WithMockUser(username = "antti", roles = { "PATIENT" })
+  public void testReleaseAssignee() throws Exception {
+    final User antti = new Patient(new UserForm("antti", "123456", Role.ROLE_PATIENT, 1));
+
+    patientService.save(antti);
+
+    final PatientForm patient = new PatientForm();
+    patient.setAddress1("1 Test Street");
+    patient.setAddress2("Some Location");
+    patient.setBloodType(BloodType.APos.toString());
+    patient.setCity("Viipuri");
+    patient.setDateOfBirth("1977-06-15");
+    patient.setEmail("antti@itrust.fi");
+    patient.setEthnicity(Ethnicity.Caucasian.toString());
+    patient.setFirstName("Antti");
+    patient.setGender(Gender.Male.toString());
+    patient.setLastName("Walhelm");
+    patient.setPhone("123-456-7890");
+    patient.setUsername("antti");
+    patient.setState(State.NC.toString());
+    patient.setZip("27514");
+
+    mvc.perform(put("/api/v1/patients/antti").contentType(MediaType.APPLICATION_JSON)
+        .content(TestUtils.asJsonString(patient))).andExpect(status().isOk());
+
+    mvc.perform(post("/api/v1/personal_representatives/assign_assignee/test")).andExpect(status().isOk());
+    mvc.perform(delete("/api/v1/personal_representatives/release_assignee/test")).andExpect(status().isOk());
+  }
+
+  @Test
+  @Transactional
+  @WithMockUser(username = "patient_1", roles = { "PATIENT" })
+  public void invalidAssignAssignor() throws Exception {
+    mvc.perform(post("/api/v1/personal_representatives/assign_assignor/test")).andExpect(status().isBadRequest());
+  }
+
+  @Test
+  @Transactional
+  @WithMockUser(username = "patient_1", roles = { "PATIENT" })
+  public void invalidAssignAssignee() throws Exception {
+    mvc.perform(post("/api/v1/personal_representatives/assign_assignee/test")).andExpect(status().isBadRequest());
   }
 
   // @Test
   // @Transactional
-  // @WithMockUser(username = "hcp", roles = { "HCP" })
-  // public void invalidViewAssignee() throws Exception {
-  // Long test = (long) 1;
-  // mvc.perform(get("/api/v1/personal_representatives/view/assignee/" +
-  // test)).andExpect(status().isBadRequest());
-  // }
-
-  // @Test
-  // @Transactional
   // @WithMockUser(username = "patient_1", roles = { "PATIENT" })
-  // public void testAssignAssignee() throws Exception {
-  // //
-  // mvc.perform(get("/api/v1/personal_representatives/assign_assignee/patient_1")).andExpect(status().isOk());
+  // public void testReleaseAssignor() throws Exception {
+  // final Patient testPatient = buildPatient();
+  // userService.save(testPatient);
 
-  // // Mocking
-  // User mockUser = mock(User.class);
-  // when(userService.findByName(anyString())).thenReturn(mockUser);
-
-  // // Perform the requestw
-  // mvc.perform(MockMvcRequestBuilders.post("/api/personal_representatives/assign_assignor/user456"))
-  // .andExpect(MockMvcResultMatchers.status().isOk());
-
-  // verify(personalRepresentativeService,
-  // times(1)).save(any(PersonalRepresentative.class));
+  // mvc.perform(delete("/api/v1/personal_representatives/release_assignor/patient_1")).andExpect(status().isOk());
   // }
 
   @Test
@@ -185,4 +371,21 @@ public class APIPersonalRepresentativeTest {
   public void invalidReleaseAssignee() throws Exception {
     mvc.perform(delete("/api/v1/personal_representatives/release_assignee/blank")).andExpect(status().isBadRequest());
   }
+
+  @Test
+  @Transactional
+  @WithMockUser(username = "hcp", roles = { "HCP" })
+  public void testAssignRelationship() throws Exception {
+    mvc.perform(post("/api/v1/personal_representatives/assign_relationship/test1/test2"))
+        .andExpect(status().isOk());
+  }
+
+  // @Test
+  // @Transactional
+  // @WithMockUser(username = "hcp", roles = { "HCP" })
+  // public void invalidAssignRelationship() throws Exception {
+  // mvc.perform(post("/api/v1/personal_representatives/assign_relationship/test1/"))
+  // .andExpect(status().isBadRequest());
+  // }
+
 }
