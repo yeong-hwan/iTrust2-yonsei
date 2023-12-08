@@ -1,16 +1,17 @@
 package edu.ncsu.csc.iTrust2.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+import edu.ncsu.csc.iTrust2.models.Hospital;
 import edu.ncsu.csc.iTrust2.models.Patient;
 import edu.ncsu.csc.iTrust2.models.PersonalRepresentative;
 import edu.ncsu.csc.iTrust2.models.Personnel;
@@ -19,7 +20,12 @@ import edu.ncsu.csc.iTrust2.services.PersonalRepresentativeService;
 import edu.ncsu.csc.iTrust2.services.UserService;
 import edu.ncsu.csc.iTrust2.models.enums.Role;
 import edu.ncsu.csc.iTrust2.models.Personnel;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,10 +33,23 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+import edu.ncsu.csc.iTrust2.models.enums.AppointmentType;
+import edu.ncsu.csc.iTrust2.models.enums.BloodType;
+import edu.ncsu.csc.iTrust2.models.enums.Ethnicity;
+import edu.ncsu.csc.iTrust2.models.enums.Gender;
+import edu.ncsu.csc.iTrust2.models.enums.HouseholdSmokingStatus;
+import edu.ncsu.csc.iTrust2.models.enums.PatientSmokingStatus;
+import edu.ncsu.csc.iTrust2.models.enums.Role;
+import edu.ncsu.csc.iTrust2.models.enums.State;
+import edu.ncsu.csc.iTrust2.models.enums.Status;
+import java.time.LocalDate;
 
+import edu.ncsu.csc.iTrust2.common.TestUtils;
 import edu.ncsu.csc.iTrust2.controllers.api.APIPersonalRepresentativeController;
 import edu.ncsu.csc.iTrust2.forms.PersonalRepresentativeForm;
 import edu.ncsu.csc.iTrust2.forms.UserForm;
@@ -38,14 +57,14 @@ import edu.ncsu.csc.iTrust2.forms.UserForm;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import edu.ncsu.csc.iTrust2.services.PersonalRepresentativeService;
-import edu.ncsu.csc.iTrust2.services.UserService;
 import io.cucumber.java.Before;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class APIPersonalRepresentativeTest {
+  @Autowired
   private MockMvc mvc;
 
   @Autowired
@@ -57,138 +76,113 @@ public class APIPersonalRepresentativeTest {
   @Autowired
   private UserService userService;
 
-  // mvc=MockMvcBuilders.webAppContextSetup(context).build();
-  // personalRepresentativeService.deleteAll();
+  @Before
+  public void setup() {
+    mvc = MockMvcBuilders.webAppContextSetup(context).build();
+    personalRepresentativeService.deleteAll();
 
-  User patient = new Patient(new UserForm("patient", "123456", Role.ROLE_PATIENT, 1));
-  User hcp = new Personnel(new UserForm("hcp", "123456", Role.ROLE_HCP, 1));
+    final User patient_1 = new Patient(new UserForm("patient_1", "123456", Role.ROLE_PATIENT, 1));
+    final User patient_2 = new Patient(new UserForm("patient_2", "123456", Role.ROLE_PATIENT, 1));
 
-  // @Test
-  // @Transactional
-  // @WithMockUser(username = "patient", roles = { "PATIENT" })
-  // public void assignAssignee() throws Exceptio
+    final User hcp = new Personnel(new UserForm("hcp", "123456", Role.ROLE_HCP, 1));
 
-  // mvc.perform(post("api/v1/lab"))
-  // }
+    // final Patient antti = buildPatient();
+
+    // userService.saveAll(List.of(patient, hcp, antti));
+
+    // final Hospital hosp = new Hospital();
+    // hosp.setAddress("123 Raleigh Road");
+    // hosp.setState(State.NC);
+    // hosp.setZip("27514");
+    // hosp.setName("iTrust Test Hospital 2");
+
+    // hospitalService.save(hosp);
+    userService.saveAll(List.of(patient_1, patient_2, hcp));
+  }
+
+  private Patient buildPatient() {
+    final Patient antti = new Patient(new UserForm("antti", "123456", Role.ROLE_PATIENT, 1));
+
+    antti.setAddress1("1 Test Street");
+    antti.setAddress2("Some Location");
+    antti.setBloodType(BloodType.APos);
+    antti.setCity("Viipuri");
+    final LocalDate date = LocalDate.of(1977, 6, 15);
+    antti.setDateOfBirth(date);
+    antti.setEmail("antti@itrust.fi");
+    antti.setEthnicity(Ethnicity.Caucasian);
+    antti.setFirstName("Antti");
+    antti.setGender(Gender.Male);
+    antti.setLastName("Walhelm");
+    antti.setPhone("123-456-7890");
+    antti.setState(State.NC);
+    antti.setZip("27514");
+
+    return antti;
+  }
 
   private final APIPersonalRepresentativeController controller = new APIPersonalRepresentativeController();
 
-  private User mockUser(String username) {
-    User user = mock(User.class);
-    when(user.getUsername()).thenReturn(username);
-    // Add any other necessary behaviors for your User mock
-    return user;
+  @Test
+  @Transactional
+  public void basicTest() {
+    assertEquals(1, 1);
+  }
+  // -----------------------------------------------
+
+  @Test
+  @Transactional
+  @WithMockUser(username = "hcp", roles = { "HCP" })
+  public void testViewAssignor() throws Exception {
+    mvc.perform(get("/api/v1/personal_representatives/view/assignor/test")).andExpect(status().isOk());
   }
 
-  // -----------------------------------------------
+  @Test
+  @Transactional
+  @WithMockUser(username = "hcp", roles = { "HCP" })
+  public void testViewAssignee() throws Exception {
+    mvc.perform(get("/api/v1/personal_representatives/view/assignee/test")).andExpect(status().isOk());
+  }
 
   // @Test
   // @Transactional
-  // @WithMockUser(username = "patient", roles = { "PATIENT" })
-  // void testAssignAssignee() {
-  // when(userService.findByName("patient")).thenReturn(patient);
-
-  // ResponseEntity response = controller.assignAssignee("assignee");
-
-  // assertEquals(HttpStatus.OK, response.getStatusCode());
-  // }
-
-  // ------------------------------
-
-  // @Test
-  // void testAssignAssignor() {
-  // when(userService.findByName("currentUser")).thenReturn(new
-  // User("currentUser"));
-
-  // ResponseEntity response = controller.assignAssignor("assignor");
-
-  // assertEquals(HttpStatus.OK, response.getStatusCode());
+  // @WithMockUser(username = "hcp", roles = { "HCP" })
+  // public void invalidViewAssignee() throws Exception {
+  // Long test = (long) 1;
+  // mvc.perform(get("/api/v1/personal_representatives/view/assignee/" +
+  // test)).andExpect(status().isBadRequest());
   // }
 
   // @Test
-  // void testViewAssignee() {
-  // when(userService.findByName("currentUser")).thenReturn(new
-  // User("currentUser"));
-  // when(personalRepresentativeService.findByAssginorContains("currentUser"))
-  // .thenReturn(Arrays.asList(new PersonalRepresentative()));
+  // @Transactional
+  // @WithMockUser(username = "patient_1", roles = { "PATIENT" })
+  // public void testAssignAssignee() throws Exception {
+  // //
+  // mvc.perform(get("/api/v1/personal_representatives/assign_assignee/patient_1")).andExpect(status().isOk());
 
-  // ResponseEntity<List<PersonalRepresentative>> response =
-  // controller.viewAssignee();
+  // // Mocking
+  // User mockUser = mock(User.class);
+  // when(userService.findByName(anyString())).thenReturn(mockUser);
 
-  // assertEquals(HttpStatus.OK, response.getStatusCode());
-  // assertEquals(1, response.getBody().size());
+  // // Perform the requestw
+  // mvc.perform(MockMvcRequestBuilders.post("/api/personal_representatives/assign_assignor/user456"))
+  // .andExpect(MockMvcResultMatchers.status().isOk());
+
+  // verify(personalRepresentativeService,
+  // times(1)).save(any(PersonalRepresentative.class));
   // }
 
-  // @Test
-  // void testViewAssignor() {
-  // when(userService.findByName("currentUser")).thenReturn(new
-  // User("currentUser", "1234", Role.ROLE_PATIENT, 1);
-  // when(personalRepresentativeService.findByAssgineeContains("currentUser"))
-  // .thenReturn(Arrays.asList(new PersonalRepresentative()));
+  @Test
+  @Transactional
+  @WithMockUser(username = "patient_1", roles = { "PATIENT" })
+  public void invalidReleaseAssignor() throws Exception {
+    mvc.perform(delete("/api/v1/personal_representatives/release_assignor/blank")).andExpect(status().isBadRequest());
+  }
 
-  // ResponseEntity<List<PersonalRepresentative>> response =
-  // controller.viewAssignor();
-
-  // assertEquals(HttpStatus.OK, response.getStatusCode());
-  // assertEquals(1, response.getBody().size());
-  // }
-
-  // @Test
-  // void testReleaseAssignor() {
-  // when(userService.findByName("currentUser")).thenReturn(new
-  // User("currentUser"));
-  // when(personalRepresentativeService.findByAssginorAndAssigneeContains("assignor",
-  // "currentUser"))
-  // .thenReturn(Arrays.asList(new PersonalRepresentative()));
-
-  // ResponseEntity response = controller.releaseAssignor("assignor");
-
-  // assertEquals(HttpStatus.OK, response.getStatusCode());
-  // }
-
-  // @Test
-  // void testReleaseAssignee() {
-  // when(userService.findByName("currentUser")).thenReturn(new
-  // User("currentUser"));
-  // when(personalRepresentativeService.findByAssginorAndAssigneeContains("currentUser",
-  // "assignee"))
-  // .thenReturn(Arrays.asList(new PersonalRepresentative()));
-
-  // ResponseEntity response = controller.releaseAssignee("assignee");
-
-  // assertEquals(HttpStatus.OK, response.getStatusCode());
-  // }
-
-  // @Test
-  // void testViewPatientAssignor() {
-  // when(personalRepresentativeService.findByAssgineeContains("assignee"))
-  // .thenReturn(Arrays.asList(new PersonalRepresentative()));
-
-  // ResponseEntity<List<PersonalRepresentative>> response =
-  // controller.viewPatientAssignor("assignee");
-
-  // assertEquals(HttpStatus.OK, response.getStatusCode());
-  // assertEquals(1, response.getBody().size());
-  // }
-
-  // @Test
-  // void testViewPatientAssignee() {
-  // when(personalRepresentativeService.findByAssginorContains("assignor"))
-  // .thenReturn(Arrays.asList(new PersonalRepresentative()));
-
-  // ResponseEntity<List<PersonalRepresentative>> response =
-  // controller.viewPatientAssignee("assignor");
-
-  // assertEquals(HttpStatus.OK, response.getStatusCode());
-  // assertEquals(1, response.getBody().size());
-  // }
-
-  // @Test
-  // void testAssignRelationship() {
-  // ResponseEntity response = controller.assignRelationship("assignee",
-  // "assignor");
-
-  // assertEquals(HttpStatus.OK, response.getStatusCode());
-  // }
-
+  @Test
+  @Transactional
+  @WithMockUser(username = "patient_1", roles = { "PATIENT" })
+  public void invalidReleaseAssignee() throws Exception {
+    mvc.perform(delete("/api/v1/personal_representatives/release_assignee/blank")).andExpect(status().isBadRequest());
+  }
 }
