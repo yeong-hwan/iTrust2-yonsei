@@ -54,14 +54,6 @@ public class APIPersonalRepresentativeController extends APIController {
 
       return new ResponseEntity(personalRepresentative, HttpStatus.OK);
 
-      // if (!personalRepresentativeService.checkDuplicate(self.getUsername(),
-      // assignee)) {
-      // return new ResponseEntity(personalRepresentative, HttpStatus.OK);
-      // }
-
-      // // else case
-      // return new ResponseEntity("It Duplicated", HttpStatus.OK);
-
     } catch (final Exception e) {
       return new ResponseEntity(
           errorResponse("Error: " + e.getMessage()),
