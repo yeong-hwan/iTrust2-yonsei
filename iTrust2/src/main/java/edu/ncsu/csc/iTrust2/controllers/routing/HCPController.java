@@ -157,7 +157,7 @@ public class HCPController {
     
 
     /* 
-     * Returns the form page for a ER to view emergency health records
+     * Returns the form page for a HCP to view emergency health records
      *
      * @param model
      *            Data for the front end
@@ -167,6 +167,20 @@ public class HCPController {
     @PreAuthorize ( "hasAnyRole('ROLE_HCP','ROLE_OPH','ROLE_OD')" )
     public String viewEmergencyHealthRecords ( final Model model ) {
         return "hcp/viewEmergencyHealthRecords";
+    }
+
+    
+    /* 
+     * Returns the form page for a HCP to view Request Laboratory Test
+     *
+     * @param model
+     *            Data for the front end
+     * @return The page to display to the user
+     */
+    @GetMapping ( "/hcp/requestLaboratoryTest" )
+    @PreAuthorize ( "hasAnyRole('ROLE_HCP','ROLE_OPH','ROLE_OD')" )
+    public String requestLaboratoryTest ( final Model model ) {
+        return "hcp/requestLaboratoryTest";
     }
 
 }

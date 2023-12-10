@@ -115,6 +115,10 @@ a {
 					if (!role.includes('PATIENT')) {
 						navbarparent.removeChild(patientdropdown);
 					}
+					
+					if (!role.includes('LABTECH')) {
+						navbarparent.removeChild(ltdropdown);
+					}
 					if (!role.includes('ADMIN')) {
 						navbarparent.removeChild(admindropdown);
 					}
@@ -126,9 +130,6 @@ a {
 					}
 					if (!role.includes('VIROLOGIST')) {
 						navbarparent.removeChild(virologistdropdown);
-					}
-					if (!role.includes('LABTECH')) {
-						navbarparent.removeChild(ltdropdown);
 					}
 
 				});
@@ -189,6 +190,8 @@ a {
 								id="viewPatientFoodDiary">view Patient Food Diary</a></li>
 							<li><a href="/iTrust2/hcp/viewEmergencyHealthRecords"
 								id="hcpViewEmergencyRecords">View Emergency Health Records</a></li>
+							<li><a href="/iTrust2/hcp/requestLaboratoryTest"
+								id="hcpViewEmergencyRecords">Request Laboratory Test</a></li>
 						</ul></li>
 					<li class="dropdown"><a class="dropdown-toggle"
 						data-toggle="dropdown" href="#">Edit<span class="caret"></span></a>
@@ -217,6 +220,14 @@ a {
 								href = "/iTrust2/patient/FoodDiary/addFoodDiary"
 								id = "addFoodDiary">addFoodDiary</a></li>
 							<!---->
+
+							
+							<li>
+								<a href="/iTrust2/patient/viewLaboratoryTestResult" id="patientViewLaboratoryTestResult">
+									View Laboratory Test Result
+								</a>
+							</li>
+
 						</ul></li>
 					<li class="dropdown"><a class="dropdown-toggle"
 						data-toggle="dropdown" id="appointments" href="#">Appointments<span
@@ -253,6 +264,21 @@ a {
 							<li>
 								<a href="/iTrust2/er/viewEmergencyHealthRecords" id="erViewEmergencyRecords">
 									View Emergency Health Records
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+
+				
+				<!-- Labtech navbar -->
+				<ul id="labtech-dropdown" class="nav navbar-nav">
+					<li class="dropdown"><a class="dropdown-toggle"
+						data-toggle="dropdown" href="#" id="labtechPatientDropDown">Patient<span class="caret"></span></a>
+						<ul class="dropdown-menu" id="labtech-view">
+							<li>
+								<a href="/iTrust2/labtech/viewRequestedLaboratoryTest" id="labtechViewRequestedLaboratoryTest">
+									View Requested Laboratory Test
 								</a>
 							</li>
 						</ul>
