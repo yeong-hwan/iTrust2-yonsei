@@ -67,24 +67,35 @@ Link: https://meet.google.com/ocp-naww-bnv
 |--------------|----------------------------|------------------------|----------------------------------------------|
 | 2023-10-17   | 목적                         | Team2 전체               | [Meeting Document](URL)                      |
 | 2023-10-24   | 목적                         | Team2 전체               | [Meeting Document](URL)                      |
+| 2023-10-28| UC 읽어보고 선정하기 | Cell 1 (김영서, 박승호, 엄소은) | [Meeting Document](https://34.64.100.199/team2/itrust2/-/blob/develop/docs/meetings/team1.md?ref_type=heads#anchor-1028)|
 | 2023-10-30   | Cell2 포지션 분배 및 개발 계획       | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
 | 2023-11-04   | Cell3 첫 미팅 및 구조 파악         | Cell 3 (강민용, 임예원, 노규민) | [Meeting Document](./docs/meetings/team3.md) |
 | 2023-11-04   | 포지션 재분배 및 Git 숙지           | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
+| 2023-11-05| DB 칼럼 공부하기 | Cell 1 (김영서, 박승호, 엄소은) | [Meeting Document](https://34.64.100.199/team2/itrust2/-/blob/develop/docs/meetings/team1.md?ref_type=heads#anchor-115)|
 | 2023-11-08   | UC15 필요한 기능에 대한 논의         | Cell 3 (강민용, 임예원, 노규민) | [Meeting Document](./docs/meetings/team3.md) |
 | 2023-11-09   | UC19 API 명세 작성 및 개발 계획 브리핑 | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
+| 2023-11-11| 개발관련 오류 논의 | Cell 1 (김영서, 박승호, 엄소은) | [Meeting Document](https://34.64.100.199/team2/itrust2/-/blob/develop/docs/meetings/team1.md?ref_type=heads#anchor-1111)|
 | 2023-11-13   | UC19 FE BE간 개발 상황 공유       | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
+| 2023-11-13 | 기능별 권한 확인하기 | Cell 1 (김영서, 박승호, 엄소은) | [Meeting Document](https://34.64.100.199/team2/itrust2/-/blob/develop/docs/meetings/team1.md?ref_type=heads#anchor-1113)|
 | 2023-11-15   | UC23 필요한 기능에 대한 논의         | Cell 3 (강민용, 임예원, 노규민) | [Meeting Document](./docs/meetings/team3.md) |
 | 2023-11-15   | eclipse Build 이슈 해결        | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
+| 2023-11-16 | UC 21 구현 | Cell 1 (김영서, 박승호, 엄소은) | [Meeting Document](https://34.64.100.199/team2/itrust2/-/blob/develop/docs/meetings/team1.md?ref_type=heads#anchor-1116)|
 | 2023-11-18   | UC15, UC23 API 문서 작성       | Cell 3 (강민용, 임예원, 노규민) | [Meeting Document](./docs/meetings/team3.md) |
 | 2023-11-18   | UC19 API 기능 설명 및 수정        | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
+| 2023-11-18 | FE, BE 형식 맞추기 | Cell 1 (김영서, 박승호, 엄소은) | [Meeting Document](https://34.64.100.199/team2/itrust2/-/blob/develop/docs/meetings/team1.md?ref_type=heads#anchor-1118)|
 | 2023-11-20   | UC15 개발 및 Test 작성 완료       | Cell 3 (강민용, 임예원, 노규민) | [Meeting Document](./docs/meetings/team3.md) |
 | 2023-11-20   | UC19 이슈 해결 및 발표 준비         | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
+| 2023-11-20 | API 테스트 이슈 공유 | Cell 1 (김영서, 박승호, 엄소은) | [Meeting Document](https://34.64.100.199/team2/itrust2/-/blob/develop/docs/meetings/team1.md?ref_type=heads#anchor-1120)|
+| 2023-11-22 | UC22 개발 계획 | Cell 1 (김영서, 박승호, 엄소은) | [Meeting Document](https://34.64.100.199/team2/itrust2/-/blob/develop/docs/meetings/team1.md?ref_type=heads#anchor-1122)|
 | 2023-11-24   | UC16 역할 분담 및 개발 계획         | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
+| 2023-11-24 | FE 관련 화면 오류 | Cell 1 (김영서, 박승호, 엄소은) | [Meeting Document](https://34.64.100.199/team2/itrust2/-/blob/develop/docs/meetings/team1.md?ref_type=heads#anchor-1124)|
 | 2023-11-28   | UC23 개발 계획 수립 및 개발 시작      | Cell 3 (강민용, 임예원, 노규민) | [Meeting Document](./docs/meetings/team3.md) |
 | 2023-11-29   | UC16 API 개발 이슈 공유 및 해결     | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
 | 2023-12-01   | UC23 개발 및 Test 작성 완료       | Cell 3 (강민용, 임예원, 노규민) | [Meeting Document](./docs/meetings/team3.md) |
+| 2023-12-01 | BE, FE 관련 오류 해결 | Cell 1 (김영서, 박승호, 엄소은) | [Meeting Document](https://34.64.100.199/team2/itrust2/-/blob/develop/docs/meetings/team1.md?ref_type=heads#anchor-1201)|
 | 2023-12-03   | UC16 개발 상황 공유 및 이슈 해결      | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
 | 2023-12-05   | UC16 API 작동 문제 해결          | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
+| 2023-12-07 | 테스트 코드 이슈 | Cell 1 (김영서, 박승호, 엄소은) | [Meeting Document](https://34.64.100.199/team2/itrust2/-/blob/develop/docs/meetings/team1.md?ref_type=heads#anchor-1207)|
 | 2023-12-08   | UC16 테스트코드 문제 해결           | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
 
 ## Git Flow
