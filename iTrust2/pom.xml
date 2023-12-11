@@ -200,10 +200,10 @@
 		<plugins>
 			<!-- added -->
 			<plugin>
-	            <groupId>org.springframework.boot</groupId>
-	            <artifactId>spring-boot-maven-plugin</artifactId>
-	        </plugin>
-	        <!-- added -->
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<!-- added -->
 
 			<plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -212,7 +212,7 @@
                     <source>11</source>
                     <target>11</target>
                     <fork>true</fork>
-                    <executable>/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home/bin/javac</executable>
+                    <executable>/usr/bin/javac</executable>
                 </configuration>
             </plugin>
 
