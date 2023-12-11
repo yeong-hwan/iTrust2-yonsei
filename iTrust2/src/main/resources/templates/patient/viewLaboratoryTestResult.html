@@ -26,7 +26,7 @@
 								return ($scope.displayName(patient)).toLowerCase().match($scope.labtestSearchFilter.toLowerCase());
 							}
 							
-							$http.get("/iTrust2/api/v1/labtests/view_results")
+							$http.get("/iTrust2/api/v1/lab_tests/view_my_results")
 								.then(function(response) {
 									$scope.labtests = response.data;
 								})
@@ -53,34 +53,8 @@
 								$scope.selectedLabTest = labtest;
 								$scope.isLabTestSelected = true;
 							}
-
-							$scope.labTestResultSave = function (selectedLabtest, testName, labName, results, notes) {
-								// Reset previous error messages
-								$scope.showErrorMsg = false;
-
-									if (!results) {
-										$scope.errorMsg = 'Please enter a result. (500 characters max)';
-										$scope.showErrorMsg = true;
-										return;
-									}
-
-									var testRecordData = {
-										patientMID: selectedLabtest,
-										testName: testName,
-										labName: labName,
-										results: results,
-										notes: notes,
-									};
-
-									$http.post("api/v1/lab_tests/record_results", testRecordData).then(function(success) {
-										alert("Result saved successfully");
-										window.location.reload();
-									}, function(failure) {
-										alert("Saving result failed. Please try again.");
-									});
-								}
-							}
-						);
+						}
+					);
 
 			/*]]>*/
 		</script>
@@ -88,58 +62,55 @@
 
 
 		<div ng-app="myApp" ng-controller="viewRequestedLabTestController">
-			
-			<form name="f" ng-submit="labTestResultSave(selectedLabtest, testName, labName, results, notes)">
-				<div style="float: left; width: 40%; height: 90%; overflow-y: auto">
-					<h2>Lab Tests:</h2>
-					<!-- info on filtering taken from here: https://www.w3schools.com/angular/angular_filters.asp
-					and https://docs.angularjs.org/api/ng/filter/filter -->
-					<h4>
-						Search: <input type="text" name="search" ng-model="labtestSearchFilter" />
-					</h4>
-					<!-- Info on scrolling taken from here: https://www.w3schools.com/cssref/pr_pos_overflow.asp -->
-					<!-- and here: https://stackoverflow.com/questions/9560330/how-to-hide-a-vertical-scroll-bar-when-not-needed -->
-					<ul style="overflow: auto; height: 90%;">
-						<!-- Information on how labels wor from here: https://stackoverflow.com/questions/7863251/clicking-the-text-to-select-corresponding-radio-button -->
-						<li ng-repeat="labtest in labtests | filter:filterLabTests"><h4>
-								<label> <input type="radio"
-									name="labtest"
-									ng-click="setSelectedLabTest(labtest)"
-									value="{{labtest.testName}}"/>{{labtest.testName}}
-								</label>
-							</h4></li>
-					</ul>
-				</div>
+			<div style="float: left; width: 40%; height: 90%; overflow-y: auto">
+				<h2>Lab Tests:</h2>
+				<!-- info on filtering taken from here: https://www.w3schools.com/angular/angular_filters.asp
+				and https://docs.angularjs.org/api/ng/filter/filter -->
+				<h4>
+					Search: <input type="text" name="search" ng-model="labtestSearchFilter" />
+				</h4>
+				<!-- Info on scrolling taken from here: https://www.w3schools.com/cssref/pr_pos_overflow.asp -->
+				<!-- and here: https://stackoverflow.com/questions/9560330/how-to-hide-a-vertical-scroll-bar-when-not-needed -->
+				<ul style="overflow: auto; height: 90%;">
+					<!-- Information on how labels wor from here: https://stackoverflow.com/questions/7863251/clicking-the-text-to-select-corresponding-radio-button -->
+					<li ng-repeat="labtest in labtests | filter:filterLabTests"><h4>
+							<label> <input type="radio"
+								name="labtest"
+								ng-click="setSelectedLabTest(labtest)"
+								value="{{labtest.testName}}"/>{{labtest.testName}}
+							</label>
+						</h4></li>
+				</ul>
+			</div>
 
-				<!-- information on vertical rule found here: https://stackoverflow.com/questions/571900/is-there-a-vr-vertical-rule-in-html  -->
-				<div
-					ng-show="isLabTestSelected"
-					style="float: left; width: 60%; border-left: 1px solid #bbb; padding-left: 3%; height: 90%; overflow-y: auto">
-						<h2>Laboratory Test Result for ({{selectedLabTest.testName}})</h2>
-						<div id="nameFields" style="padding-top: 10px;">
-							<div style="padding-bottom: 10px;">
-								<h5 style="font-weight: bold;">Test Name:</h5>
-								<p>{{selectedLabTest.testName}}</p>
-							</div>
-							<div style="padding-bottom: 10px;">
-								<h5 style="font-weight: bold;">Lab Name:</h5>
-								<p>{{selectedLabTest.labName}}</p>
-							</div>
-							<div style="padding-bottom: 30px;">
-								<h5 style="font-weight: bold;">Instructions:</h5>
-								<p>{{selectedLabTest.instructions}}</p>
-							</div>
-							<div style="padding-bottom: 30px;">
-								<h5 style="font-weight: bold;">Results:</h5>
-								<p>{{selectedLabTest.results}}</p>
-							</div>
-							<div style="padding-bottom: 30px;">
-								<h5 style="font-weight: bold;">Notes:</h5>
-								<p>{{selectedLabTest.notes}}</p>
-							</div>
+			<!-- information on vertical rule found here: https://stackoverflow.com/questions/571900/is-there-a-vr-vertical-rule-in-html  -->
+			<div
+				ng-show="isLabTestSelected"
+				style="float: left; width: 60%; border-left: 1px solid #bbb; padding-left: 3%; height: 90%; overflow-y: auto">
+					<h2>Laboratory Test Result for ({{selectedLabTest.testName}})</h2>
+					<div id="nameFields" style="padding-top: 10px;">
+						<div style="padding-bottom: 10px;">
+							<h5 style="font-weight: bold;">Test Name:</h5>
+							<p>{{selectedLabTest.testName}}</p>
 						</div>
-				</div>
-			</form>
+						<div style="padding-bottom: 10px;">
+							<h5 style="font-weight: bold;">Lab Name:</h5>
+							<p>{{selectedLabTest.labName}}</p>
+						</div>
+						<div style="padding-bottom: 30px;">
+							<h5 style="font-weight: bold;">Instructions:</h5>
+							<p>{{selectedLabTest.instructions}}</p>
+						</div>
+						<div style="padding-bottom: 30px;">
+							<h5 style="font-weight: bold;">Results:</h5>
+							<p>{{selectedLabTest.results}}</p>
+						</div>
+						<div style="padding-bottom: 30px;">
+							<h5 style="font-weight: bold;">Notes:</h5>
+							<p>{{selectedLabTest.notes}}</p>
+						</div>
+					</div>
+			</div>
 		</div>
 	</div>
 </body>

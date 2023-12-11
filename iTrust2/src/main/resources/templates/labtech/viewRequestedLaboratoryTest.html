@@ -26,20 +26,21 @@
 								return ($scope.displayName(patient)).toLowerCase().match($scope.labtestSearchFilter.toLowerCase());
 							}
 							
-							$http.get("/iTrust2/api/v1/labtests")
+							$http.get("/iTrust2/api/v1/lab_tests/view_labtests")
 								.then(function(response) {
 									$scope.labtests = response.data;
 								})
 								.catch(function(response) {
+									console.log(response);
 									$scope.labtests = [
 										{
-											patientMID: "123123",
+											patientName: "123123",
 											testName: "testName1",
 											labName: "labName1",
 											instructions: "instructions1",
 										},
 										{
-											patientMID: "123123123",
+											patientName: "123123123",
 											testName: "testName2",
 											labName: "labName2",
 											instructions: "instructions2",
@@ -63,19 +64,22 @@
 									}
 
 									var testRecordData = {
-										patientMID: selectedLabtest,
+										patientName: selectedLabtest,
 										testName: testName,
 										labName: labName,
 										results: results,
 										notes: notes,
 									};
 
-									$http.post("api/v1/lab_tests/record_results", testRecordData).then(function(success) {
-										alert("Result saved successfully");
-										window.location.reload();
-									}, function(failure) {
-										alert("Saving result failed. Please try again.");
-									});
+									$http.post("/iTrust2/api/v1/lab_tests/record_results", testRecordData)
+										.then(function(success) {
+											alert("Result saved successfully");
+											window.location.reload();
+										})
+										.catch(function(failure) {
+											console.log(failure);
+											alert("Saving result failed. Please try again.");
+										});
 								}
 							}
 						);

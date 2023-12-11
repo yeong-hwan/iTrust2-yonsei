@@ -59,18 +59,21 @@
 									}
 
 									var testData = {
-										patientMID: selectedPatient,
+										patientName: selectedPatient,
 										testName: testName,
 										labName: labName,
 										instructions: instructions,
 									};
 
-									$http.post("api/v1/lab_tests/order", testData).then(function(success) {
-										alert("Lab Test Requested successfully");
-										window.location.reload();
-									}, function(failure) {
-										alert("Lab Test Request failed. Please try again.");
-									});
+									$http.post("/iTrust2/api/v1/lab_tests/order", testData)
+										.then(function(success) {
+											alert("Lab Test Requested successfully");
+											window.location.reload();
+										})
+										.catch(function(failure) {
+											console.log(failure);
+											alert("Lab Test Request failed. Please try again.");
+										});
 								}
 							}
 						);
