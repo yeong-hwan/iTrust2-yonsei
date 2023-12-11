@@ -10,6 +10,7 @@
 6. 11/28
 7. 12/01
 
+
 ### Meeting Title: Cell3 첫 미팅 및 구조 파악
 - **Date:** 11/04
 - **Participants:** 강민용, 임예원, 노규민
