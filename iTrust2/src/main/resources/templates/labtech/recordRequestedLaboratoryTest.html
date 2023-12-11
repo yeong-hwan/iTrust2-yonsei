@@ -1,0 +1,156 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout :: head(title=~{::title},links=~{::script})">
+<title>Document Office Visit</title>
+<script th:src="@{/js/dateTimeService.js}"
+		src="../js/dateTimeService.js"></script>
+</head>
+<body th:include="layout :: body" th:with="content=~{::content}">
+	<div th:fragment="content">
+
+		<script th:inline="javascript">
+			/* Otherwise Thymeleaf tries to parse Javascript as XML and breaks itself sometimes.  Sigh */
+			/*<![CDATA[*/
+
+			var app = angular.module('myApp', ['dateTimeServices']);
+			
+			app.controller(
+						'viewRequestedLabTestController',
+						function($scope, $http, dateTimeService) {
+							$scope.displayName = function(p) {
+								return p.firstName + " " + p.lastName + " (" + p.username + ")";
+							}
+							
+							// documentation on Angular filters: https://docs.angularjs.org/api/ng/filter/filter
+							$scope.labtestSearchFilter = "";
+							$scope.filterLabTests = function(patient) {
+								return ($scope.displayName(patient)).toLowerCase().match($scope.labtestSearchFilter.toLowerCase());
+							}
+							
+							$http.get("/iTrust2/api/v1/lab_tests/view_labtests")
+								.then(function(response) {
+									$scope.labtests = response.data;
+								})
+								.catch(function(response) {
+									console.log(response);
+								});
+
+							$scope.setSelectedLabTest = function (labtest) {
+								$scope.selectedLabTest = labtest;
+								$scope.isLabTestSelected = true;
+							}
+
+							$scope.labTestResultSave = function (results, notes) {
+								// Reset previous error messages
+								$scope.showErrorMsg = false;
+
+									var pateintName = $scope.selectedLabTest.patient.username;
+									var testName = $scope.selectedLabTest.testName;
+									var labName = $scope.selectedLabTest.labName;
+									if (!notes) {
+										notes = "";
+									}
+
+									if (!results) {
+										$scope.errorMsg = 'Please enter a result. (500 characters max)';
+										$scope.showErrorMsg = true;
+										return;
+									}
+
+
+									var testRecordData = {
+										patientName: pateintName,
+										testName: testName,
+										labName: labName,
+										results: results,
+										notes: notes,
+									};
+
+									$http.post("/iTrust2/api/v1/lab_tests/record_results", testRecordData)
+										.then(function(success) {
+											alert("Result saved successfully");
+											window.location.reload();
+										})
+										.catch(function(failure) {
+											console.log(failure);
+											alert("Saving result failed. Please try again.");
+										});
+								}
+							}
+						);
+
+			/*]]>*/
+		</script>
+
+
+
+		<div ng-app="myApp" ng-controller="viewRequestedLabTestController">
+			
+			<form name="f" ng-submit="labTestResultSave(results, notes)">
+				<div style="float: left; width: 40%; height: 90%; overflow-y: auto">
+					<h2>Lab Tests:</h2>
+					<!-- info on filtering taken from here: https://www.w3schools.com/angular/angular_filters.asp
+					and https://docs.angularjs.org/api/ng/filter/filter -->
+					<h4>
+						Search: <input type="text" name="search" ng-model="labtestSearchFilter" />
+					</h4>
+					<!-- Info on scrolling taken from here: https://www.w3schools.com/cssref/pr_pos_overflow.asp -->
+					<!-- and here: https://stackoverflow.com/questions/9560330/how-to-hide-a-vertical-scroll-bar-when-not-needed -->
+					<ul style="overflow: auto; height: 90%;">
+						<!-- Information on how labels wor from here: https://stackoverflow.com/questions/7863251/clicking-the-text-to-select-corresponding-radio-button -->
+						<li ng-repeat="labtest in labtests | filter:filterLabTests"><h4>
+								<label> <input type="radio"
+									name="labtest"
+									ng-click="setSelectedLabTest(labtest)"
+									value="{{labtest.testName}}"/>{{labtest.testName}}
+								</label>
+							</h4></li>
+					</ul>
+				</div>
+
+				<!-- information on vertical rule found here: https://stackoverflow.com/questions/571900/is-there-a-vr-vertical-rule-in-html  -->
+				<div
+					ng-show="isLabTestSelected"
+					style="float: left; width: 60%; border-left: 1px solid #bbb; padding-left: 3%; height: 90%; overflow-y: auto">
+						<h2>Record Laboratory Test for ({{selectedLabTest.testName}})</h2>
+						<div id="nameFields" style="padding-top: 10px;">
+							<div style="padding-bottom: 10px;">
+								<h5 style="font-weight: bold;">Patient Name:</h5>
+								<p>{{selectedLabTest.patient.username}}</p>
+							</div>
+							<div style="padding-bottom: 10px;">
+								<h5 style="font-weight: bold;">Test Name:</h5>
+								<p>{{selectedLabTest.testName}}</p>
+							</div>
+							<div style="padding-bottom: 10px;">
+								<h5 style="font-weight: bold;">Lab Name:</h5>
+								<p>{{selectedLabTest.labName}}</p>
+							</div>
+							<div style="padding-bottom: 30px;">
+								<h5 style="font-weight: bold;">Instructions:</h5>
+								<p>{{selectedLabTest.instructions}}</p>
+							</div>
+							<div class="form-group" style="padding-bottom: 8px;">
+								<label for="results">Results:</label>
+								<textarea style="width: 80%; height: 150px;" class="form-control" id="results" placeholder="Results for the test (Up to 500 characters)." ng-model="results"></textarea>
+							</div>
+							<div class="form-group" style="padding-bottom: 10px;">
+								<label for="notes">Additional Notes:</label>
+								<textarea style="width: 80%; height: 50px;" class="form-control" id="notes" placeholder="notes for the test (Up to 500 characters)." ng-model="notes"></textarea>
+							</div>
+						</div>
+
+						
+						<button type="submit" class="btn btn-primary">Submit</button>
+
+						<div class="alert alert-danger" style="margin-top: 10px; width: 80%;" ng-show="showErrorMsg">
+							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+							<span class="sr-only">Error:</span>
+							<span>{{errorMsg}}</span>
+						</div>
+						
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

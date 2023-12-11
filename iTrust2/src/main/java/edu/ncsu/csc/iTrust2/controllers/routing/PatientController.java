@@ -130,5 +130,16 @@ public class PatientController {
         return "/patient/FoodDiary/addFoodDiary";
     }
 
+    /**
+     * @param model
+     *              data for front end
+     * @return The page for the patient to view their Lab Test Results
+     */
+    @GetMapping(value = "patient/viewLaboratoryTestResult")
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    public String viewLaboratoryTestResult(final Model model) {
+        return "/patient/viewLaboratoryTestResult";
+    }
+
     
 }

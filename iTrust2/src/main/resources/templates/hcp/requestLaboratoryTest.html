@@ -1,0 +1,141 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout :: head(title=~{::title},links=~{::script})">
+<title>Document Office Visit</title>
+<script th:src="@{/js/dateTimeService.js}"
+		src="../js/dateTimeService.js"></script>
+</head>
+<body th:include="layout :: body" th:with="content=~{::content}">
+	<div th:fragment="content">
+
+		<script th:inline="javascript">
+			/* Otherwise Thymeleaf tries to parse Javascript as XML and breaks itself sometimes.  Sigh */
+			/*<![CDATA[*/
+
+			var app = angular.module('myApp', ['dateTimeServices']);
+			
+			app.controller(
+						'requestLabTestController',
+						function($scope, $http, dateTimeService) {
+							$scope.displayName = function(p) {
+								return p.firstName + " " + p.lastName + " (" + p.username + ")";
+							}
+							
+							// documentation on Angular filters: https://docs.angularjs.org/api/ng/filter/filter
+							$scope.patientSearchFilter = "";
+							$scope.filterPatients = function(patient) {
+								return ($scope.displayName(patient)).toLowerCase().match($scope.patientSearchFilter.toLowerCase());
+							}
+							
+							$http.get("/iTrust2/api/v1/patients")
+								.then(function(response) {
+									$scope.patients = response.data;
+								});
+
+							$scope.setSelectedPatient = function (patient) {
+								$scope.selectedPatient = patient;
+								$scope.isPatientSelected = true;
+							}
+
+							$scope.requestLabTestSubmit = function (testName, labName, instructions) {
+								// Reset previous error messages
+								$scope.showErrorMsg = false;
+
+								if (!testName) {
+									$scope.errorMsg = 'Please enter a test name. (250 characters max)';
+									$scope.showErrorMsg = true;
+									return;
+								} else if (!labName) {
+									$scope.errorMsg = 'Please enter a lab name. (250 characters max)';
+									$scope.showErrorMsg = true;
+									return;
+								} else if (!instructions) {
+									$scope.errorMsg = 'Please enter instructions. (500 characters max)';
+									$scope.showErrorMsg = true;
+									return;
+								}
+
+								var testData = {
+									patientName: $scope.selectedPatient,
+									testName: testName,
+									labName: labName,
+									instructions: instructions,
+								};
+
+								$http.post("/iTrust2/api/v1/lab_tests/order", testData)
+									.then(function(success) {
+										console.log(testData);
+										alert("Lab Test Requested successfully");
+										window.location.reload();
+									})
+									.catch(function(failure) {
+										console.log(failure);
+										alert("Lab Test Request failed. Please try again.");
+									});
+							}
+						}
+					);
+
+			/*]]>*/
+		</script>
+
+
+
+		<div ng-app="myApp" ng-controller="requestLabTestController">
+			
+			<form name="f" ng-submit="requestLabTestSubmit(testName, labName, instructions)">
+				<div style="float: left; width: 40%; height: 90%; overflow-y: auto">
+					<h2>Patients:</h2>
+					<!-- info on filtering taken from here: https://www.w3schools.com/angular/angular_filters.asp
+					and https://docs.angularjs.org/api/ng/filter/filter -->
+					<h4>
+						Search: <input type="text" name="search" ng-model="patientSearchFilter" />
+					</h4>
+					<!-- Info on scrolling taken from here: https://www.w3schools.com/cssref/pr_pos_overflow.asp -->
+					<!-- and here: https://stackoverflow.com/questions/9560330/how-to-hide-a-vertical-scroll-bar-when-not-needed -->
+					<ul style="overflow: auto; height: 90%;">
+						<!-- Information on how labels wor from here: https://stackoverflow.com/questions/7863251/clicking-the-text-to-select-corresponding-radio-button -->
+						<li ng-repeat="patient in patients | filter:filterPatients"><h4>
+								<label> <input type="radio"
+									name="patient"
+									ng-click="setSelectedPatient(patient.username)"
+									value="{{patient.username}}"/>&nbsp;{{displayName(patient)}}
+								</label>
+							</h4></li>
+					</ul>
+				</div>
+
+				<!-- information on vertical rule found here: https://stackoverflow.com/questions/571900/is-there-a-vr-vertical-rule-in-html  -->
+				<div
+					ng-show="isPatientSelected"
+					style="float: left; width: 60%; border-left: 1px solid #bbb; padding-left: 3%; height: 90%; overflow-y: auto">
+						<h2>Request Laboratory Test for ({{selectedPatient}})</h2>
+						<div id="nameFields" style="padding-top: 10px;">
+							<div class="form-group" style="width: 40%;">
+								<label for="testName">Test Name:</label>
+								<input type="text" class="form-control" id="testName" placeholder="Enter Test Name" ng-model="testName">
+							</div>
+							<div class="form-group" style="width: 40%;">
+								<label for="labName">Lab Name:</label>
+								<input type="text" class="form-control" id="labName" placeholder="Enter Lab Name" ng-model="labName">
+							</div>
+							<div class="form-group">
+								<label for="instructions">Instructions:</label>
+								<textarea style="width: 80%; height: 200px;" class="form-control" id="instructions" placeholder="Special instructions for the test (Up to 500 characters)." ng-model="instructions"></textarea>
+							</div>
+						</div>
+
+						
+						<button type="submit" class="btn btn-primary">Request</button>
+
+						<div class="alert alert-danger" style="margin-top: 10px; width: 80%;" ng-show="showErrorMsg">
+							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+							<span class="sr-only">Error:</span>
+							<span>{{errorMsg}}</span>
+						</div>
+						
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
