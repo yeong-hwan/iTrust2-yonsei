@@ -1,0 +1,261 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout :: head(title=~{::title},links=~{::script})">
+<title>view Patient Food Diary</title>
+<script th:src="@{/js/dateTimeService.js}"
+		src="../js/dateTimeService.js"></script>
+</head>
+<body th:include="layout :: body" th:with="content=~{::content}">
+	<div th:fragment="content">
+
+		<script th:inline="javascript">
+			/* Otherwise Thymeleaf tries to parse Javascript as XML and breaks itself sometimes.  Sigh */
+			/*<![CDATA[*/
+
+			var app = angular.module('myApp', []);
+			app.controller('myCtrl',function($scope, $http) {
+
+								//Initialize variables!
+								$scope.selectedPatient = null; 	
+								$scope.selectedAssignee = null; 	
+								$scope.selectedAssignor = null; 
+								$scope.isAssign = false;
+								$scope.handleIsAssign = function (){
+									$scope.isAssign = true;
+								}
+
+
+								$scope.displayName = function(p) {
+									return p.firstName + " " + p.lastName + " (" + p.username + ")";
+								}
+								
+								// documentation on Angular filters: https://docs.angularjs.org/api/ng/filter/filter
+								$scope.searchFilter = "";
+								$scope.filterPatients = function(patient) {
+									return ($scope.displayName(patient)).toLowerCase().match($scope.searchFilter.toLowerCase());
+								}
+
+								$scope.selectPatient = function(patient){
+									$scope.selectedPatient = patient;
+									// console.log("selected Patient", patient.username);
+								}								
+								
+								$scope.selectAssignee = function(patient){
+									$scope.selectedAssignee = patient;
+									// console.log("selected Assignee", patient.username);
+								}
+
+								$scope.selectAssignor = function(patient){
+									$scope.selectedAssignor = patient;
+									// console.log("selected Assignor", patient.username);
+								}
+
+								// $scope.selectPatient = function(patient){
+								// 	$scope.selectedPatient = patient;
+								// 	// $scope.getFoodDiaries($scope.selectedPatient);
+								// }
+
+								$scope.assignPR = function(){
+									console.log("Selected Patient: ",$scope.selectedPatient);
+									if ($scope.selectedPatient === null){
+										$scope.errMsg1 = "No Patient was selected.";
+									}
+									else{
+										$scope.errMsg1 = "";
+										$http({
+										method: 'POST',
+										url: '/iTrust2/api/v1/personal_representatives/assign_assignee/' + $scope.selectedPatient.username
+										
+									}).then(function(response){
+										console.log(response.data, "Success Assign PR");
+										$scope.selectedPatient= null;
+										$scope.message1 = "Successfully assign PR."
+										$scope.getAssignee();
+									})
+									}
+								}
+
+								$scope.releasePR = function(){
+									console.log("SelectedAssignee:",$scope.selectedAssignee);
+									if ($scope.selectedAssignee === null ){
+										$scope.message2=""
+										$scope.errMsg2 = "No Patient was selected.";
+									}
+									else{
+										$scope.errMsg2 = "";
+										$http({
+										method: 'DELETE',
+										url: '/iTrust2/api/v1/personal_representatives/release_assignee/' + $scope.selectedAssignee
+										
+									}).then(function(response){
+										console.log($scope.selectedAssignee, "Success Release PR");
+										$scope.selectedAssignee= null;
+										$scope.message2 = "Successfully Release PR."
+										$scope.getAssignee();
+									})
+									}
+								}
+
+								$scope.unAssign = function(){
+									console.log("SelectedAssignee:",$scope.selectedAssignor);
+									if ($scope.selectedAssignor === null ){
+										$scope.message3=""
+										$scope.errMsg3 = "No Patient was selected.";
+									}
+									else{
+										$scope.errMsg3 = "";
+										$http({
+										method: 'DELETE',
+										url: '/iTrust2/api/v1/personal_representatives/release_assignor/' + $scope.selectedAssignor
+										
+									}).then(function(response){
+										console.log($scope.selectedAssignor, "Success Release PR");
+										$scope.selectedAssignor= null;
+										$scope.message3 = "Successfully Released from PR."
+										$scope.getAssignor();
+									})
+									}
+								}
+
+
+                                //Patients list를 반환한다.
+								$http.get("/iTrust2/api/v1/patients").then(
+										function(response) {
+											$scope.patients = response.data;
+										});
+							
+								
+								$scope.getAssignee = function(){
+									$http({
+										method: 'GET',
+										url : '/iTrust2/api/v1/personal_representatives/view/assignee',
+
+									}).then(function(response){
+										console.log("Successfully get AssigneeList");
+										$scope.AssigneeList = response.data;
+										console.log($scope.AssigneeList);
+									})
+								}
+								$scope.getAssignor = function(){
+									$http({
+										method: 'GET',
+										url : '/iTrust2/api/v1/personal_representatives/view/assignor',
+									}).then(function(response){
+										console.log("Successfully get AssignorList");
+										$scope.AssignorList = response.data;
+										console.log($scope.AssignorList);
+						
+									})
+								}
+								$scope.getAssignee();
+								$scope.getAssignor();
+	
+
+
+						});
+
+			/*]]>*/
+		</script>
+
+
+
+		<div ng-app="myApp" ng-controller="myCtrl">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3>Personal Representatives</h3>
+                        </div>
+						<div class="panel-body">
+							<div class="row">
+				
+								<div class="col-md-3" style="height: 100%">
+									<div class="panel panel-info" style="display: felx; justify-content: center; flex-wrap: wrap; align-items: center; ">
+										<div class="panel-heading">
+											<h4>My PR List</h4>
+										</div>
+										<div class="panel-body" style="display: flex; justify-content: center; flex-direction: column;">
+											<ul style="overflow:auto; height: 60%;">
+												<li ng-repeat="Assignee in AssigneeList">
+													<label><h4>
+														<input type="radio" name="release PR"
+														ng-click="selectAssignee(Assignee.assignee)">&nbsp;{{Assignee.assignee}}
+													</h4></label>
+												</li>
+											</ul>
+											<button class="btn btn-primary btn-lg" ng-click="releasePR()"
+											name="releasePR">Release PR</button>
+											<br>
+											<div name="success" style="color: green;">{{message2}}</div>
+											<div name="error" style="color: red;">{{errMsg2}}</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="panel panel-info">
+										<div class="panel-heading">
+											<h4>Patients List who assigned me as PR</h4>
+										</div>
+										<div class="panel-body" style="display: flex; justify-content: center; flex-direction: column; flex-flow:column; ">
+											<ul style="overflow:auto; height: 60%;">
+												<li ng-repeat="Assignor in AssignorList">
+													<label><h4>
+														<input type="radio" name="releas PR"
+														ng-click="selectAssignor(Assignor.assignor)">&nbsp;{{Assignor.assignor}}
+													</h4></label>
+												</li>
+											</ul>
+											<button class="btn btn-primary btn-lg" ng-click="unAssign()"
+											name="unAssign">Release myself from his/her PR</button>
+											<br>
+											<div name="success" style="color: green;">{{message3}}</div>
+											<div name="error" style="color: red;">{{errMsg3}}</div>
+										</div>
+									</div>
+								</div>
+								<div ng-show="!isAssign">
+									<div class="form-group col-md-4" style="display: flex; justify-content: center; align-items:center; margin-top: 1rem;">
+										<button class="btn btn-primary btn-lg" ng-click="handleIsAssign()">Assign New Patient as PR</button>
+									</div>
+								</div>
+								<div ng-show="isAssign">
+									<div class="col-md-4">
+										<div class="panel panel-info">
+											<div class="panel-heading">
+												<h4>Assign PR</h4>
+											</div>
+											<div class="panel-body">
+												<h4>
+													Search: <input type="text" name="search" ng-model="searchFilter" />
+												</h4>
+												<br>
+												<!-- Info on scrolling taken from here: https://www.w3schools.com/cssref/pr_pos_overflow.asp -->
+												<!-- and here: https://stackoverflow.com/questions/9560330/how-to-hide-a-vertical-scroll-bar-when-not-needed -->
+												<ul style="overflow:auto; height: 45%;">
+													<!-- Information on how labels wor from here: https://stackoverflow.com/questions/7863251/clicking-the-text-to-select-corresponding-radio-button -->
+													<li ng-repeat="patient in patients | filter:filterPatients"><h4>
+															<label> <input type="radio" name="Assignee PR"
+																ng-click="selectPatient(patient)"
+																/>&nbsp;{{patient.username}}
+															</label>
+														</h4></li>
+												</ul>
+												<button class="btn btn-primary btn-lg" ng-click="assignPR()"
+												name="assignPR">Assign PR</button>
+												<br>
+												<div name="success" style="color: green;">{{message1}}</div>
+												<div name="error" style="color: red;">{{errMsg1}}</div>
+
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+                    </div>
+                </div>
+            </div>
+
+		</div>
+	</div>
+</body>
+</html>

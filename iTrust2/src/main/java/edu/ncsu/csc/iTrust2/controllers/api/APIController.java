@@ -1,5 +1,8 @@
 package edu.ncsu.csc.iTrust2.controllers.api;
 
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.google.gson.Gson;
 
 /**
@@ -26,6 +29,8 @@ import com.google.gson.Gson;
  * @author Kai Presler-Marshall
  *
  */
+// @RestController
+// @RequestMapping("/api/")
 public abstract class APIController {
     /** Base path of API */
     static final protected String BASE_PATH = "/api/v1/";
@@ -34,7 +39,7 @@ public abstract class APIController {
      * Used to serialize data and messages to JSON for transmitting through the
      * REST API
      */
-    static final private Gson     GSON      = new Gson();
+    static final private Gson GSON = new Gson();
 
     /**
      * Turns the provided object into JSON
@@ -43,8 +48,8 @@ public abstract class APIController {
      *            The object to serialize
      * @return The resulting JSON String
      */
-    static final protected String toJson ( final Object obj ) {
-        return GSON.toJson( obj );
+    static final protected String toJson(final Object obj) {
+        return GSON.toJson(obj);
     }
 
     /**
@@ -57,8 +62,8 @@ public abstract class APIController {
      *            The class of the object
      * @return The resulting JSON String
      */
-    static final protected String toJson ( final Object obj, final Class<JSONResponse> cls ) {
-        return GSON.toJson( obj, cls );
+    static final protected String toJson(final Object obj, final Class<JSONResponse> cls) {
+        return GSON.toJson(obj, cls);
     }
 
     /**
@@ -66,13 +71,13 @@ public abstract class APIController {
      * to the user.
      *
      * @param status
-     *            The status of the request to send
+     *                The status of the request to send
      * @param message
-     *            The detailed message to send
+     *                The detailed message to send
      * @return The resulting JSON String
      */
-    static final protected String responseMessage ( final String status, final String message ) {
-        return toJson( new JSONResponse( status, message ), JSONResponse.class );
+    static final protected String responseMessage(final String status, final String message) {
+        return toJson(new JSONResponse(status, message), JSONResponse.class);
     }
 
     /**
@@ -80,11 +85,11 @@ public abstract class APIController {
      * what is provided.
      *
      * @param message
-     *            The detailed message to send
+     *                The detailed message to send
      * @return The resulting JSON String
      */
-    static final protected String errorResponse ( final String message ) {
-        return responseMessage( "failed", message );
+    static final protected String errorResponse(final String message) {
+        return responseMessage("failed", message);
     }
 
     /**
@@ -92,11 +97,11 @@ public abstract class APIController {
      * what is provided.
      *
      * @param message
-     *            The detailed message to send
+     *                The detailed message to send
      * @return The resulting JSON String
      */
-    static final protected String successResponse ( final String message ) {
-        return responseMessage( "success", message );
+    static final protected String successResponse(final String message) {
+        return responseMessage("success", message);
     }
 
     /**
@@ -122,11 +127,11 @@ public abstract class APIController {
          * Default constructor for JSONResponse.
          *
          * @param status
-         *            The status (success/failed)
+         *                The status (success/failed)
          * @param message
-         *            The message; any informational message desired
+         *                The message; any informational message desired
          */
-        public JSONResponse ( final String status, final String message ) {
+        public JSONResponse(final String status, final String message) {
             this.status = status;
             this.message = message;
         }
