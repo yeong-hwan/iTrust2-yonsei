@@ -152,6 +152,8 @@
       ![IMG_0332](/uploads/cfaad308210b09acbb18a8df818f08b7/IMG_0332.PNG)
 - During Meeting
     - (BE) API 개발 도중 생긴 이슈 공유
+    - UC16 기능 파악
+      ![UC16pic](/uploads/6f2037c037079eeb4971590badb76f96/UC16pic.png)
 - 개발 상황
   - [X] (BE) Assignor PR 지정 API 구현 (API 1-1)
   - [X] (BE) Assignee PR 지정 API 구현 (API 1-2)
