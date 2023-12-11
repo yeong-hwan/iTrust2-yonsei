@@ -54,10 +54,10 @@
 
 ## Regular Meeting
 
-| Meeting Date | Meeting Purpose | Participants | Document Link |
-| ------------ | ------------ | --------------- | ------------- |
-| 2023-11-28 | Iter3 대비 | Cell 1, 2, 3 | [Meeting Document](./docs/regular_meetings/231128.md) |
-| 2023-12-05 | Iter3 대비 | Cell 1, 2, 3 |  [Meeting Document](./docs/regular_meetings/231205.md) |
+| Meeting Date | Meeting Purpose | Participants | Document Link | 담당 Cell | 
+| ------------ | ------------ | --------------- | ------------- | ------------ |
+| 2023-11-28 | Iter3 대비 | Cell 1, 2, 3 | [Meeting Document](./docs/regular_meetings/231128.md) | Cell 3|
+| 2023-12-05 | Iter3 대비 | Cell 1, 2, 3 |  [Meeting Document](./docs/regular_meetings/231205.md) |Cell 3|
 
 11 PM, Tue, 1hour.  
 Link: https://meet.google.com/ocp-naww-bnv
