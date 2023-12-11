@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import edu.ncsu.csc.iTrust2.models.enums.Role;
 
@@ -141,6 +142,19 @@ public class PatientController {
     public String addFoodDiary(final Model model) {
         return "/patient/FoodDiary/addFoodDiary";
     }
+    
+    /**
+     * @param model
+     *              data for front end
+     * @return The page for the patient to view their surgery details
+     */
+    @GetMapping("/patient/officeVisit/viewSurgeryDetails/{id}")
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    public String viewSurgeryDetails( @PathVariable String id, final Model model) {
+        model.addAttribute("id", id);
+        return "/patient/officeVisit/viewSurgeryDetails";
+    }
+
 
     /**
      * Create a page for the patient to view assignor PR (자신을 지정한 pr list)
