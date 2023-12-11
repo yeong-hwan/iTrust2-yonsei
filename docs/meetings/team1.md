@@ -26,7 +26,6 @@
 - During Meeting
     - 안과와 관련된 UC 2개 (UC 21, 22) 선정
 
-#115
 ### 11/5
 - Before Meeting
     - DB 칼럼 뜯어보기
@@ -40,7 +39,6 @@
     - 구현해야 하는 기능 분담
         - Iter1 : 0~6 끝내기 (BE- 엄소은, 박승호, FE - 김영서, 박승호) 
 
-#1111
 ### 11/11
 - Before Meeting
     - 개발 관련 오류 발생한 것 가져오기
@@ -54,7 +52,6 @@
     - [X] (FE) eyecheckup 체크 하는 박스
     - [X] (BE) OPH, OD 도 appointment 를 볼 수 있도록 권한 추가 부여
 
-#1113
 ### 11/13
 - Before Meeting
     - HCP, OD, OPH 권한 별로 안과 수술 신청 권한이 다른 것을 확인
@@ -67,7 +64,6 @@
 - 브랜치 이슈
     - develop 말고 main 에 머지하는 이슈 -> revert 로 해결 
 
-#1116
 ### 11/16
 - Before Meeting
     - edit office visit page 구현
@@ -94,7 +90,6 @@
     - [X] (BE) eyecheckup 관련 테이블 추가
     - [X] (BE) eyecheckup id 을 OfficeVisit 테이블에서 FK 로 참조하도록 추가 
 
-#1118
 ### 11/18
 - During Meeting 
     - FE, BE eyecheckup 관련 형식 맞추기 
@@ -113,7 +108,6 @@
 
     <img width="600" alt="KakaoTalk_Photo_2023-12-08-12-56-15" src="https://github.com/ddoddii/ddoddii.github.io/assets/95014836/db8c17bd-528f-4f39-9f08-31845e058339">
 
-#1120
 ### 11/20
 - Before Meeting
     - UC 21 정상 작동하는지 확인 
@@ -135,7 +129,6 @@
 
     <img width="365" alt="KakaoTalk_Snapshot_20231208_130249" src="https://github.com/ddoddii/ddoddii.github.io/assets/95014836/0417d0d7-e8bd-4bc8-9d48-2502fbff3bf0">
 
-#1122
 ### 11/22 
 - During Meeting
     - 구현 계획 (프론트엔드)
@@ -164,7 +157,6 @@
     - feature/team1 에서는 기능이 정상 작동하지만, develop 브랜치에서 정상 작동 되지 않는 문제 발생
     - 다른 팀의 머지 시 team1 의 코드가 날라가는 문제가 발생했음을 확인했고, 수정 완료함
 
-#1124
 ### 11/24
 - Before Meeting
     - FE 관련 문제 상황 인식 
@@ -183,7 +175,6 @@
     - [X] (BE) patient가 surgeryvisit 볼 수 있는 api 만들고 logger 부분 visit type에 따라 다르게 찍히도록 수정
     - [X] (BE) prescriptions 정보도 editOfficeVisit page에서 나오도록 수정했고 patient surgeryVisit 잘 가져오는 것도 확인
 
-#127
 ### 12/7
 - During Meeting
     - 테스트 코드 관련 문제 상황 공유
@@ -196,7 +187,6 @@
     
     <img width="369" alt="KakaoTalk_Snapshot_20231208_131905" src="https://github.com/ddoddii/ddoddii.github.io/assets/95014836/317e2f23-8c0f-4fd5-a3e9-5556fd279704">
 
-#1211
 ### 12/11
 - During Meeting
     - 머지 이후 UC21, 22에 대한 front-end test 및 핫픽스
