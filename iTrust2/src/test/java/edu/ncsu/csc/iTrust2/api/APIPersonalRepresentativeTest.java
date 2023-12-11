@@ -336,6 +336,36 @@ public class APIPersonalRepresentativeTest {
 
   @Test
   @Transactional
+  @WithMockUser(username = "antti", roles = { "PATIENT" })
+  public void testGetPatient() throws Exception {
+    final User antti = new Patient(new UserForm("antti", "123456", Role.ROLE_PATIENT, 1));
+
+    patientService.save(antti);
+
+    final PatientForm patient = new PatientForm();
+    patient.setAddress1("1 Test Street");
+    patient.setAddress2("Some Location");
+    patient.setBloodType(BloodType.APos.toString());
+    patient.setCity("Viipuri");
+    patient.setDateOfBirth("1977-06-15");
+    patient.setEmail("antti@itrust.fi");
+    patient.setEthnicity(Ethnicity.Caucasian.toString());
+    patient.setFirstName("Antti");
+    patient.setGender(Gender.Male.toString());
+    patient.setLastName("Walhelm");
+    patient.setPhone("123-456-7890");
+    patient.setUsername("antti");
+    patient.setState(State.NC.toString());
+    patient.setZip("27514");
+
+    mvc.perform(put("/api/v1/patients/antti").contentType(MediaType.APPLICATION_JSON)
+        .content(TestUtils.asJsonString(patient))).andExpect(status().isOk());
+
+    mvc.perform(get("/api/v1/personal_representatives/patients")).andExpect(status().isOk());
+  }
+
+  @Test
+  @Transactional
   @WithMockUser(username = "patient_1", roles = { "PATIENT" })
   public void invalidAssignAssignor() throws Exception {
     mvc.perform(post("/api/v1/personal_representatives/assign_assignor/test")).andExpect(status().isBadRequest());
