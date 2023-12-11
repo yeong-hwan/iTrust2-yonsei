@@ -63,17 +63,29 @@
 Link: https://meet.google.com/ocp-naww-bnv
 
 ### Meetings
-| Meeting Date | Meeting Purpose | Participants | Document Link |
-| ------------ | ------------ | --------------- | ------------- |
-| 2023-10-17   | 목적 | Team2 전체  | [Meeting Document](URL) |
-| 2023-10-24   | 목적 | Team2 전체  | [Meeting Document](URL) |
-| 2023-11-04   | Cell3 첫 미팅 및 구조 파악 | Cell 3 (강민용, 임예원, 노규민)  | [Meeting Document](./docs/meetings/team3.md) |
-| 2023-11-08   | UC15 필요한 기능에 대한 논의 | Cell 3 (강민용, 임예원, 노규민)  | [Meeting Document](./docs/meetings/team3.md) |
-| 2023-11-15   | UC23 필요한 기능에 대한 논의 | Cell 3 (강민용, 임예원, 노규민)  | [Meeting Document](./docs/meetings/team3.md) |
-| 2023-11-18   | UC15, UC23 API 문서 작성 | Cell 3 (강민용, 임예원, 노규민)  | [Meeting Document](./docs/meetings/team3.md) |
-| 2023-11-20   | UC15 개발 및 Test 작성 완료 | Cell 3 (강민용, 임예원, 노규민)  | [Meeting Document](./docs/meetings/team3.md) |
-| 2023-11-28   | UC23 개발 계획 수립 및 개발 시작 | Cell 3 (강민용, 임예원, 노규민)  | [Meeting Document](./docs/meetings/team3.md) |
-| 2023-12-01   | UC23 개발 및 Test 작성 완료 | Cell 3 (강민용, 임예원, 노규민)  | [Meeting Document](./docs/meetings/team3.md) |
+| Meeting Date | Meeting Purpose       | Participants           | Document Link                                |
+|--------------|-----------------------|------------------------|----------------------------------------------|
+| 2023-10-17   | 목적                    | Team2 전체               | [Meeting Document](URL)                      |
+| 2023-10-24   | 목적                    | Team2 전체               | [Meeting Document](URL)                      |
+| 2023-10-30   | Cell2 포지션 분배 및 개발 계획  | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
+| 2023-11-04   | Cell3 첫 미팅 및 구조 파악    | Cell 3 (강민용, 임예원, 노규민) | [Meeting Document](./docs/meetings/team3.md) |
+| 2023-11-04   | 포지션 재분배 및 Git 숙지      | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
+| 2023-11-08   | UC15 필요한 기능에 대한 논의    | Cell 3 (강민용, 임예원, 노규민) | [Meeting Document](./docs/meetings/team3.md) |
+| 2023-11-09   | API 명세 작성 및 개발 계획 브리핑 | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
+| 2023-11-13   | FE BE간 개발 상황 공유       | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
+| 2023-11-15   | UC23 필요한 기능에 대한 논의    | Cell 3 (강민용, 임예원, 노규민) | [Meeting Document](./docs/meetings/team3.md) |
+| 2023-11-15   | Build 이슈 해결           | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
+| 2023-11-18   | UC15, UC23 API 문서 작성  | Cell 3 (강민용, 임예원, 노규민) | [Meeting Document](./docs/meetings/team3.md) |
+| 2023-11-18   | API 기능 설명 및 수정        | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
+| 2023-11-20   | UC15 개발 및 Test 작성 완료  | Cell 3 (강민용, 임예원, 노규민) | [Meeting Document](./docs/meetings/team3.md) |
+| 2023-11-20   | 이슈 해결 및 발표 준비         | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
+| 2023-11-24   | UC16 역할 분담 및 개발 계획    | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
+| 2023-11-28   | UC23 개발 계획 수립 및 개발 시작 | Cell 3 (강민용, 임예원, 노규민) | [Meeting Document](./docs/meetings/team3.md) |
+| 2023-11-29   | API 개발 이슈 공유 및 해결     | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
+| 2023-12-01   | UC23 개발 및 Test 작성 완료  | Cell 3 (강민용, 임예원, 노규민) | [Meeting Document](./docs/meetings/team3.md) |
+| 2023-12-03   | 개발 상황 공유 및 이슈 해결      | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
+| 2023-12-05   | UC16 API 작동 문제 해결     | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
+| 2023-12-08   | UC16 테스트코드 문제 해결      | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
 
 ## Git Flow
 
