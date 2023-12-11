@@ -105,10 +105,6 @@ public class APILabTestController extends APIController {
     @GetMapping (BASE_PATH + "/lab_tests/view_my_results")
     public ResponseEntity getMyLabTestResult (){
         final User self = userService.findByName( LoggerUtil.currentUser() );
-        if (self == null){
-            return new ResponseEntity( errorResponse( "No results found" ),
-                    HttpStatus.NOT_FOUND );
-        }
         boolean isAuthorized = false;
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         final SimpleGrantedAuthority patient = new SimpleGrantedAuthority( "ROLE_PATIENT" ); 
@@ -213,7 +209,7 @@ public class APILabTestController extends APIController {
                     HttpStatus.UNAUTHORIZED );
         }
         List<LabTest> labTests = labTestService.findByLabTech( self.getUsername() );
-        if ( labTests == null ) {
+        if ( labTests.isEmpty() ) {
             return new ResponseEntity( errorResponse( "No results found" ),
                     HttpStatus.NOT_FOUND );
         }

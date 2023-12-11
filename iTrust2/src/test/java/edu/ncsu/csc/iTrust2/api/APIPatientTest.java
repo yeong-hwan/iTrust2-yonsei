@@ -36,6 +36,11 @@ import edu.ncsu.csc.iTrust2.models.enums.Role;
 import edu.ncsu.csc.iTrust2.models.enums.State;
 import edu.ncsu.csc.iTrust2.services.PatientService;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+
+
+
 /**
  * Test for API functionality for interacting with Patients
  *
@@ -71,7 +76,7 @@ public class APIPatientTest {
     @Test
     @Transactional
     @WithMockUser ( username = "hcp", roles = { "HCP" } )
-    public void testSearchPatients () throws Exception {
+    public void testSearchPatientsHCP () throws Exception {
         final PatientForm patient = new PatientForm();
         patient.setFirstName("yewon");
         patient.setLastName("lim");
@@ -105,6 +110,48 @@ public class APIPatientTest {
                 .andExpect(jsonPath("$[0].firstName").value("yewon"));
         
     } 
+    
+    @Test
+    @Transactional
+    @WithMockUser ( username = "hcp", roles = { "HCP" } )
+    public void testSearchPatientsER () throws Exception {
+        final PatientForm patient = new PatientForm();
+        patient.setFirstName("yewon");
+        patient.setLastName("lim");
+        patient.setAddress1( "1 Test Street" );
+        patient.setAddress2( "Some Location" );
+        patient.setBloodType( BloodType.APos.toString() );
+        patient.setCity( "Viipuri" );
+        patient.setDateOfBirth( "1977-06-15" );
+        patient.setEmail( "test@yonsei.ac.kr");
+        
+        User hcp = new Patient(new UserForm("test", "123456", Role.ROLE_PATIENT, 1));
+        service.save(hcp);
+        // Should also now be able to edit existing record with new information
+        mvc.perform( put( "/api/v1/patients/test" ).contentType( MediaType.APPLICATION_JSON )
+                .content( TestUtils.asJsonString( patient ) ) ).andExpect( status().isOk() );
+
+        MockMvc erMvc = MockMvcBuilders.webAppContextSetup( context )
+                .defaultRequest(get("/").with(user("er").roles("ER")))
+                .apply(springSecurity())
+                .build();
+        MultiValueMap<String, String> info = new LinkedMultiValueMap<>();
+        info.add("searchQuery", "ye_");
+        info.add("searchType", "name");
+        erMvc.perform(get( "/api/v1/emergency_health_records/search" ).params(info))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect( status().isOk() )
+                .andExpect(jsonPath("$[0].firstName").value("yewon"));
+        MultiValueMap<String, String> info2 = new LinkedMultiValueMap<>();
+        info2.add("searchQuery", "te");
+        info2.add("searchType", "username");
+        erMvc.perform(get( "/api/v1/emergency_health_records/search" ).params(info2))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect( status().isOk() )
+                .andExpect(jsonPath("$[0].firstName").value("yewon"));
+        
+    } 
+    
     /**
      * Tests that getting a patient that doesn't exist returns the proper
      * status.

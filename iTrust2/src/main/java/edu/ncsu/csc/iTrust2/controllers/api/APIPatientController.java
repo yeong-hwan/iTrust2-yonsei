@@ -114,46 +114,40 @@ public class APIPatientController extends APIController {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         final SimpleGrantedAuthority hcp = new SimpleGrantedAuthority( "ROLE_HCP" );
         final SimpleGrantedAuthority er = new SimpleGrantedAuthority( "ROLE_ER" );
-        try {
-            isAuthorized = auth.getAuthorities().contains( hcp ) || auth.getAuthorities().contains( er );
-            if ( !isAuthorized ) {
-                return new ResponseEntity( errorResponse( "User not authenticated" ),
-                        HttpStatus.UNAUTHORIZED );
+        
+        isAuthorized = auth.getAuthorities().contains( hcp ) || auth.getAuthorities().contains( er );
+        if ( !isAuthorized ) {
+            return new ResponseEntity( errorResponse( "User not authenticated" ),
+                    HttpStatus.UNAUTHORIZED );
+        }
+        
+        if ( searchQuery.isEmpty() ) {
+            patients = (List<Patient>) patientService.findAll();
+        }
+        else {
+            if ( searchType.equals( "name" ) ) {
+                patients = (List<Patient>) patientService.findByNameContains( searchQuery );
+            }
+            else if ( searchType.equals( "username" ) ) {
+                patients = (List<Patient>) patientService.findByUsernameContains( searchQuery );
             }
         }
-        catch ( final Exception e ) {
-            return new ResponseEntity(errorResponse("User not authenticated"), HttpStatus.UNAUTHORIZED );
+        if ( patients == null ) {
+            return new ResponseEntity( errorResponse( "No matching patients" ), HttpStatus.NOT_FOUND );
         }
-        try{
-            if ( searchQuery.isEmpty() ) {
-                patients = (List<Patient>) patientService.findAll();
+        else {
+            // logging 
+            // if current user is hcp, log as hcp_view_er
+            // if current user is er, log as er_view_er
+            if ( auth.getAuthorities().contains( hcp ) ) {
+                loggerUtil.log( TransactionType.HCP_VIEW_ER, LoggerUtil.currentUser(), "HCP views a patients Emergency Health Records " + searchQuery );
             }
-            else {
-                if ( searchType.equals( "name" ) ) {
-                    patients = (List<Patient>) patientService.findByNameContains( searchQuery );
-                }
-                else if ( searchType.equals( "username" ) ) {
-                    patients = (List<Patient>) patientService.findByUsernameContains( searchQuery );
-                }
+            else if ( auth.getAuthorities().contains( er ) ) {
+                loggerUtil.log( TransactionType.ER_VIEW_ER, LoggerUtil.currentUser(), "ER views a patients Emergency Health Records " + searchQuery );
             }
-            if ( patients == null ) {
-                return new ResponseEntity( errorResponse( "No matching patients" ), HttpStatus.NOT_FOUND );
-            }
-            else {
-                // logging 
-                // if current user is hcp, log as hcp_view_er
-                // if current user is er, log as er_view_er
-                if ( auth.getAuthorities().contains( hcp ) ) {
-                    loggerUtil.log( TransactionType.HCP_VIEW_ER, LoggerUtil.currentUser(), "HCP views a patients Emergency Health Records " + searchQuery );
-                }
-                else if ( auth.getAuthorities().contains( er ) ) {
-                    loggerUtil.log( TransactionType.ER_VIEW_ER, LoggerUtil.currentUser(), "ER views a patients Emergency Health Records " + searchQuery );
-                }
-                return new ResponseEntity( patients, HttpStatus.OK );
-            }   
-        } catch ( final Exception e ) {
-            return new ResponseEntity( errorResponse( "Invalid search type or query " + e ), HttpStatus.BAD_REQUEST );
-        }
+            return new ResponseEntity( patients, HttpStatus.OK );
+        }   
+        
     }
 
 
@@ -285,46 +279,39 @@ public class APIPatientController extends APIController {
         final Authentication authorized = SecurityContextHolder.getContext().getAuthentication();
         final SimpleGrantedAuthority hcp = new SimpleGrantedAuthority( "ROLE_HCP" );
         final SimpleGrantedAuthority er = new SimpleGrantedAuthority( "ROLE_ER" );
-        try {
-        	if(!(authorized.getAuthorities().contains( hcp ) || authorized.getAuthorities().contains( er ))) {
-                return new ResponseEntity( errorResponse( "Unauthorized User" ),
-                        HttpStatus.UNAUTHORIZED );
-            }
+        
+        if(!(authorized.getAuthorities().contains( hcp ) || authorized.getAuthorities().contains( er ))) {
+            return new ResponseEntity( errorResponse( "Unauthorized User" ),
+                    HttpStatus.UNAUTHORIZED );
         }
-        catch ( final Exception e ) {
-            return new ResponseEntity(errorResponse("Unauthorized User"), HttpStatus.UNAUTHORIZED );
+    
+        Patient patient = (Patient) patientService.findByName( patientUsername );
+        if ( patient == null ) {
+            return new ResponseEntity( errorResponse( "Patient not found"),
+                    HttpStatus.NOT_FOUND );
         }
-        try{
-        	Patient patient = (Patient) patientService.findByName( patientUsername );
-            if ( patient == null ) {
-                return new ResponseEntity( errorResponse( "Patient not found"),
-                        HttpStatus.NOT_FOUND );
-            }
-            List<Diagnosis> diagnosis = diagnosisService.findByPatient(patient);
-        	List<Prescription> prescription = prescriptionService.findByPatient(patient);
-        	
-        	/*LocalDate today = LocalDate.now();
-        	Period ageCalc = Period.between(patient.getDateOfBirth(), today);
-        	int age = ageCalc.getYears();*/
-        	
-        	Map<String, Object> record = new HashMap<>();
-        	record.put("firstName", patient.getFirstName());
-        	record.put("lastName", patient.getLastName());
-        	record.put("age", patient.getAge());
-        	record.put("username", patientUsername);
-           	record.put("dob", patient.getDateOfBirth());
-        	record.put("gender", patient.getGender());
-        	record.put("bloodType", patient.getBloodType());
-        	//Map<String, Object> record = new HashMap<>();
-        	//record.put("patient", patient);
-        	record.put("diagnoses", diagnosis);
-        	record.put("prescriptions", prescription);
-        	
-        	return new ResponseEntity(record, HttpStatus.OK);
-        	
-        } catch ( final Exception e ) {
-            return new ResponseEntity( errorResponse( "Patient not found" +e.getMessage()), HttpStatus.NOT_FOUND );
-        }
+        List<Diagnosis> diagnosis = diagnosisService.findByPatient(patient);
+        List<Prescription> prescription = prescriptionService.findByPatient(patient);
+        
+        /*LocalDate today = LocalDate.now();
+        Period ageCalc = Period.between(patient.getDateOfBirth(), today);
+        int age = ageCalc.getYears();*/
+        
+        Map<String, Object> record = new HashMap<>();
+        record.put("firstName", patient.getFirstName());
+        record.put("lastName", patient.getLastName());
+        record.put("age", patient.getAge());
+        record.put("username", patientUsername);
+        record.put("dob", patient.getDateOfBirth());
+        record.put("gender", patient.getGender());
+        record.put("bloodType", patient.getBloodType());
+        //Map<String, Object> record = new HashMap<>();
+        //record.put("patient", patient);
+        record.put("diagnoses", diagnosis);
+        record.put("prescriptions", prescription);
+        
+        return new ResponseEntity(record, HttpStatus.OK);
+        
     }
 
 }

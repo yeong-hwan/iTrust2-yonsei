@@ -407,6 +407,43 @@ public class APILabTestTest {
                 .andExpect(status().isUnauthorized());
     }
 
+
+    @Test 
+    @Transactional
+    @WithMockUser( username = "hcp", roles = { "HCP" } )
+    public void unauthorizedGetLabTests() throws Exception{
+        // create a hcp
+        final UserForm hcp = new UserForm( "hcp", "1234", Role.ROLE_HCP, 1 );
+
+        mvc.perform( MockMvcRequestBuilders.post( "/api/v1/users" ).contentType( MediaType.APPLICATION_JSON )
+                .content( TestUtils.asJsonString( hcp ) ) ).andExpect( MockMvcResultMatchers.status().isOk() );
+
+        mvc.perform(MockMvcRequestBuilders.get("/api/v1/lab_tests/view_labtests")
+                .contentType( MediaType.APPLICATION_JSON ))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test 
+    @Transactional
+    public void emptyGetLabTests() throws Exception{
+        // create a labtech
+        final UserForm u1 = new UserForm( "labtech", "1234", Role.ROLE_LABTECH, 1 );
+
+        mvc.perform( MockMvcRequestBuilders.post( "/api/v1/users" ).contentType( MediaType.APPLICATION_JSON )
+                .content( TestUtils.asJsonString( u1 ) ) ).andExpect( MockMvcResultMatchers.status().isOk() );
+
+        MockMvc labtechMvc = MockMvcBuilders.webAppContextSetup( context )
+                        .defaultRequest(get("/").with(user("labtech").roles("LABTECH")))
+                        .apply(springSecurity())
+                        .build();
+
+        labtechMvc.perform(MockMvcRequestBuilders.get("/api/v1/lab_tests/view_labtests").with(user("labtech").roles("LABTECH")))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isNotFound());
+    }
+
+
     @Test
     @Transactional
     @WithMockUser( username = "patient", roles = { "PATIENT" } )
@@ -464,4 +501,95 @@ public class APILabTestTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isNotFound());
     }
+
+
+    @Test
+    @Transactional
+    @WithMockUser( username = "patient", roles = { "PATIENT" } )
+    public void getMyLabTestResult404() throws Exception{
+        // create a patient
+        final UserForm u = new UserForm( "patient", "1234", Role.ROLE_PATIENT, 1 );
+
+        mvc.perform( MockMvcRequestBuilders.post( "/api/v1/users" ).contentType( MediaType.APPLICATION_JSON )
+                .content( TestUtils.asJsonString( u ) ) ).andExpect( MockMvcResultMatchers.status().isOk() );
+        
+        
+        mvc.perform(get("/api/v1/lab_tests/view_my_results").with(user("patient").password("1234").roles("PATIENT"))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser( username = "hcp", roles = { "HCP" } )
+    public void getMyLabTestResult400() throws Exception{
+        // create a patient
+        final UserForm u = new UserForm( "hcp", "1234", Role.ROLE_HCP, 1 );
+
+        mvc.perform( MockMvcRequestBuilders.post( "/api/v1/users" ).contentType( MediaType.APPLICATION_JSON )
+                .content( TestUtils.asJsonString( u ) ) ).andExpect( MockMvcResultMatchers.status().isOk() );
+        
+        
+        mvc.perform(get("/api/v1/lab_tests/view_my_results").with(user("hcp").password("1234").roles("HCP"))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @Transactional
+    public void getMyLabTestResult200() throws Exception{
+        // create a patient
+        final UserForm u = new UserForm( "patient", "1234", Role.ROLE_PATIENT, 1 );
+
+        mvc.perform( MockMvcRequestBuilders.post( "/api/v1/users" ).contentType( MediaType.APPLICATION_JSON )
+                .content( TestUtils.asJsonString( u ) ) ).andExpect( MockMvcResultMatchers.status().isOk() );
+
+        // create a labtech
+        final UserForm u1 = new UserForm( "labtech", "1234", Role.ROLE_LABTECH, 1 );
+
+        mvc.perform( MockMvcRequestBuilders.post( "/api/v1/users" ).contentType( MediaType.APPLICATION_JSON )
+                .content( TestUtils.asJsonString( u1 ) ) ).andExpect( MockMvcResultMatchers.status().isOk() );
+
+        // create a hcp
+        final UserForm hcp = new UserForm( "hcp", "1234", Role.ROLE_HCP, 1 );
+
+        mvc.perform( MockMvcRequestBuilders.post( "/api/v1/users" ).contentType( MediaType.APPLICATION_JSON )
+                .content( TestUtils.asJsonString( hcp ) ) ).andExpect( MockMvcResultMatchers.status().isOk() );
+
+        
+
+        LabTestForm labtest = new LabTestForm();
+        labtest.setTestName( "Blood Test" );
+        labtest.setLabName( "LabCorp" );
+        labtest.setInstructions( "Take blood sample" );
+        labtest.setPatientName("patient");
+
+        MockMvc hcpMvc = MockMvcBuilders.webAppContextSetup( context )
+                        .defaultRequest(get("/").with(user("hcp").roles("HCP")))
+                        .apply(springSecurity())
+                        .build();
+
+
+        // HCP orders a lab test
+        hcpMvc.perform( post( "/api/v1/lab_tests/order" ).with(user("hcp").password("1234").roles("HCP"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtils.asJsonString(labtest)) )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect( status().isOk() );
+        
+        MockMvc hcpPatient = MockMvcBuilders.webAppContextSetup( context )
+                        .defaultRequest(get("/").with(user("patient").roles("PATIENT")))
+                        .apply(springSecurity())
+                        .build();
+        hcpPatient.perform(get("/api/v1/lab_tests/view_my_results")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk());
+    }
+
+
+
+
 }
