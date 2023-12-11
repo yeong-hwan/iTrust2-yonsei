@@ -3,6 +3,8 @@
 
 
 ## Team2 iTrust2 Project
+
+### Members
 | GitLab ID | Name |Student ID|    Contact  | Cell No.  | etc. |
 |:---:|:---:|:---:|:-------------:|:-----:|:---:|
 | 2021147561 | Kim, Yeong Seo | 2021147561 | 010-9494-7646 | Cell 1 | Experienced in Java |
@@ -15,35 +17,7 @@
 | 2019145010 | Lim, Yewon | 2019145010 | 010-5446-2109 | Cell 3 | Experienced in Java |
 | 2021147593 | Noh, GyuMin | 2021147593 | 010-7141-2273 | Cell 3 | Experienced in Java |
 
-## Regular Meeting
-
-11 PM, Tue, 1hour.  
-Link: https://meet.google.com/ocp-naww-bnv
-
-### Meetings
-| Meeting Date | Meeting Purpose | Participants | Document Link |
-| ------------ | ------------ | --------------- | ------------- |
-| 2023-10-17   | 목적 | Team2 전체  | [Meeting Document](URL) |
-| 2023-10-24   | 목적 | Team2 전체  | [Meeting Document](URL) |
-| 2023-11-04   | 목적 | Cell 3 (강민용, 임예원, 노규민)  | [Meeting Document](URL) |
-| 2023-11-05   | 목적 | Cell 2 (김주은, 윤종윤, 장영환)  | [Meeting Document](URL) |
-| 2023-11-05   | 목적 | Cell 1 (김영서, 박승호, 엄소은)  | [Meeting Document](URL) |
-
-
-## User Case Progress
-
-| User Case      | Cell | Task Assignment | API Documentation | Backend API Completion | Frontend UI Completion | Integration & Testing |
-| --------------- |--------------- | --------------- | ----------------- | ---------------------- | ---------------------- | --------------------- |
-| UC 21      | Cell 1 | ✅ | ✅ | ✅ | ✅ | ✅ |
-| UC 22      | Cell 1 | ✅ | ✅ | 🚧 | 🚧 | ❌ |
-| UC 16      | Cell 2 | ✅ | ✅ | ✅ | ✅ | ✅ |
-| UC 19      | Cell 2 | ✅ | ✅ | 🚧 | 🚧 | ❌ |
-| UC 15      | Cell 3 | ✅ | ✅ | ✅ | ✅ | ✅ |
-| UC 23      | Cell 3 | ✅ | ✅ | 🚧 | 🚧 | ❌ |
-
-
-
-## Project Rules
+### Project Rules
 
 1. **Communication is Key**: Maintain open communication channels through Slack, emails, or regular standup meetings.
 2. **Task Assignment**: Use project management tools (e.g., Trello, Asana) to assign tasks clearly and keep track of progress.
@@ -54,6 +28,47 @@ Link: https://meet.google.com/ocp-naww-bnv
 7. **Testing Protocol**: Ensure comprehensive test coverage for new features and bug fixes; automate where possible.
 8. **Meeting Etiquette**: Start meetings on time, prepare an agenda, and ensure active participation from all team members.
 9. **Version Control**: Use descriptive commit messages and avoid committing large, unrelated changes in a single commit.
+
+
+## User Case Progress
+
+| User Case      | Cell | Task Assignment | API Documentation | Backend API Completion | Frontend UI Completion | Integration & Testing |
+| --------------- |--------------- | --------------- | ----------------- | ---------------------- | ---------------------- | --------------------- |
+| UC 21      | Cell 1 | ✅ | ✅ | ✅ | ✅ | ✅ |
+| UC 22      | Cell 1 | ✅ | ✅ | ✅ | ✅ | ✅ |
+| UC 16      | Cell 2 | ✅ | ✅ | ✅ | ✅ | ✅ |
+| UC 19      | Cell 2 | ✅ | ✅ | ✅ | ✅ | ✅ |
+| UC 15      | Cell 3 | ✅ | ✅ | ✅ | ✅ | ✅ |
+| UC 23 (new)| Cell 3 | ✅ | ✅ | ✅ | ✅ | ✅ |
+
+## UC API Documentation
+| User Case      | Cell | Document Link |
+| --------------- |--------------- | --------------- |
+| UC 21      | Cell 1 | [API Document](./docs/apis/UC21.md) |
+| UC 22      | Cell 1 | [API Document](./docs/apis/UC22.md) |
+| UC 16      | Cell 2 | [API Document](./docs/apis/UC16.md) |
+| UC 19      | Cell 2 | [API Document](./docs/apis/UC19.md) |
+| UC 15      | Cell 3 | [API Document](./docs/apis/UC15.md) |
+| UC 23 (new)| Cell 3 | [API Document](./docs/apis/UC23.md) |
+
+
+## Regular Meeting
+
+11 PM, Tue, 1hour.  
+Link: https://meet.google.com/ocp-naww-bnv
+
+### Meetings
+| Meeting Date | Meeting Purpose | Participants | Document Link |
+| ------------ | ------------ | --------------- | ------------- |
+| 2023-10-17   | 목적 | Team2 전체  | [Meeting Document](URL) |
+| 2023-10-24   | 목적 | Team2 전체  | [Meeting Document](URL) |
+| 2023-11-04   | Cell3 첫 미팅 및 구조 파악 | Cell 3 (강민용, 임예원, 노규민)  | [Meeting Document](./docs/meetings/team3.md) |
+| 2023-11-08   | UC15 필요한 기능에 대한 논의 | Cell 3 (강민용, 임예원, 노규민)  | [Meeting Document](./docs/meetings/team3.md) |
+| 2023-11-15   | UC23 필요한 기능에 대한 논의 | Cell 3 (강민용, 임예원, 노규민)  | [Meeting Document](./docs/meetings/team3.md) |
+| 2023-11-18   | UC15, UC23 API 문서 작성 | Cell 3 (강민용, 임예원, 노규민)  | [Meeting Document](./docs/meetings/team3.md) |
+| 2023-11-20   | UC15 개발 및 Test 작성 완료 | Cell 3 (강민용, 임예원, 노규민)  | [Meeting Document](./docs/meetings/team3.md) |
+| 2023-11-28   | UC23 개발 계획 수립 및 개발 시작 | Cell 3 (강민용, 임예원, 노규민)  | [Meeting Document](./docs/meetings/team3.md) |
+| 2023-12-01   | UC23 개발 및 Test 작성 완료 | Cell 3 (강민용, 임예원, 노규민)  | [Meeting Document](./docs/meetings/team3.md) |
 
 ## Git Flow
 
