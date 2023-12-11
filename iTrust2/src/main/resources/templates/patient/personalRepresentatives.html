@@ -70,6 +70,10 @@
 										$scope.selectedPatient= null;
 										$scope.message1 = "Successfully assign PR."
 										$scope.getAssignee();
+										$http.get("/iTrust2/api/v1/personal_representatives/patients").then(
+										function(response) {
+											$scope.patients = response.data;
+										});
 									})
 									}
 								}
@@ -91,6 +95,10 @@
 										$scope.selectedAssignee= null;
 										$scope.message2 = "Successfully Release PR."
 										$scope.getAssignee();
+										$http.get("/iTrust2/api/v1/personal_representatives/patients").then(
+										function(response) {
+											$scope.patients = response.data;
+										});
 									})
 									}
 								}
@@ -112,13 +120,17 @@
 										$scope.selectedAssignor= null;
 										$scope.message3 = "Successfully Released from PR."
 										$scope.getAssignor();
+										$http.get("/iTrust2/api/v1/personal_representatives/patients").then(
+										function(response) {
+											$scope.patients = response.data;
+										});
 									})
 									}
 								}
 
 
                                 //Patients list를 반환한다.
-								$http.get("/iTrust2/api/v1/patients").then(
+								$http.get("/iTrust2/api/v1/personal_representatives/patients").then(
 										function(response) {
 											$scope.patients = response.data;
 										});
@@ -133,6 +145,7 @@
 										console.log("Successfully get AssigneeList");
 										$scope.AssigneeList = response.data;
 										console.log($scope.AssigneeList);
+										
 									})
 								}
 								$scope.getAssignor = function(){
