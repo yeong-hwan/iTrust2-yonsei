@@ -31,22 +31,8 @@
 									$scope.labtests = response.data;
 								})
 								.catch(function(response) {
-									$scope.labtests = [
-										{
-											testName: "testName1",
-											labName: "labName1",
-											instructions: "instructions1",
-											results: "results1",
-											notes: "notes1",
-										},
-										{
-											testName: "testName2",
-											labName: "labName2",
-											instructions: "instructions2",
-											results: "results2",
-											notes: "notes2",
-										},
-									];
+									console.log(response);
+									$scope.labtests = [];
 								});
 
 							$scope.setSelectedLabTest = function (labtest) {

@@ -36,47 +36,44 @@
 								$scope.isPatientSelected = true;
 							}
 
-							$scope.requestLabTestSubmit = function (selectedPatient, testName, labName, instructions) {
+							$scope.requestLabTestSubmit = function (testName, labName, instructions) {
 								// Reset previous error messages
 								$scope.showErrorMsg = false;
 
-									if (!selectedPatient) {
-										$scope.errorMsg = 'Please select a patient';
-										$scope.showErrorMsg = true;
-										return;
-									} else if (!testName) {
-										$scope.errorMsg = 'Please enter a test name. (250 characters max)';
-										$scope.showErrorMsg = true;
-										return;
-									} else if (!labName) {
-										$scope.errorMsg = 'Please enter a lab name. (250 characters max)';
-										$scope.showErrorMsg = true;
-										return;
-									} else if (!instructions) {
-										$scope.errorMsg = 'Please enter instructions. (500 characters max)';
-										$scope.showErrorMsg = true;
-										return;
-									}
-
-									var testData = {
-										patientName: selectedPatient,
-										testName: testName,
-										labName: labName,
-										instructions: instructions,
-									};
-
-									$http.post("/iTrust2/api/v1/lab_tests/order", testData)
-										.then(function(success) {
-											alert("Lab Test Requested successfully");
-											window.location.reload();
-										})
-										.catch(function(failure) {
-											console.log(failure);
-											alert("Lab Test Request failed. Please try again.");
-										});
+								if (!testName) {
+									$scope.errorMsg = 'Please enter a test name. (250 characters max)';
+									$scope.showErrorMsg = true;
+									return;
+								} else if (!labName) {
+									$scope.errorMsg = 'Please enter a lab name. (250 characters max)';
+									$scope.showErrorMsg = true;
+									return;
+								} else if (!instructions) {
+									$scope.errorMsg = 'Please enter instructions. (500 characters max)';
+									$scope.showErrorMsg = true;
+									return;
 								}
+
+								var testData = {
+									patientName: $scope.selectedPatient,
+									testName: testName,
+									labName: labName,
+									instructions: instructions,
+								};
+
+								$http.post("/iTrust2/api/v1/lab_tests/order", testData)
+									.then(function(success) {
+										console.log(testData);
+										alert("Lab Test Requested successfully");
+										window.location.reload();
+									})
+									.catch(function(failure) {
+										console.log(failure);
+										alert("Lab Test Request failed. Please try again.");
+									});
 							}
-						);
+						}
+					);
 
 			/*]]>*/
 		</script>
@@ -85,7 +82,7 @@
 
 		<div ng-app="myApp" ng-controller="requestLabTestController">
 			
-			<form name="f" ng-submit="requestLabTestSubmit(selectedPatient, testName, labName, instructions)">
+			<form name="f" ng-submit="requestLabTestSubmit(testName, labName, instructions)">
 				<div style="float: left; width: 40%; height: 90%; overflow-y: auto">
 					<h2>Patients:</h2>
 					<!-- info on filtering taken from here: https://www.w3schools.com/angular/angular_filters.asp

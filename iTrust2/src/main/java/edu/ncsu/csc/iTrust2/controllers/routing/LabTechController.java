@@ -38,9 +38,9 @@ public class LabTechController {
      *            Data for the front end
      * @return The page to display to the user
      */
-    @GetMapping ( "/labtech/viewRequestedLaboratoryTest" )
+    @GetMapping ( "/labtech/recordRequestedLaboratoryTest" )
     @PreAuthorize ( "hasRole('ROLE_LABTECH')" )
-    public String viewRequestedLaboratoryTest ( final Model model ) {
-        return "labtech/viewRequestedLaboratoryTest";
+    public String recordRequestedLaboratoryTest ( final Model model ) {
+        return "labtech/recordRequestedLaboratoryTest";
     }
 }

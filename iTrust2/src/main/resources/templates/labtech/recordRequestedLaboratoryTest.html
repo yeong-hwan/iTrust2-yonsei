@@ -32,20 +32,6 @@
 								})
 								.catch(function(response) {
 									console.log(response);
-									$scope.labtests = [
-										{
-											patientName: "123123",
-											testName: "testName1",
-											labName: "labName1",
-											instructions: "instructions1",
-										},
-										{
-											patientName: "123123123",
-											testName: "testName2",
-											labName: "labName2",
-											instructions: "instructions2",
-										},
-									];
 								});
 
 							$scope.setSelectedLabTest = function (labtest) {
@@ -53,9 +39,16 @@
 								$scope.isLabTestSelected = true;
 							}
 
-							$scope.labTestResultSave = function (selectedLabtest, testName, labName, results, notes) {
+							$scope.labTestResultSave = function (results, notes) {
 								// Reset previous error messages
 								$scope.showErrorMsg = false;
+
+									var pateintName = $scope.selectedLabTest.patient.username;
+									var testName = $scope.selectedLabTest.testName;
+									var labName = $scope.selectedLabTest.labName;
+									if (!notes) {
+										notes = "";
+									}
 
 									if (!results) {
 										$scope.errorMsg = 'Please enter a result. (500 characters max)';
@@ -63,8 +56,9 @@
 										return;
 									}
 
+
 									var testRecordData = {
-										patientName: selectedLabtest,
+										patientName: pateintName,
 										testName: testName,
 										labName: labName,
 										results: results,
@@ -91,7 +85,7 @@
 
 		<div ng-app="myApp" ng-controller="viewRequestedLabTestController">
 			
-			<form name="f" ng-submit="labTestResultSave(selectedLabtest, testName, labName, results, notes)">
+			<form name="f" ng-submit="labTestResultSave(results, notes)">
 				<div style="float: left; width: 40%; height: 90%; overflow-y: auto">
 					<h2>Lab Tests:</h2>
 					<!-- info on filtering taken from here: https://www.w3schools.com/angular/angular_filters.asp
@@ -119,6 +113,10 @@
 					style="float: left; width: 60%; border-left: 1px solid #bbb; padding-left: 3%; height: 90%; overflow-y: auto">
 						<h2>Record Laboratory Test for ({{selectedLabTest.testName}})</h2>
 						<div id="nameFields" style="padding-top: 10px;">
+							<div style="padding-bottom: 10px;">
+								<h5 style="font-weight: bold;">Patient Name:</h5>
+								<p>{{selectedLabTest.patient.username}}</p>
+							</div>
 							<div style="padding-bottom: 10px;">
 								<h5 style="font-weight: bold;">Test Name:</h5>
 								<p>{{selectedLabTest.testName}}</p>
