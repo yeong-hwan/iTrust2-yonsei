@@ -20,5 +20,7 @@ public interface LabTestRepository extends JpaRepository<LabTest, Long> {
 
     List<LabTest> findByPatient(User patient);
 
+    List<LabTest> findByLabtech(User labtech);
+
     LabTest findByPatientAndTestNameAndLabNameAndLabtech(User patient, String testName, String labName, User labtech);
 } 

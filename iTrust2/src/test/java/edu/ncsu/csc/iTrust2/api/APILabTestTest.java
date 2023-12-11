@@ -309,6 +309,11 @@ public class APILabTestTest {
                 .content(TestUtils.asJsonString(labtest2)) )
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isNotFound());
+
+        labtechMvc.perform( get( "/api/v1/lab_tests/view_labtests" ).with(user("labtech").password("1234").roles("LABTECH"))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk());
                 
     }
 

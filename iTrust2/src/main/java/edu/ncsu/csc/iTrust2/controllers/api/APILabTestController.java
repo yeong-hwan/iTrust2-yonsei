@@ -101,6 +101,33 @@ public class APILabTestController extends APIController {
         return new ResponseEntity( labTests, HttpStatus.OK );
     }
 
+
+    @GetMapping (BASE_PATH + "/lab_tests/view_my_results")
+    public ResponseEntity getMyLabTestResult (){
+        final User self = userService.findByName( LoggerUtil.currentUser() );
+        if (self == null){
+            return new ResponseEntity( errorResponse( "No results found" ),
+                    HttpStatus.NOT_FOUND );
+        }
+        boolean isAuthorized = false;
+        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        final SimpleGrantedAuthority patient = new SimpleGrantedAuthority( "ROLE_PATIENT" ); 
+        isAuthorized =  auth.getAuthorities().contains( patient );
+        if ( !isAuthorized ) {
+            return new ResponseEntity( errorResponse( "User not authenticated" ),
+                    HttpStatus.UNAUTHORIZED );
+        }
+
+        final List<LabTest> labTests = labTestService.findByPatient( self.getUsername() );
+        if ( labTests.isEmpty() ) {
+            return new ResponseEntity( errorResponse( "No results found" ),
+                    HttpStatus.NOT_FOUND );
+        }
+        loggerUtil.log( TransactionType.VIEW_LAB_TEST_RESULTS, LoggerUtil.currentUser(), "Patient, Lab Tech, or HCP views lab test results");
+
+        return new ResponseEntity( labTests, HttpStatus.OK );
+    }
+
     /*
      * Order a lab test for a given patient name, testName, labName, and instructions
      */
@@ -166,7 +193,35 @@ public class APILabTestController extends APIController {
                     HttpStatus.BAD_REQUEST );
         }
     }
-     
+    
+
+    /*
+     * View all lab tests assigned to a given lab tech
+     */
+
+    @GetMapping ( BASE_PATH + "/lab_tests/view_labtests")
+    public ResponseEntity getLabTests() {
+        final User self = userService.findByName( LoggerUtil.currentUser() );
+        boolean isAuthorized = false;
+        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        final SimpleGrantedAuthority labtech = new SimpleGrantedAuthority( "ROLE_LABTECH" );
+        
+        // only labtech can call this function
+        isAuthorized = auth.getAuthorities().contains( labtech );
+        if ( !isAuthorized ) {
+            return new ResponseEntity( errorResponse( "User not authenticated" ),
+                    HttpStatus.UNAUTHORIZED );
+        }
+        List<LabTest> labTests = labTestService.findByLabTech( self.getUsername() );
+        if ( labTests == null ) {
+            return new ResponseEntity( errorResponse( "No results found" ),
+                    HttpStatus.NOT_FOUND );
+        }
+        return new ResponseEntity( labTests, HttpStatus.OK );
+    }
+    
+    
+
     /*
      * Process and Record a lab test for a given patient name, testName, labName, notes and results
      */
@@ -183,16 +238,14 @@ public class APILabTestController extends APIController {
         boolean isAuthorized = false;
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         final SimpleGrantedAuthority labtech = new SimpleGrantedAuthority( "ROLE_LABTECH" );
-        try {
-            isAuthorized = auth.getAuthorities().contains( labtech );
-            if ( !isAuthorized ) {
-                return new ResponseEntity( errorResponse( "User not authenticated" ),
-                        HttpStatus.UNAUTHORIZED );
-            }
+        
+        isAuthorized = auth.getAuthorities().contains( labtech );
+        if ( !isAuthorized ) {
+            return new ResponseEntity( errorResponse( "User not authenticated" ),
+                    HttpStatus.UNAUTHORIZED );
         }
-        catch ( final Exception e ) {
-            return new ResponseEntity(errorResponse("User not authenticated"), HttpStatus.UNAUTHORIZED );
-        }
+        
+        
 
         try{
             final Patient patient = patientService.findByName( patientName );

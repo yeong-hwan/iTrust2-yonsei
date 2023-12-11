@@ -33,6 +33,10 @@ public class LabTestService extends Service{
         return repository.findAll();
     }
 
+    public List<LabTest> findByLabTech(final String labTechName){
+        return repository.findByLabtech(userService.findByName(labTechName));
+    }
+
     public List<LabTest> findByPatient ( final String patientName ) {
         return repository.findByPatient( userService.findByName( patientName ) );
     }
