@@ -28,6 +28,7 @@
 7. **Testing Protocol**: Ensure comprehensive test coverage for new features and bug fixes; automate where possible.
 8. **Meeting Etiquette**: Start meetings on time, prepare an agenda, and ensure active participation from all team members.
 9. **Version Control**: Use descriptive commit messages and avoid committing large, unrelated changes in a single commit.
+10. **Feedback Loop**: Encourage a culture of feedback and improvement, both within the team and from stakeholders or end-users.
 
 
 ## User Case Progress
@@ -84,8 +85,6 @@ Link: https://meet.google.com/ocp-naww-bnv
 ### Meetings
 | Meeting Date | Meeting Purpose            | Participants           | Document Link                                |
 |--------------|----------------------------|------------------------|----------------------------------------------|
-| 2023-10-17   | 목적                         | Team2 전체               | [Meeting Document](URL)                      |
-| 2023-10-24   | 목적                         | Team2 전체               | [Meeting Document](URL)                      |
 | 2023-10-28| UC 읽어보고 선정하기 | Cell 1 (김영서, 박승호, 엄소은) | [Meeting Document](https://34.64.100.199/team2/itrust2/-/blob/develop/docs/meetings/team1.md?ref_type=heads#anchor-1028)|
 | 2023-10-30   | Cell2 포지션 분배 및 개발 계획       | Cell 2 (김주은, 윤종윤, 장영환) | [Meeting Document](./docs/meetings/team2.md) |
 | 2023-11-04   | Cell3 첫 미팅 및 구조 파악         | Cell 3 (강민용, 임예원, 노규민) | [Meeting Document](./docs/meetings/team3.md) |
