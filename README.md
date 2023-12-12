@@ -54,12 +54,14 @@
 
 ## Regular Meeting
 
-| Meeting Date | Meeting Purpose | Participants | Document Link | 담당 Cell | 
-| ------------ | ------------ | --------------- | ------------- | ------------ |
-| 2023-10-17 | Iter1 대비 | Cell 1, 2, 3 | [Meeting Document](https://34.64.100.199/team2/itrust2/-/blob/develop/docs/regular_meetings/231017.md) | Cell 1|
-| 2023-10-24 | Iter1 대비 | Cell 1, 2, 3 | [Meeting Document](https://34.64.100.199/team2/itrust2/-/blob/develop/docs/regular_meetings/231024.md) | Cell 1|
-| 2023-11-28 | Iter3 대비 | Cell 1, 2, 3 | [Meeting Document](./docs/regular_meetings/231128.md) | Cell 3|
-| 2023-12-05 | Iter3 대비 | Cell 1, 2, 3 |  [Meeting Document](./docs/regular_meetings/231205.md) |Cell 3|
+| Meeting Date | Meeting Purpose | Participants | Document Link                                                                                          | 담당 Cell | 
+|--------------|-----------------| --------------- |--------------------------------------------------------------------------------------------------------| ------------ |
+| 2023-10-17   | Iter1 대비        | Cell 1, 2, 3 | [Meeting Document](https://34.64.100.199/team2/itrust2/-/blob/develop/docs/regular_meetings/231017.md) | Cell 1|
+| 2023-10-24   | Iter1 대비        | Cell 1, 2, 3 | [Meeting Document](https://34.64.100.199/team2/itrust2/-/blob/develop/docs/regular_meetings/231024.md) | Cell 1|
+| 2023-11-07   | Iter2 대비        | Cell 1, 2, 3 | [Meeting Document](./docs/regular_meetings/231107.md)                                                  | Cell 3|
+| 2023-11-14   | Iter2 대비        | Cell 1, 2, 3 | [Meeting Document](./docs/regular_meetings/231114.md)                                                  | Cell 3|
+| 2023-11-28   | Iter3 대비        | Cell 1, 2, 3 | [Meeting Document](./docs/regular_meetings/231128.md)                                                  | Cell 3|
+| 2023-12-05   | Iter3 대비        | Cell 1, 2, 3 | [Meeting Document](./docs/regular_meetings/231205.md)                                                  |Cell 3|
 
 11 PM, Tue, 1hour.  
 Link: https://meet.google.com/ocp-naww-bnv
