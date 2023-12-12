@@ -1,0 +1,270 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout :: head(title=~{::title},links=~{::script})">
+<title>view Patient Food Diary</title>
+<script th:src="@{/js/dateTimeService.js}"
+		src="../js/dateTimeService.js"></script>
+</head>
+<body th:include="layout :: body" th:with="content=~{::content}">
+	<div th:fragment="content">
+
+		<script th:inline="javascript">
+			/* Otherwise Thymeleaf tries to parse Javascript as XML and breaks itself sometimes.  Sigh */
+			/*<![CDATA[*/
+
+			var app = angular.module('myApp', []);
+			app.controller('myCtrl',function($scope, $http) {
+
+								//Initialize variables!
+								$scope.selectedPatient = null; 	
+								$scope.selectedAssignee = null; 	
+								$scope.selectedAssignor = null; 
+                                $scope.isAssign = false;
+
+                                $scope.handleIsAssign = function (){
+                                    if ($scope.isAssign === false){
+                                        $scope.isAssign = true;
+                                    }
+                                    else{
+                                        $scope.isAssign = false;
+                                    }
+                                }
+
+                                $scope.displayName = function(p) {
+									return p.firstName + " " + p.lastName + " (" + p.username + ")";
+								}
+
+								// documentation on Angular filters: https://docs.angularjs.org/api/ng/filter/filter
+								$scope.searchFilter = "";
+								$scope.filterPatients = function(patient) {
+									return ($scope.displayName(patient)).toLowerCase().match($scope.searchFilter.toLowerCase());
+								}
+
+								$scope.selectPatient = function(patient){
+									$scope.selectedPatient = patient;
+                                    $scope.getAssignee();
+								    $scope.getAssignor();
+								}								
+								
+								$scope.selectAssignee = function(patient){
+									$scope.selectedAssignee = patient;
+								}
+
+								$scope.selectAssignor = function(patient){
+									$scope.selectedAssignor = patient;
+								}
+
+								// $scope.selectPatient = function(patient){
+								// 	$scope.selectedPatient = patient;
+								// 	// $scope.getFoodDiaries($scope.selectedPatient);
+								// }
+
+								$scope.assignRelationship = function(){
+									console.log("Selected Assignor: ",$scope.selectedAssignor.username);
+									if ($scope.selectedAssignor === null || $scope.selectedAssignee === null){
+										$scope.errMsg1 = "You should select both assignor and assignee for PR.";
+									}
+									else{
+										$scope.errMsg1 = "";
+										$http({
+										method: 'POST',
+										url: '/iTrust2/api/v1/personal_representatives/assign_relationship/' + $scope.selectedAssignee.username + '/'+$scope.selectedAssignor.username
+										
+									}).then(function(response){
+										console.log(response.data, "Success Assign PR");
+										$scope.selectedAssignor= null;
+                                        $scope.selectedAssignee= null;
+										$scope.message1 = "Successfully assign PR relationships."
+										$scope.getAssignee();
+                                        $scope.getAssignor();
+									})
+									}
+								}
+
+
+                                //Patients list를 반환한다.
+								$http.get("/iTrust2/api/v1/patients").then(
+										function(response) {
+											$scope.patients = response.data;
+										});
+							
+                                
+                                //특정 환자의 assignee를 가져오는 list
+								
+								$scope.getAssignee = function(){
+									$http({
+										method: 'GET',
+										url : '/iTrust2/api/v1/personal_representatives/view/assignee/' + $scope.selectedPatient.username
+
+									}).then(function(response){
+										console.log("Successfully get Patient's AssigneeList");
+										$scope.AssigneeList = response.data;
+										console.log($scope.AssigneeList);
+									})
+								}
+
+                                //특정 환자의 assignor을 가져오는 list
+								$scope.getAssignor = function(){
+									$http({
+										method: 'GET',
+										url : '/iTrust2/api/v1/personal_representatives/view/assignor/' + $scope.selectedPatient.username
+									}).then(function(response){
+										console.log("Successfully get Patient's AssignorList");
+										$scope.AssignorList = response.data;
+										console.log($scope.AssignorList);
+						
+									})
+								}
+
+
+
+	
+
+
+						});
+
+			/*]]>*/
+		</script>
+
+
+
+		<div ng-app="myApp" ng-controller="myCtrl">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading" style="display: flex; flex-direction: row; text-align: center; justify-content: space-between;">
+                            <h3 style="margin-right: 5rem;">Personal Representatives</h3>
+                            <button class="btn btn-primary btn-lg" ng-click="handleIsAssign()"
+                            name="handleIsAssign" style="background-color:rgb(162, 225, 249); color:black; border-style: groove;">Assign New Assignor-Assignee Relationships</button>
+                        </div>
+                        <div ng-show="!isAssign">
+                            <div class="panel-body" style="display: flex; flex-direction: row; flex-flow:wrap; width: 100%; height: 100%;">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">
+                                                <h4>Patients</h4>
+                                            </div>
+                                            <div class="panel-body">
+                                                <h4>
+                                                    Search: <input type="text" name="search" ng-model="searchFilter" />
+                                                </h4>
+                                                <br>
+                                                <!-- Info on scrolling taken from here: https://www.w3schools.com/cssref/pr_pos_overflow.asp -->
+                                                <!-- and here: https://stackoverflow.com/questions/9560330/how-to-hide-a-vertical-scroll-bar-when-not-needed -->
+                                                <ul style="overflow:auto; height: 45%;">
+                                                    <!-- Information on how labels wor from here: https://stackoverflow.com/questions/7863251/clicking-the-text-to-select-corresponding-radio-button -->
+                                                    <li ng-repeat="patient in patients | filter:filterPatients"><h4>
+                                                            <label> <input type="radio" name="Assignee PR"
+                                                                ng-click="selectPatient(patient)"
+                                                                />&nbsp;{{patient.username}}
+                                                            </label>
+                                                        </h4></li>
+                                                </ul>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3" style="height: 100%">
+                                        <div class="panel panel-info" style="display: felx; justify-content: center; flex-wrap: wrap; align-items: center; ">
+                                            <div class="panel-heading">
+                                                <h4>Patient's Assignee List(해당 환자가 PR로 등록한 환자 목록)</h4>
+                                            </div>
+                                            <div class="panel-body" style="display: flex; justify-content: center; flex-direction: column;">
+                                                <ul style="overflow:auto; height: 60%;">
+                                                    <li ng-repeat="Assignee in AssigneeList">
+                                                        <label><h4>
+                                                            &nbsp;{{Assignee.assignee}}
+                                                        </h4></label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">
+                                                <h4>Patient's Assignor List(해당 환자를 PR로 등록한 환자 목록)</h4>
+                                            </div>
+                                            <div class="panel-body" style="display: flex; justify-content: center; flex-direction: column; flex-flow:column; ">
+                                                <ul style="overflow:auto; height: 60%;">
+                                                    <li ng-repeat="Assignor in AssignorList">
+                                                        <label><h4>
+                                                            &nbsp;{{Assignor.assignor}}
+                                                        </h4></label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="isAssign">
+                            <div class="panel-body" style="display: flex; flex-direction: row; flex-flow:wrap; width: 100%; height: 100%;">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">
+                                                <h4>Select Assignor</h4>
+                                            </div>
+                                            <div class="panel-body">
+                                                <h4>
+                                                    Search: <input type="text" name="search" ng-model="searchFilter" />
+                                                </h4>
+                                                <br>
+                                                <!-- Info on scrolling taken from here: https://www.w3schools.com/cssref/pr_pos_overflow.asp -->
+                                                <!-- and here: https://stackoverflow.com/questions/9560330/how-to-hide-a-vertical-scroll-bar-when-not-needed -->
+                                                <ul style="overflow:auto; height: 45%;">
+                                                    <!-- Information on how labels wor from here: https://stackoverflow.com/questions/7863251/clicking-the-text-to-select-corresponding-radio-button -->
+                                                    <li ng-repeat="patient in patients | filter:filterPatients"><h4>
+                                                            <label> <input type="radio" name="Assignor PR"
+                                                                ng-click="selectAssignor(patient)"
+                                                                />&nbsp;{{patient.username}}
+                                                            </label>
+                                                        </h4></li>
+                                                </ul>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">
+                                                <h4>Select Assignee</h4>
+                                            </div>
+                                            <div class="panel-body">
+                                                <h4>
+                                                    Search: <input type="text" name="search" ng-model="searchFilter" />
+                                                </h4>
+                                                <br>
+                                                <!-- Info on scrolling taken from here: https://www.w3schools.com/cssref/pr_pos_overflow.asp -->
+                                                <!-- and here: https://stackoverflow.com/questions/9560330/how-to-hide-a-vertical-scroll-bar-when-not-needed -->
+                                                <ul style="overflow:auto; height: 45%;">
+                                                    <!-- Information on how labels wor from here: https://stackoverflow.com/questions/7863251/clicking-the-text-to-select-corresponding-radio-button -->
+                                                    <li ng-repeat="patient in patients | filter:filterPatients"><h4>
+                                                            <label> <input type="radio" name="Assignee PR"
+                                                                ng-click="selectAssignee(patient)"
+                                                                />&nbsp;{{patient.username}}
+                                                            </label>
+                                                        </h4></li>
+                                                </ul>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary btn-lg" ng-click ="assignRelationship()" style="margin-left: 5rem;">Assign PR relationship</button>
+                                    <br>
+                                    <br>
+                                    <div name="success" style="color: green; margin-left: 5rem;">{{message1}}</div>
+                                    <div name="error" style="color: red; margin-left: 5rem;">{{errMsg1}}</div>
+                                </div>
+							</div>
+						</div>
+                    </div>
+                </div>
+            </div>
+        
+		</div>
+	</div>
+</body>
+</html>

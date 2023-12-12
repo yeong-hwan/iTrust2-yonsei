@@ -1,0 +1,122 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout :: head(title=~{::title},links=~{::script})">
+<title>View Surgery Details</title>
+<script th:src="@{/js/dateTimeService.js}"
+		src="../js/dateTimeService.js"></script>
+</head>
+<body th:include="layout :: body" th:with="content=~{::content}">
+	<div th:fragment="content">
+
+		<script th:inline="javascript">
+	    /* Otherwise Thymeleaf tries to parse Javascript as XML and breaks itself sometimes.  Sigh */
+	    /*<![CDATA[*/
+	    var app = angular.module("viewSurgeryDetails", ['dateTimeServices']);
+	    app.controller("viewSurgeryDetailsCtrl", function($scope, $http, dateTimeService, $location) {
+				$scope.id = $location.absUrl().split('/').pop();
+
+		
+		// 12.01 test for surgeryvisits api params로 들어온 visit id parsing 해서 완성부탁드립니다! -SH-
+		$http.get("/iTrust2/api/v1/surgeryvisits/" + $scope.id).then(function(response) {
+		    console.log(response.data);
+				$scope.visit = response.data;
+		});
+
+		function twoDigit(num) {
+					if (num < 10) {
+						return "0" + num;
+					}
+					return num;
+				}
+
+		$scope.getDate = function getDate(dateString) {
+					/* The months start at 0... only the months.  So we have to add 1 to get the correct input.*/
+					var dateObject = new Date(dateString);
+					var date = {
+						year: dateObject.getFullYear(),
+						month: dateObject.getMonth(),
+						dayOfMonth: dateObject.getDate()
+					};
+					month = date.month + 1;
+					return twoDigit(month) + "/" + twoDigit(date.dayOfMonth) + "/" + date.year;
+				}
+
+	    });
+	    /*]]>*/
+	</script>
+
+
+
+		<div ng-app="viewSurgeryDetails" ng-controller="viewSurgeryDetailsCtrl">
+			<div
+				style="float: left; width: 100%; border-left: 1px solid #bbb; padding-left: 3%; height: 100%; overflow-y: auto">
+				<h2 id="header0">Surgery Details</h2>
+				<table>
+					<tr>
+						<td style="text-align: left; padding: 5px"><b>ID:</b></td>
+						<td>{{visit.id ? visit.id : '-'}}</td>
+					</tr>
+					<tr>
+						<td style="text-align: left; padding: 5px"><b>Date:</b></td>
+						<td>{{getDate(visit.date) ? getDate(visit.date) : '-'}}</td>
+					</tr>
+					<tr>
+						<td style="text-align: left; padding: 5px"><b>OPH:</b></td>
+						<td>{{visit.eyecheckup.hcp.username ? visit.eyecheckup.hcp.username : '-'}}</td>
+					</tr>
+					<tr>
+						<td style="text-align: left; padding: 5px"><b>Hospital:</b></td>
+						<td>{{visit.hospital.name ? visit.hospital.name : '-'}}</td>
+					</tr>
+					<tr>
+						<td style="text-align: left; padding: 5px"><b>Surgery Type:</b></td>
+						<td>{{visit.surgeryType ? visit.surgeryType.toLowerCase().split('_')[0].charAt(0).toUpperCase() + visit.surgeryType.toLowerCase().split('_')[0].substring(1) + ' ' + visit.surgeryType.toLowerCase().split('_')[1].charAt(0).toUpperCase() + visit.surgeryType.toLowerCase().split('_')[1].substring(1) : '-'}}</td>
+					</tr>
+					<tr>
+						<td style="text-align: left; padding: 5px"><b>Visual Acuity of OS:</b></td>
+						<td>{{visit.eyecheckup.visualAcuityOS ? visit.eyecheckup.visualAcuityOS : '-'}}</td>
+					</tr>
+					<tr>
+						<td style="text-align: left; padding: 5px"><b>Visual Acuity of OD:</b></td>
+						<td>{{visit.eyecheckup.visualAcuityOD ? visit.eyecheckup.visualAcuityOD : '-'}}</td>
+					</tr>
+					<tr>
+						<td style="text-align: left; padding: 5px"><b>Sphere of OS:</b></td>
+						<td>{{visit.eyecheckup.sphereOS ? visit.eyecheckup.sphereOS : '-'}}</td>
+					</tr>
+					<tr>
+						<td style="text-align: left; padding: 5px"><b>Sphere of OD:</b></td>
+						<td>{{visit.eyecheckup.sphereOD ? visit.eyecheckup.sphereOD : '-'}}</td>
+					</tr>
+					<tr>
+						<td style="text-align: left; padding: 5px"><b>Cylinder of OS:</b></td>
+						<td>{{visit.eyecheckup.cylinderOS ? visit.eyecheckup.cylinderOS : '-'}}</td>
+					</tr>
+					<tr>
+						<td style="text-align: left; padding: 5px"><b>Cylinder of OD:</b></td>
+						<td>{{visit.eyecheckup.cylinderOD ? visit.eyecheckup.cylinderOD : '-'}}</td>
+					</tr>
+					<tr>
+						<td style="text-align: left; padding: 5px"><b>Axis of OS:</b></td>
+						<td>{{visit.eyecheckup.axisOS ? visit.eyecheckup.axisOS : '-'}}</td>
+					</tr>
+					<tr>
+						<td style="text-align: left; padding: 5px"><b>Axis of OD:</b></td>
+						<td>{{visit.eyecheckup.axisOD ? visit.eyecheckup.axisOD : '-'}}</td>
+					</tr>
+					<tr>
+						<td style="text-align: left; padding: 5px"><b>Note:</b></td>
+						<td>{{visit.note ? visit.note : '-'}}</td>
+					</tr>
+				</table>
+
+				<!-- <div name="success" style="color: green;">{{message}}</div> -->
+			</div>
+		</div>
+
+
+
+
+	</div>
+	</div>
+</body>
+</html>

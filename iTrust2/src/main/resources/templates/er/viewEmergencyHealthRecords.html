@@ -1,0 +1,315 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="layout :: head(title=~{::title},links=~{})">
+<title>View Emergency Health Records</title>
+</head>
+
+<body th:include="layout :: body" th:with="content=~{::content}">
+
+
+	<div th:fragment="content">
+
+		<script th:inline="javascript">
+			/* Otherwise Thymeleaf tries to parse Javascript as XML and breaks itself sometimes.  Sigh */
+			/*<![CDATA[*/
+			var app = angular.module("viewEmergencyHealthRecordsApp", []);
+
+			app.controller('viewEmergencyHealthRecordsCtrl', function ($scope, $http) {
+				$scope.searchPatient = function (searchType, firstName, lastName, username) {
+					
+					// Reset previous error messages
+					$scope.showFormErrorMsg = false;
+					$scope.showListErrorMsg = false;
+
+					// validation checks
+					var firstNameRegex = /^[A-Za-z-,\'\s]{1,20}$/;
+					var lastNameRegex = /^[A-Za-z-,\'\s]{1,30}$/;
+					var usernameRegex = /^[A-Za-z0-9_-]{6,20}$/;
+
+
+					if (!searchType) {
+						$scope.formErrorMsg = 'Search type should be selected';
+						$scope.showFormErrorMsg = true;
+						return;
+					} else if (searchType === 'name') {
+						if (!firstName && !lastName) {
+							$scope.formErrorMsg = 'First name or last name should be entered';
+							$scope.showFormErrorMsg = true;
+							return;
+						} else if (firstName && !firstNameRegex.test(firstName)) {
+							$scope.formErrorMsg = 'First name must be 1 to 20 characters, alpha characters, or symbols - or _';
+							$scope.showFormErrorMsg = true;
+							return;
+						} else if (lastName && !lastNameRegex.test(lastName)) {
+							$scope.formErrorMsg = 'Last name must be 1 to 30 characters, alpha characters, or symbols - or _';
+							$scope.showFormErrorMsg = true;
+							return;
+						}
+					} else if (searchType === 'username') {
+						if (!username) {
+							$scope.formErrorMsg = 'Username should be entered';
+							$scope.showFormErrorMsg = true;
+							return;
+						} else if (!usernameRegex.test(username)) {
+							$scope.formErrorMsg = 'Username must be 6 to 20 characters, alpha characters, or symbols - or _';
+							$scope.showFormErrorMsg = true;
+							return;
+						}
+					}
+					
+
+					$scope.patientList = [
+						{
+							"firstName": "Siegwardof",
+							"lastName": "Catarina",
+							"username": "siegwardof.catarina",
+						},
+						{
+							"firstName": "Siegwardof",
+							"lastName": "Catarina",
+							"username": "siegwardof.catarina",
+						},
+					]
+					
+					// Based on search criteria (name or username), send GET request
+					if ($scope.searchType === 'username') {
+						var searchQuery = $scope.username;
+					} else if ($scope.searchType === 'name') {
+						// If only first name is entered, search by first name
+						if ($scope.firstName && !$scope.lastName) {
+							var searchQuery = $scope.firstName + '_';
+						} else if (!$scope.firstName && $scope.lastName) {
+							var searchQuery = '_' + $scope.lastName;
+						} else {
+							var searchQuery = $scope.firstName + '_' + $scope.lastName;
+						}
+					}
+
+					console.log('searchQuery:', searchQuery);
+
+					$http.get('/iTrust2/api/v1/emergency_health_records/search?searchType=' + $scope.searchType + '&searchQuery=' + searchQuery)
+						.then(function (response) {
+							$scope.patientList = response.data;
+
+							// If no patients found, show error message
+							if ($scope.patientList.length === 0) {
+								$scope.listErrorMsg = 'No patients found';
+								$scope.showListErrorMsg = true;
+							}
+						})
+						.catch(function (error) {
+							console.log('Error fetching patients by name:', error);
+						});
+					
+
+				};
+
+				$scope.showPatientRecords = function (patient) {
+					$scope.selectedPatientInfo = {
+						"firstName": "Siegwardof",
+						"lastName": "Catarina",
+						"username": "siegwardof.catarina",
+						"age": 45,
+						"dob": "1978-05-12",
+						"gender": "Male",
+						"bloodType": "AB+",
+						"diagnoses": [
+							{
+								"code" :
+									{
+										"code": "D001",
+										"description": "Example Diagnosis 1",
+									},
+							}
+						],
+						"prescriptions": [
+							{
+								"drug_id": "P001",
+								"dosage": "123",
+								"start_date": "2023-11-12",
+								"end_date": "2023-11-13",
+							},
+						]
+					};
+
+					// Send GET request to get patient emergency health records
+					$http.get('/iTrust2/api/v1/emergency_health_records/view?patientUsername=' + patient.username)
+						.then(function (response) {
+							$scope.selectedPatientInfo = response.data;
+						})
+						.catch(function (error) {
+							console.log('Error fetching patients by name:', error);
+						});
+
+					$('#patientModal').modal('show'); // Show the modal
+				};
+			});
+
+			app.filter('filterDate', function () {
+				return function (items, days) {
+					var currentDate = new Date();
+					var filteredItems = [];
+
+					angular.forEach(items, function (item) {
+						var itemDate = new Date(item.date);
+						var diffInDays = (currentDate - itemDate) / (1000 * 60 * 60 * 24);
+
+						if (diffInDays <= days) {
+							filteredItems.push(item);
+						}
+					});
+
+					return filteredItems;
+				};
+			});
+
+
+
+			function toggleSearchFields() {
+				var searchType = document.getElementById('searchType').value;
+				var nameFields = document.getElementById('nameFields');
+				var usernameField = document.getElementById('usernameField');
+
+				if (searchType === 'name') {
+					nameFields.style.display = 'block';	
+					usernameField.style.display = 'none';
+				} else if (searchType === 'username') {
+					nameFields.style.display = 'none';
+					usernameField.style.display = 'block';
+				}
+			}
+			/*]]>*/
+		</script>
+
+		<div ng-app="viewEmergencyHealthRecordsApp" ng-controller="viewEmergencyHealthRecordsCtrl">
+			<div id="patientModal" class="modal fade" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title">Patient Emergency Health Records</h4>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+						</div>
+
+						<div class="modal-body">
+							<!-- Display patient information here -->
+							<p><strong>First Name:</strong> {{ selectedPatientInfo.firstName }}</p>
+							<p><strong>Last Name:</strong> {{ selectedPatientInfo.lastName }}</p>
+							<p><strong>Username:</strong> {{ selectedPatientInfo.username }}</p>
+							<p><strong>Age:</strong> {{ selectedPatientInfo.age }}</p>
+							<p><strong>Date of Birth:</strong> {{ selectedPatientInfo.dob }}</p>
+							<p><strong>Gender:</strong> {{ selectedPatientInfo.gender }}</p>
+							<p><strong>BloodType:</strong> {{ selectedPatientInfo.bloodType }}</p>
+							<!-- Add more information as needed -->
+						</div>
+						
+						<div class="modal-body">
+
+							<h4>Latest Short-Term Diagnosis Codes (Last 60 Days)</h4>
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Diagnosis Code</th>
+										<th>Description</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="diagnosis in selectedPatientInfo.diagnoses">
+										<td>{{ diagnosis.code.code }}</td>
+										<td>{{ diagnosis.code.description }}</td>
+									</tr>
+								</tbody>
+							</table>
+						
+							<h4>All Prescriptions in Last 90 Days</h4>
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Drug ID</th>
+										<th>Dosage</th>
+										<th>Start Date</th>
+										<th>End Date</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="prescription in selectedPatientInfo.prescriptions">
+										<td>{{ prescription.drug_id }}</td>
+										<td>{{ prescription.medication }}</td>
+										<td>{{ prescription.start_date }}</td>
+										<td>{{ prescription.end_date }}</td>
+									</tr>
+								</tbody>
+							</table>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="container mt-4">
+				<div class="row">
+					<form class="col-md-6" name="f" ng-submit="searchPatient(searchType, firstName, lastName, username)">
+						<h2>Search Emergency Health Records</h2>
+						<div class="form-group">
+							<label for="searchType">Search By:</label>
+							<select class="form-control" id="searchType" ng-model="searchType" onchange="toggleSearchFields()">
+								<option value="name">Patient Name</option>
+								<option value="username">Username (MID)</option>
+							</select>
+						</div>
+						<div id="nameFields">
+							<div class="form-group">
+								<label for="firstName">First Name:</label>
+								<input type="text" class="form-control" id="firstName" placeholder="Enter First Name" ng-model="firstName">
+							</div>
+							<div class="form-group">
+								<label for="lastName">Last Name:</label>
+								<input type="text" class="form-control" id="lastName" placeholder="Enter Last Name" ng-model="lastName">
+							</div>
+						</div>
+						<div id="usernameField" style="display: none;">
+							<div class="form-group">
+								<label for="username">Username:</label>
+								<input type="text" class="form-control" id="username" placeholder="Enter Username" ng-model="username">
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary">Search</button>
+
+						<div class="alert alert-danger" ng-show="showFormErrorMsg">
+							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+							<span class="sr-only">Error:</span>
+							<span>{{formErrorMsg}}</span>
+						</div>
+					</form>
+
+					<div class="col-md-6">
+						<h2>Patient List</h2>
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>First Name</th>
+									<th>Last Name</th>
+									<th>Username</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="patient in patientList" ng-click="showPatientRecords(patient)">
+									<!-- Apply CSS to indicate clickable items -->
+									<td style="cursor: pointer;" ng-style="{ 'text-decoration': 'underline' }" title="Click to view details">{{ patient.firstName }}</td>
+									<td style="cursor: pointer;" ng-style="{ 'text-decoration': 'underline' }" title="Click to view details">{{ patient.lastName }}</td>
+									<td style="cursor: pointer;" ng-style="{ 'text-decoration': 'underline' }" title="Click to view details">{{ patient.username }}</td>
+								</tr>
+							</tbody>
+						</table>
+						
+						<div class="alert alert-danger" ng-show="showListErrorMsg">
+							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+							<span>{{listErrorMsg}}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

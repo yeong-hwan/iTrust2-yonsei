@@ -105,8 +105,19 @@ a {
 					var erdropdown = document.getElementById('er-dropdown');
 					var ltdropdown = document.getElementById('labtech-dropdown');
 					var virologistdropdown = document.getElementById('virologist-dropdown');
+					var odList = document.getElementById('hcp-view');
+					var odview = document.getElementById('od-view');
+					console.log(role);
+					if (!(role.includes('OD') || role.includes('OPH'))) {
+						console.log('trying...');
+						odList.removeChild(odview);
+					}
 					if (!role.includes('PATIENT')) {
 						navbarparent.removeChild(patientdropdown);
+					}
+					
+					if (!role.includes('LABTECH')) {
+						navbarparent.removeChild(ltdropdown);
 					}
 					if (!role.includes('ADMIN')) {
 						navbarparent.removeChild(admindropdown);
@@ -114,14 +125,11 @@ a {
 					if (!(role.includes('HCP') || role.includes('OD') || role.includes('OPH') || role.includes('VIROLOGIST'))) {
 						navbarparent.removeChild(hcpdropdown);
 					}
-					if (!role.includes('VIROLOGIST')) {
-						navbarparent.removeChild(virologistdropdown);
-					}
 					if (!role.includes('ER')) {
 						navbarparent.removeChild(erdropdown);
 					}
-					if (!role.includes('LABTECH')) {
-						navbarparent.removeChild(ltdropdown);
+					if (!role.includes('VIROLOGIST')) {
+						navbarparent.removeChild(virologistdropdown);
 					}
 
 				});
@@ -147,6 +155,8 @@ a {
 						<ul class="dropdown-menu">
 							<li><a href="/iTrust2/admin/hospitals" id="deletehospital">Manage
 									Hospitals</a></li>
+							<li><a href="/iTrust2/admin/hospitals" id="deletehospital">Manage
+								Hospitals</a></li>
 							<li><a href="/iTrust2/admin/users" id="users">Manage
 									Users</a></li>
 							<li><a href="/iTrust2/admin/drugs" id="drugs">Manage
@@ -165,14 +175,25 @@ a {
 				<ul id="hcp-dropdown" class="nav navbar-nav">
 					<li class="dropdown"><a class="dropdown-toggle"
 						data-toggle="dropdown" href="#" id="hcpPatientDropDown">Patient<span class="caret"></span></a>
-						<ul class="dropdown-menu">
+						<ul class="dropdown-menu" id="hcp-view">
 							<li><a href="/iTrust2/hcp/appointmentRequests"
 								id="viewrequests">View Appointment Requests and Upcoming
+									Appointments</a></li>
+							<li id="od-view"><a href="/iTrust2/hcp/appointmentOphthalmologistRequests"
+								id="viewrequests">View Ophthalmologist Appointment Requests and Upcoming
 									Appointments</a></li>
 							<li><a href="/iTrust2/hcp/editPatientDemographics"
 								id="editPatientDemographics">Edit Patient</a></li>
 							<li><a href="/iTrust2/hcp/documentOfficeVisit"
 								id="documentOfficeVisit">Document Office Visit</a></li>
+							<li><a href="/iTrust2/hcp/FoodDiary/viewPatientFoodDiary"
+								id="viewPatientFoodDiary">view Patient Food Diary</a></li>
+							<li><a href="/iTrust2/hcp/viewEmergencyHealthRecords"
+								id="hcpViewEmergencyRecords">View Emergency Health Records</a></li>
+							<li><a href="/iTrust2/hcp/requestLaboratoryTest"
+								id="hcpViewEmergencyRecords">Request Laboratory Test</a></li>
+							<li><a href="/iTrust2/hcp/patientPersonalRepresentatives"
+								id="hcpPR">Patient Personal Representatives</a></li>
 						</ul></li>
 					<li class="dropdown"><a class="dropdown-toggle"
 						data-toggle="dropdown" href="#">Edit<span class="caret"></span></a>
@@ -192,6 +213,26 @@ a {
 					<li class="dropdown"><a class="dropdown-toggle"
 						data-toggle="dropdown" href="#">Patient<span class="caret"></span></a>
 						<ul class="dropdown-menu">
+
+	<!-- pateint에 food diary menu를 patient에 추가함-->
+							<li><a 
+							href = "/iTrust2/patient/FoodDiary/viewFoodDiary"
+							id = "viewFoodDiary">viewFoodDiary</a></li>
+							<li><a 
+								href = "/iTrust2/patient/FoodDiary/addFoodDiary"
+								id = "addFoodDiary">addFoodDiary</a></li>
+								<li><a 
+									href = "/iTrust2/patient/personalRepresentatives"
+									id = "PR">Manage Personal Representatives</a></li>
+							<!---->
+
+							
+							<li>
+								<a href="/iTrust2/patient/viewLaboratoryTestResult" id="patientViewLaboratoryTestResult">
+									View Laboratory Test Result
+								</a>
+							</li>
+
 						</ul></li>
 					<li class="dropdown"><a class="dropdown-toggle"
 						data-toggle="dropdown" id="appointments" href="#">Appointments<span
@@ -200,6 +241,9 @@ a {
 							<li><a
 								href="/iTrust2/patient/manageAppointmentRequest"
 								id="requestappointment">Manage Appointment Requests</a></li>
+							<li><a
+								href="/iTrust2/patient/manageOphthalmologistAppointmentRequest"
+								id="requestappointment">Manage Ophthalmologist Appointment Requests</a></li>
 							<li><a href="/iTrust2/patient/officeVisit/viewOfficeVisits"
 								id="viewOfficeVisits">Past Office Visits</a></li>
 							<li><a href="/iTrust2/patient/officeVisit/viewDiagnoses"
@@ -215,6 +259,37 @@ a {
 								id="editdemographics-patient">Edit Demographics</a></li>
 						</ul></li>
 				</ul>
+
+				
+				<!-- ER navbar -->
+				<ul id="er-dropdown" class="nav navbar-nav">
+					<li class="dropdown"><a class="dropdown-toggle"
+						data-toggle="dropdown" href="#" id="erPatientDropDown">Patient<span class="caret"></span></a>
+						<ul class="dropdown-menu" id="er-view">
+							<li>
+								<a href="/iTrust2/er/viewEmergencyHealthRecords" id="erViewEmergencyRecords">
+									View Emergency Health Records
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+
+				
+				<!-- Labtech navbar -->
+				<ul id="labtech-dropdown" class="nav navbar-nav">
+					<li class="dropdown"><a class="dropdown-toggle"
+						data-toggle="dropdown" href="#" id="labtechPatientDropDown">Patient<span class="caret"></span></a>
+						<ul class="dropdown-menu" id="labtech-view">
+							<li>
+								<a href="/iTrust2/labtech/recordRequestedLaboratoryTest" id="labtechrecordRequestedLaboratoryTest">
+									Record Requested Laboratory Test
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+
 				<ul id="extra-dropdown" class="nav navbar-nav">
 					<li><a
 						href="https://github.ncsu.edu/engr-csc326-staff/iTrust2-v8/wiki">About</a></li>

@@ -1,0 +1,142 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:tiles="http://www.thymeleaf.org">
+<head>
+<title tiles:fragment="title">iTrust2 :: Sign Up</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<style>
+body {
+	background-image: url("DrJenkins");
+	background-size: cover;
+}
+</style>
+
+<!-- AngularJS library -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+</head>
+<body>
+	<div tiles:fragment="content">
+		<script th:inline="javascript">
+			/* Otherwise Thymeleaf tries to parse Javascript as XML and breaks itself sometimes.  Sigh */
+			/*<![CDATA[*/
+			var app = angular.module("signupApp", []);
+
+			app.controller('signupCtrl', function($scope, $http) {
+
+				$scope.generateUsers = function(username, password, repeatedPassword, role) {
+
+					// Reset previous error messages
+					$scope.errorMsg = '';
+					$scope.showErrorMsg = false;
+
+					// Validation checks
+					var usernameRegex = /^[a-zA-Z0-9_-]{6,20}$/;
+					var passwordRegex = /^.{6,20}$/;
+
+					if (!username || !usernameRegex.test(username)) {
+						$scope.errorMsg = 'Username must be 6 to 20 characters, alpha characters, or symbols - or _';
+						$scope.showErrorMsg = true;
+						return;
+					} else if (!password || !passwordRegex.test(password)) {
+						$scope.errorMsg = 'Password must be 6 to 20 characters';
+						$scope.showErrorMsg = true;
+						return;
+					} else if (!repeatedPassword || !passwordRegex.test(repeatedPassword)) {
+						$scope.errorMsg = 'Repeated password must be 6 to 20 characters';
+						$scope.showErrorMsg = true;
+						return;
+					} else if (password !== repeatedPassword) {
+						$scope.errorMsg = 'Passwords do not match';
+						$scope.showErrorMsg = true;
+						return;
+					} else if (!role) {
+						$scope.errorMsg = 'Role should be selected';
+						$scope.showErrorMsg = true;
+						return;
+					}
+
+					var userData = {
+						username: username,
+						password: password,
+						password2: repeatedPassword,
+						roles: [role],
+						enabled: 1,
+					};
+
+					$http.post("api/v1/generateUsers", userData).then(function(success) {
+						alert("User generated successfully");
+						window.location.href = "login";
+
+					}, function(failure) {
+						alert("User generation failed. Please try again.");
+					});
+				}
+			});
+			/*]]>*/
+		</script>
+
+		<div class="container" ng-app="signupApp" ng-controller="signupCtrl">
+			<div class="row">
+				<div class="col-md-4 col-md-offset-4">
+					<br />
+					<div class="panel panel-default">
+						<div class="panel-body" style="background: #eee">
+							<h1>Signup to iTrust2</h1>
+							<form name="f" ng-submit="generateUsers(username, password, repeatedPassword, role)">
+								<fieldset>
+									<div th:if="${param.error}" class="alert alert-error">
+										Invalid username and password.</div>
+										
+									<div class="form-group">
+										<label for="username">Username</label> <input type="text"
+											class="form-control" id="username" name="username"
+											placeholder="Username" ng-model="username">
+									</div>
+									<div class="form-group">
+										<label for="password">Password</label> <input type="password"
+											class="form-control" id="password" name="password"
+											placeholder="Password" ng-model="password">
+									</div>
+									<div class="form-group">
+										<label for="password">Repeated Password</label> <input type="password"
+											class="form-control" id="repeatedPassword" name="repeatedPassword"
+											placeholder="Repeated Password" ng-model="repeatedPassword">
+									</div>
+
+									<div class="form-group">
+										<label for="role">Role</label>
+										<select class="form-control" id="role" name="role" ng-model="role">
+											<option value="ROLE_PATIENT">Patient</option>
+											<option value="ROLE_HCP">Health Care Provider (HCP)</option>
+											<option value="ROLE_OD">Optometrist HCP</option>
+											<option value="ROLE_OPH">Ophthalmologist HCP</option>
+											<option value="ROLE_ADMIN">Admin</option>
+											<option value="ROLE_ER">Emergency Responder (ER)</option>
+											<option value="ROLE_LABTECH">Lab Tech</option>
+										</select>
+									</div>
+
+									<div class="alert alert-danger" ng-show="showErrorMsg">
+										<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+										<span class="sr-only">Error:</span>
+										<span ng-show="errorMsg">{{errorMsg}}</span>
+									</div>
+
+									<button type="submit" class="btn btn-primary btn-block">Generate new user</button>
+								</fieldset>
+							</form>
+							<div class="row">
+								<div class="mx-auto text-center">
+									<a class="btn btn-sm" href="login">Back to login</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,311 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<script th:src="@{/js/dateTimeService.js}" src="../js/dateTimeService.js"></script>
+<head th:include="layout :: head(title=~{::title},links=~{})">
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+<head th:include="layout :: head(title=~{::title},links=~{})">
+<title>Add FoodDiary</title>
+</head>
+<body th:include="layout :: body" th:with="content=~{::content}">
+	<div th:fragment="content">
+		<script th::inline="javascript">
+		/* Otherwise Thymeleaf tries to parse Javascript as XML and breaks itself sometimes.  Sigh */
+		/*<![CDATA[*/
+ 			var app = angular.module("addFoodDiaryApp", []);
+			app.controller("addFoodDiaryCtrl", function($scope, $http) {
+			
+			$scope.err = [];
+
+			for(var i = 0; i < 9; i++) {
+		    $scope.err[i] = "";
+			}
+				var checkValidFoodDiaryForm = function(FoodDiary) {
+					var valid = true;
+					if(FoodDiary.foodName === undefined || FoodDiary.foodName === "" ) {
+						$scope.err[0]="Make sure no fields are empty";
+					}else {
+			    		$scope.err[0] = "";
+		    		}
+
+					if (!/^[1-9]\d*$|^0$/.test(FoodDiary.servingNumber)){
+						$scope.err[1]="Number of serving must be a positive integer";
+						if(FoodDiary.servingNumber === undefined || FoodDiary.servingNumber===""){
+							$scope.err[1]="Make sure no fields are empty";
+						}
+						valid = false;
+					} else {
+			    		$scope.err[1] = "";
+		    		}
+					if ( !/^[1-9]\d*$|^0$/.test(FoodDiary.caloriesPerServing)){
+						$scope.err[2]="Calories must be a positive integer or zero";
+						if(FoodDiary.caloriesPerServing === undefined || FoodDiary.caloriesPerServing===""){
+							$scope.err[2]="Make sure no fields are empty";
+						}
+						valid = false;
+					}else {
+			    		$scope.err[2] = "";
+		    		}
+					if ( !/^[1-9]\d*$|^0$/.test(FoodDiary.fatPerServing)){
+						$scope.err[3]= "Grams of Fat must be a positive integer or zero";
+						if(FoodDiary.fatPerServing === undefined || FoodDiary.fatPerServing===""){
+							$scope.err[3]="Make sure no fields are empty";
+						}
+						valid = false;
+					}else {
+			    		$scope.err[3] = "";
+		    		}
+					if ( !/^[1-9]\d*$|^0$/.test(FoodDiary.sodiumPerServing)){
+						$scope.err[4]="Miligrams of sodium must be a positive integer or zero";
+						if(FoodDiary.sodiumPerServing === undefined || FoodDiary.sodiumPerServing===""){
+							$scope.err[4]="Make sure no fields are empty";
+						}
+						valid = false;
+					}else {
+			    		$scope.err[4] = "";
+		    		}
+					if ( !/^[1-9]\d*$|^0$/.test(FoodDiary.carbsPerServing)){
+						$scope.err[5]="Grams of carbs must be a positive integer or zero";
+						if(FoodDiary.carbsPerServing === undefined || FoodDiary.carbsPerServing===""){
+							$scope.err[5]="Make sure no fields are empty";
+						}
+						valid = false;
+					}else {
+			    		$scope.err[5] = "";
+		    		}
+					if ( !/^[1-9]\d*$|^0$/.test(FoodDiary.sugarsPerServing)){
+						$scope.err[6]="Grams of sugars must be a positive integer or zero";
+						if(FoodDiary.sugarsPerServing === undefined || FoodDiary.sugarsPerServing===""){
+							$scope.err[6]="Make sure no fields are empty";
+						}
+						valid = false;
+					}else {
+			    		$scope.err[6] = "";
+		    		}
+					if ( !/^[1-9]\d*$|^0$/.test(FoodDiary.fiberPerServing)){
+						$scope.err[7]="Grams of fiber must be a positive integer or zero";
+						if(FoodDiary.fiberPerServing === undefined || FoodDiary.fiberPerServing===""){
+							$scope.err[7]="Make sure no fields are empty";
+						}
+						valid = false;
+					}else {
+			    		$scope.err[7] = "";
+		    		}
+					if ( !/^[1-9]\d*$|^0$/.test(FoodDiary.proteinPerServing)){
+						$scope.err[8]="Grams of protein must be a positive integer or zero";
+						if(FoodDiary.proteinPerServing === undefined || FoodDiary.proteinPerServing===""){
+							$scope.err[8]="Make sure no fields are empty";
+						}
+						valid = false;
+					}else {
+			    		$scope.err[8] = "";
+		    		}
+
+					return valid;
+
+				}
+
+				$scope.setMaxDate = function() {
+					var now_utc = Date.now();
+					var timeOff = new Date().getTimezoneOffset() * 60000;
+					var today = new Date(now_utc - timeOff).toISOString().split("T")[0];
+					$scope.maxDate = today;
+				};
+
+				$scope.setMaxDate();
+
+
+				$scope.addFoodDiary = function () {
+					var valid = checkValidFoodDiaryForm($scope.FoodDiary);
+					if (!valid) {
+						$scope.message ="";
+					} else {
+						const inputDate = $scope.FoodDiary.date;
+						const year = inputDate.getFullYear();
+						const month = String(inputDate.getMonth() + 1).padStart(2, '0');
+						const day = String(inputDate.getDate()).padStart(2, '0');
+						const formattedDateString = `${year}-${month}-${day}`;
+						
+						console.log($scope.FoodDiary.date);
+						console.log(formattedDateString);
+						console.log(typeof formattedDateString);
+
+						$scope.FoodDiary.date = formattedDateString;
+						// $scope.FoodDiary.id = 1;
+						// $scope.FoodDiary.username = 'test1234';
+
+						console.log($scope.FoodDiary);
+
+
+						$http({method:'POST',
+							   url:"/iTrust2/api/v1/food_diary/add",
+							   data:$scope.FoodDiary}).then(
+							function (response) {
+								$scope.FoodDiary.date = "";
+								$scope.FoodDiary.foodName = "";
+								$scope.FoodDiary.mealType = "";
+								$scope.FoodDiary.servingNumber = "";
+								$scope.FoodDiary.caloriesPerServing = "";
+								$scope.FoodDiary.fatPerServing = "";
+								$scope.FoodDiary.sodiumPerServing = "";
+								$scope.FoodDiary.carbsPerServing = "";
+								$scope.FoodDiary.sugarsPerServing = "";
+								$scope.FoodDiary.fiberPerServing = "";
+								$scope.FoodDiary.proteinPerServing = "";
+
+								$scope.message = "FoodDiary added successfully.";
+							}, function (rejection) {
+								$scope.message = "Could not add FoodDiary.";
+							});
+							
+					}}
+			});
+			
+</script>
+
+<style>
+form {
+	width: 400px;
+}
+
+.label {
+	float: right;
+	text-align: left;
+	width: 200px;
+	height: 30px;
+	color: #000000
+}
+
+input[type=text] {
+	float: right;
+	text-align: left;
+	width: 200px;
+	height: 30px;
+	padding: 10px;
+}
+
+.clear {
+	clear: both;
+	height: 0;
+	line-height: 0;
+}
+
+.floatright {
+	float: right;
+}
+</style>
+			<div ng-app="addFoodDiaryApp" ng-controller="addFoodDiaryCtrl">
+				
+				<div
+				style="float: left; width: 100%; border-left: 1px solid #bbb; padding-left: 3%; height: 100%; overflow-y: auto">
+				<h2 id="header0">Add a Food Diary</h2>
+					<table>
+						<tr>
+							<td style="text-align: left; padding: 10px" ><label for="date">Date:</label></td>
+							<td style="text-align: left; padding: 10px"><input id="Date" type="date" class="form-control" ng-max="{{maxDate}}" ng-init="setMaxDate()" name="Date"  ng-model="FoodDiary.date" required="true" /></td>
+						</tr>
+						<tr>
+							<td style="text-align: left; padding: 10px"><b>Type of Meal:</b></td>
+							<td>
+								<select class="label" id="mealType" name="mealType" ng-model="FoodDiary.mealType" required>
+									<option value="Breakfast">Breakfast</option>
+									<option value="Lunch">Lunch</option>
+									<option value="Dinner">Dinner</option>
+									<option value="Snack">Snack</option>
+								</select>
+							</td>
+						</tr>
+						<!-- Name of Food 입력 필드와 에러 메시지 -->
+						<tr>
+							<td style="text-align: left; padding: 10px"><b>Name of Food:</b></td>
+							<td>
+								<input type="text" name="name" id="name" ng-model="FoodDiary.foodName"  />
+							</td>
+							<td style="color: red" ng-show="err[0]">{{err[0]}}</td>
+						</tr>
+						<!-- Number of Servings 입력 필드와 에러 메시지 -->
+						<tr>
+							<td style="text-align: left; padding: 10px"><b>Number of Servings:</b></td>
+							<td>
+								<input type="text" name="serveNum" id="serveNum" ng-model="FoodDiary.servingNumber" />
+								
+							</td>
+							<td style="color: red" ng-show="err[1]">{{err[1]}}</td>
+						</tr>
+						<!-- Calories 입력 필드와 에러 메시지 -->
+						<tr>
+							<td style="text-align: left; padding: 10px"><b>Calories per Serving:</b></td>
+							<td>
+								<input type="text" name="calories" id="calories" ng-model="FoodDiary.caloriesPerServing" />
+								
+							</td>
+							<td style="color: red" ng-show="err[2]">{{err[2]}}</td>
+						</tr>
+						<!-- Fat 입력 필드와 에러 메시지 -->
+						<tr>
+							<td style="text-align: left; padding: 10px"><b>Grams of Fat per Serving:</b></td>
+							<td>
+								<input type="text" name="fat" id="fat" ng-model="FoodDiary.fatPerServing" />
+							
+							</td>
+							<td style="color: red" ng-show="err[3]">{{err[3]}}</td>
+						</tr>
+						<!-- Sodium 입력 필드와 에러 메시지 -->
+						<tr>
+							<td style="text-align: left; padding: 10px"><b>Milligrams of Sodium per Serving:</b></td>
+							<td>
+								<input type="text" name="sodium" id="sodium" ng-model="FoodDiary.sodiumPerServing" value = ""/>
+								
+							</td>
+							<td style="color: red" ng-show="err[4]">{{err[4]}}</td>
+						</tr>
+						<!-- Carbs 입력 필드와 에러 메시지 -->
+						<tr>
+							<td style="text-align: left; padding: 10px"><b>Grams of Carbs per Serving:</b></td>
+							<td>
+								<input type="text" name="carbs" id="carbs" ng-model="FoodDiary.carbsPerServing" />
+								
+							</td>
+							<td style="color: red" ng-show="err[5]">{{err[5]}}</td>
+						</tr>
+						<!-- Sugar 입력 필드와 에러 메시지 -->
+						<tr>
+							<td style="text-align: left; padding: 10px"><b>Grams of Sugars per Serving:</b></td>
+							<td>
+								<input type="text" name="sugars" id="sugars" ng-model="FoodDiary.sugarsPerServing" />
+								
+							</td>
+							<td style="color: red" ng-show="err[6]">{{err[6]}}</td>
+						</tr>
+						<!-- Fiber 입력 필드와 에러 메시지 -->
+						<tr>
+							<td style="text-align: left; padding: 10px"><b>Grams of Fiber per Serving:</b></td>
+							<td>
+								<input type="text" name="fiber" id="fiber" ng-model="FoodDiary.fiberPerServing" />
+								
+							</td>
+							<td style="color: red" ng-show="err[7]">{{err[7]}}</td>
+						</tr>
+						<!-- Protein 입력 필드와 에러 메시지 -->
+						<tr>
+							<td style="text-align: left; padding: 10px"><b>Grams of Protein per Serving:</b></td>
+							<td>
+								<input type="text" name="protein" id="protein" ng-model="FoodDiary.proteinPerServing" />
+								
+							</td>
+							<td style="color: red" ng-show="err[8]">{{err[8]}}</td>
+						</tr>
+					</table>
+					<br />
+					<button ng-click="addFoodDiary()" class="btn" name="submit">Add Food Diary</button>
+
+					<div name="success" style="color: green;">{{message}}</div>
+			</div>
+		</div>
+
+</div>
+</div>
+
+</body>
+</html>
