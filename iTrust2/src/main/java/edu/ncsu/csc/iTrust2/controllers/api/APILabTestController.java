@@ -159,7 +159,9 @@ public class APILabTestController extends APIController {
             LabTest dummyLabTest = new LabTest();
             List<User> labtechList = userService.findByRole(Role.ROLE_LABTECH);
             // gender-neutral indication ! ㅋㅋ 
-            int zim = (int)(Math.random() * labtechList.size());
+
+            java.util.Random random = new java.util.Random();
+            int zim = random.nextInt(labtechList.size());
             User labtech = labtechList.get(zim);
             
 
