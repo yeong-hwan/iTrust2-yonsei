@@ -52,7 +52,24 @@
 | UC 23 (new)| Cell 3 | [API Document](./docs/apis/UC23.md) |
 
 
+## Test Coverage
+Achieved over 80% test coverage across all UCs implemented.
+<br/>
+
+![cell1_test_coverage](img/cell1_test_coverage.png)
+<br/>
+
+![cell2_test_coverage](img/cell2_test_coverage.png)
+
+<br/>
+
+![cell3_test_coverage](img/cell3_test_coverage.png)
+
+
+
 ## Regular Meeting
+11 PM, Tue, 1hour.  
+Link: https://meet.google.com/ocp-naww-bnv
 
 | Meeting Date | Meeting Purpose | Participants | Document Link                                                                                          | 담당 Cell | 
 |--------------|-----------------| --------------- |--------------------------------------------------------------------------------------------------------| ------------ |
@@ -63,8 +80,6 @@
 | 2023-11-28   | Iter3 대비        | Cell 1, 2, 3 | [Meeting Document](./docs/regular_meetings/231128.md)                                                  | Cell 3|
 | 2023-12-05   | Iter3 대비        | Cell 1, 2, 3 | [Meeting Document](./docs/regular_meetings/231205.md)                                                  |Cell 3|
 
-11 PM, Tue, 1hour.  
-Link: https://meet.google.com/ocp-naww-bnv
 
 ### Meetings
 | Meeting Date | Meeting Purpose            | Participants           | Document Link                                |
