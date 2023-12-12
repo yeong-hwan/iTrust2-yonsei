@@ -55,16 +55,16 @@
 
 ## Test Coverage
 Achieved over 80% test coverage across all UCs implemented.
+<img src="img/cell1_test_coverage.png" alt="drawing" width="400"/>
 <br/>
-
-![cell1_test_coverage](img/cell1_test_coverage.png)
-<br/>
-
-![cell2_test_coverage](img/cell2_test_coverage.png)
+<img src="img/cell2_test_coverage.png" alt="drawing" width="400"/>
 
 <br/>
 
-![cell3_test_coverage](img/cell3_test_coverage.png)
+<img src="img/cell3_test_coverage.png" alt="drawing" width="400"/>
+
+<br/>
+
 
 
 
