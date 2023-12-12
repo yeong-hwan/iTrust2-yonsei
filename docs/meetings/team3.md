@@ -10,6 +10,8 @@
 6. 11/28
 7. 12/01
 
+## UC Flow
+![cell3_uc_flow](../../img/cell3_uc_flow.png)
 
 ### Meeting Title: Cell3 첫 미팅 및 구조 파악
 - **Date:** 11/04

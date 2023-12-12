@@ -16,7 +16,9 @@
 11. [12/7](#anchor-127)
 12. [12/11](#anchor-1211)
 
----
+## UC Flow
+![cell1_uc_flow](../../img/cell1_uc_flow.png)
+
 ## 회의록
 
 
