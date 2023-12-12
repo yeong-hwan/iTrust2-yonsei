@@ -133,7 +133,8 @@ We follow a simplified Git flow process:
 5. **Merge to `develop`**: After approval, merge into the `develop` branch.
 6. **Release**: Periodically merge `develop` into `main` for stable releases.
 
-![git-flow](img/git-flow.png)
+
+<img src="img/git-flow.png" alt="drawing" width="400"/>
 
 **Git flow**
 - [Git flow 참고 영상](https://youtu.be/EV3FZ3cWBp8)
