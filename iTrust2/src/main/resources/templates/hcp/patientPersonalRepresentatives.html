@@ -82,7 +82,7 @@
 
 
                                 //Patients list를 반환한다.
-								$http.get("/iTrust2/api/v1/patients").then(
+								$http.get("/iTrust2/api/v1/personal_representatives/patients").then(
 										function(response) {
 											$scope.patients = response.data;
 										});
