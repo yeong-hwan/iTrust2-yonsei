@@ -17,6 +17,22 @@
 | 2019145010 | Lim, Yewon | 2019145010 | 010-5446-2109 | Cell 3 | Experienced in Java |
 | 2021147593 | Noh, GyuMin | 2021147593 | 010-7141-2273 | Cell 3 | Experienced in Java |
 
+### Leader Role
+##### Iteration 1
+- Team Leader: Park, Seungho
+- QA Leader: Uhm, Soeun
+- Plan Leader: Kim, Yeong Seo  
+
+##### Iteration 2
+- Team Leader: Jang, Yeonghwan
+- QA Leader: Yoon, Jongyoon
+- Plan Leader: Kim, Jueun
+
+##### Iteration 3
+- Team Leader: Lim, Yewon
+- QA Leader: Noh, GyuMin
+- Plan Leader: Kang, Minyong
+
 ### Project Rules
 
 1. **Communication is Key**: Maintain open communication channels through Slack, emails, or regular standup meetings.
