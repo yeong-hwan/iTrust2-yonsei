@@ -1,6 +1,19 @@
-# iTrust2
+# iTrust2-Yonsei
 
+## Background
+iTrust2 was founded as a class project for **CSI3106 Software Engineering** in the [Computer Science Department of Yonsei University](https://cs.yonsei.ac.kr/) and is maintained primarily by [Yeonghwan Jang](https://github.com/yeong-hwan). The goal of iTrust2 is to engage students with software engineering practices on a significant, relevant, and growing application that includes security and privacy requirements.
 
+iTrust2 is an **Electronics Health Records system (EHR)** that provides patients with a means to maintain their health records and communicate with their health care providers (HCPs).  HCPs can record information about office visits including basic health metrics, diagnoses, prescriptions, eye care, and pregnancy care. iTrust2 follows [HIPAA statue](http://www.hhs.gov/ocr/hipaa/) for ensuring security and privacy of patient records.
+
+## Technical Info
+iTrust2 is written with Java EE and JavaScript. It uses Spring to handle the backend and AngularJS on the frontend (currently AngularJS v1.6; work is underway to migrate to AngularJS v7) and runs with a MySQL/MariaDB database. Testing is performed using Spring for the API and a combination of Cucumber and Selenium on the frontend.
+
+iTrust2 is a successor to the original iTrust also developed at NC State University.
+We mainly referred to [NSCU CSC 326 SWE project](https://github.com/ncsu-csc326/iTrust2)
+
+Each semester, the teaching staff releases a new version of iTrust2, taking a project from one team that followed particularly good practise and implemented a particularly good version, and cleans it up a bit.
+
+Starting with v8, iTrust2 received a significant rewrite of the Java layers of the system. This was done to upgrade to Spring Boot 2.x (2.3.7.RELEASE as of the time of this writing) and use a more moduler, component-based architecture. This brought several benefits, such as transaction-based rollback in tests and separate test/production databases through Application Profiles. However, from a functional perspective, iTrust2-v8 marks a significant regression from iTrust2-v7, losing about half of the usecases. Efforts are underway to rewrite them.
 
 ## Team2 iTrust2 Project
 
@@ -150,20 +163,18 @@ We follow a simplified Git flow process:
 6. **Release**: Periodically merge `develop` into `main` for stable releases.
 
 
-<img src="img/git-flow.png" alt="drawing" width="400"/>
+<img src="img/git-flow.png" alt="drawing" width="600"/>
 
+### How We Co-operation
 **Git flow**
-- [Git flow 참고 영상](https://youtu.be/EV3FZ3cWBp8)
+- [Git flow discription](https://youtu.be/EV3FZ3cWBp8)
 
 **Commit Convention**
-- [Commit Convention 참고 자료](https://velog.io/@shin6403/Git-git-%EC%BB%A4%EB%B0%8B-%EC%BB%A8%EB%B2%A4%EC%85%98-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0)
-```
-# 제목은 최대 50글자까지 아래에 작성: ex) Feat: Add Key mapping  
-# 본문은 아래에 작성  
-# 꼬릿말은 아래에 작성: ex) Github issue #23  
+- [Commit Convention reference](https://velog.io/@shin6403/Git-git-%EC%BB%A4%EB%B0%8B-%EC%BB%A8%EB%B2%A4%EC%85%98-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0)
 
+```
 # --- COMMIT END ---  
-#   <타입> 리스트  
+#   <Type> : Title 
 #   feat        : 기능 (새로운 기능)  
 #   fix         : 버그 (버그 수정)  
 #   refactor    : 리팩토링  
@@ -173,20 +184,13 @@ We follow a simplified Git flow process:
 #   docs        : 문서 수정 (문서 추가, 수정, 삭제, README)  
 #   test        : 테스트 (테스트 코드 추가, 수정, 삭제: 비즈니스 로직에 변경 없음)  
 #   chore       : 기타 변경사항 (빌드 스크립트 수정, assets, 패키지 매니저 등)  
-#   init        : 초기 생성  
 #   rename      : 파일 혹은 폴더명을 수정하거나 옮기는 작업만 한 경우  
 #   remove      : 파일을 삭제하는 작업만 수행한 경우  
 # ------------------  
-#   제목 첫 글자를 대문자로  
-#   제목은 명령문으로  
-#   제목 끝에 마침표(.) 금지  
-#   제목과 본문을 한 줄 띄워 분리하기  
-#   본문은 "어떻게" 보다 "무엇을", "왜"를 설명한다.  
-#   본문에 여러줄의 메시지를 작성할 땐 "-"로 구분  
+#   <Body> : discripton(optional)
 # ------------------  
-#   <꼬리말>  
-#   필수가 아닌 optioanl  
-#   Fixes        :이슈 수정중 (아직 해결되지 않은 경우)  
+#   <Footer> : issue control(optioanl)
+#   Fixes        : 이슈 수정중 (아직 해결되지 않은 경우)  
 #   Resolves     : 이슈 해결했을 때 사용  
 #   Ref          : 참고할 이슈가 있을 때 사용  
 #   Related to   : 해당 커밋에 관련된 이슈번호 (아직 해결되지 않은 경우)  
