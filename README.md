@@ -15,20 +15,20 @@ Each semester, the teaching staff releases a new version of iTrust2, taking a pr
 
 Starting with v8, iTrust2 received a significant rewrite of the Java layers of the system. This was done to upgrade to Spring Boot 2.x (2.3.7.RELEASE as of the time of this writing) and use a more moduler, component-based architecture. This brought several benefits, such as transaction-based rollback in tests and separate test/production databases through Application Profiles. However, from a functional perspective, iTrust2-v8 marks a significant regression from iTrust2-v7, losing about half of the usecases. Efforts are underway to rewrite them.
 
-## Team2 iTrust2 Project
+## iTrust2 Project
 
 ### Members
-| GitLab ID | Name |Student ID|    Contact  | Cell No.  | etc. |
-|:---:|:---:|:---:|:-------------:|:-----:|:---:|
-| 2021147561 | Kim, Yeong Seo | 2021147561 | 010-9494-7646 | Cell 1 | Experienced in Java |
-| 2021147598 | Park, Seungho  | 2021147598 | 010-4076-6939 | Cell 1 | Experienced in Java |
-| Soeun | Uhm, Soeun | 2019143073 | 010-9887-7683 | Cell 1 | Experienced in Java |
-| claire | Kim, Jueun | 2021147510 | 010-7213-7394 | Cell 2 | Experienced in Java |
-| Yoon | Yoon, Jongyoon | 2021147599 | 010-8300-1365 | Cell 2 | Experienced in Java |
-| 2019145019| Jang, Yeonghwan | 2019145019 | 010-3103-3840 | Cell 2 | Experienced in Java |
-| KangMinYong | Kang, Minyong | 2017147513 | 010-3041-1621 | Cell 3 | Experienced in Java |
-| 2019145010 | Lim, Yewon | 2019145010 | 010-5446-2109 | Cell 3 | Experienced in Java |
-| 2021147593 | Noh, GyuMin | 2021147593 | 010-7141-2273 | Cell 3 | Experienced in Java |
+| GitHub ID | Name | Cell No.  | Department |
+|:---:|:---:|:---:|:---:|
+| 0xseo | Kim, Yeong Seo | Cell 1 | Yonsei CS |
+| 2021147599 | Park, Seungho | Cell 1 | Yonsei CS |
+| ddoddii | Uhm, Soeun  | Cell 1 | Yonsei IE |
+| Nugu-ai | Kim, Jueun  | Cell 2 | Yonsei CS |
+| yjy0503| Yoon, Jongyoon  | Cell 2 | Yonsei CS |
+| yeong-hwan| Jang, Yeonghwan | Cell 2 | Yonsei CS |
+| minyong-yonsei | Kang, Minyong | Cell 3 | Yonsei CS |
+| three0-s | Lim, Yewon | Cell 3 | Yonsei CS |
+| 2021147593 | Noh, GyuMin | Cell 3 | Yonsei CS |
 
 ### Leader Role
 ##### Iteration 1
