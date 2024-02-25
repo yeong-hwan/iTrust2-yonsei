@@ -167,7 +167,7 @@ We follow a simplified Git flow process:
 
 ### How We Co-operation
 **Git flow**
-- [Git flow discription](https://youtu.be/EV3FZ3cWBp8)
+- [Git flow description](https://youtu.be/EV3FZ3cWBp8)
 
 **Commit Convention**
 - [Commit Convention reference](https://velog.io/@shin6403/Git-git-%EC%BB%A4%EB%B0%8B-%EC%BB%A8%EB%B2%A4%EC%85%98-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0)
@@ -187,7 +187,7 @@ We follow a simplified Git flow process:
 #   rename      : 파일 혹은 폴더명을 수정하거나 옮기는 작업만 한 경우  
 #   remove      : 파일을 삭제하는 작업만 수행한 경우  
 # ------------------  
-#   <Body> : discripton(optional)
+#   <Body> : descripton(optional)
 # ------------------  
 #   <Footer> : issue control(optioanl)
 #   Fixes        : 이슈 수정중 (아직 해결되지 않은 경우)  
