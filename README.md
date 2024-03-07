@@ -1,5 +1,9 @@
 # iTrust2-Yonsei
 
+<div align="center">
+   <img src="img/main_small.png" alt="drawing" width=700"/>
+</div>
+
 ## Background
 iTrust2 was founded as a class project for **CSI3106 Software Engineering** in the [Computer Science Department of Yonsei University](https://cs.yonsei.ac.kr/) and is maintained primarily by [Yeonghwan Jang](https://github.com/yeong-hwan). The goal of iTrust2 is to engage students with software engineering practices on a significant, relevant, and growing application that includes security and privacy requirements.
 
